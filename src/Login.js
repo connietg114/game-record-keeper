@@ -19,6 +19,7 @@ function Login(){
         <textarea value={text} onChange={(e) => setText(e.target.value)}></textarea> {/*make textarea bigger in css*/}
         <div>
             <button onClick={submitHandler}> Submit</button> 
+        
         </div>
 
         <table> 

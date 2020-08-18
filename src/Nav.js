@@ -11,11 +11,14 @@ function Nav(){
         <nav className="topnav">
         <Link style={style} to='/'><a>LOGO</a></Link>
         <a><input type="text" placeholder="Search ..." ></input></a>
-        <Link style={style} to='/'><a  className="active">Home</a></Link>
-        <Link style={style} to='/about'><a >About</a></Link>
-        <Link style={style} to='/theresults'><a >TheResults</a></Link>
-        <Link style={style} to='/login'><a >LogIn</a></Link>
-        <Link style={style}> <a>Hello Admin!</a></Link> {/*<Link> moves items position...need styling */}
+        <Link style={style} to='/'className="active">Home</Link>
+        <Link style={style} to='/matches'>Matches</Link>
+        <Link style={style} to='/players'>Players</Link>
+
+        <Link style={style} to='/about'>About</Link>
+        <Link style={style} to='/theresults'>TheResults</Link>
+        <Link style={style} to='/login'>LogIn</Link>
+        <Link style={style}> Hello Admin!</Link> {/*<Link> moves items position...need styling */}
         
     </nav>
     );

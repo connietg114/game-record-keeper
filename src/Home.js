@@ -22,24 +22,29 @@ function Home(){
         setText('');
     }
    
-    var result = [
-        {
-            "date:": '2020-04-01',
-            "gameType": 'Tennis'
-        }
-    ];
-
+    //for remove item from players array
+   
     return(
         <div>
             <h1>Home</h1>
             <hr></hr>
             <input name="newPlayerName" value={text} onChange={e => setText(e.target.value)}></input>
             <button onClick={addPlayer}>Add Player</button>
+            
             <h3>Form a Table below:</h3>
             <table>
             
             {
-                players.map(p => (<tr><td><input type="text" value={p}></input></td><td><button>Remove</button></td></tr>))
+                players.map(p => (
+
+                <tr>
+                    <td>{p}</td>
+                    <td>
+                        <button id='playerName'>Remove</button>
+                                   
+                    </td>
+                </tr>))
+                
             }
         
             </table>

@@ -8,6 +8,8 @@ import Home from './Home.js';
 import About from './About.js';
 import Login from './Login.js';
 import Theresults from './Theresults.js';
+import Matches from './matches.js';
+import Players from './players.js';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 //import 'bootstrap/dist/css/bootstrap.min.css';
@@ -21,6 +23,8 @@ function App(){
             <Nav/>
             <Switch> {/* after detect '/', then stop - Home */}
                 <Route path ='/' exact component={Home}/> {/*put exact so that / works for Home only*/}
+                <Route path='/matches' component={Matches}/>
+                <Route path='/players' component={Players}/>
                 <Route path='/about' component={About}/>
                 <Route path='/theresults' component={Theresults}/>
                 <Route path='/login' component={Login}/>
