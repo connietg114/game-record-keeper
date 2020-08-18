@@ -48,10 +48,39 @@ function Home(){
         tournamentID: '200'},
         
     ];
-    for (var i = 0; i<games.length;i++){
-        games= _.orderBy(games, ['date','name'], ['asc','asc']);
-        console.log(games[i].name);
-    }
+    
+    games= _.orderBy(games, ['date','name'], ['asc','asc']); //sort by date then name
+    
+    var tournaments = [
+        {ID: '100',
+        name: 'Go',
+        startDate: '2019-03-04',
+        endDate:'2020-01-02',
+        type:'null'},
+        
+        {ID: '101',
+        name: 'Catan',
+        startDate: '2019-03-04',
+        endDate:'2020-01-02',
+        type:'null'},
+    
+        {ID: '120',
+        name: 'Chess',
+        startDate: '2019-03-04',
+        endDate:'2020-01-02',
+        type:'null'},
+    
+        {ID: '120',
+        name: 'Connect Four',
+        startDate: '2019-03-04',
+        endDate:'2020-01-02',
+        type:'null'},
+    
+        {ID: '105',
+        name: 'Monopoly',
+        startDate: '2019-03-04',
+        endDate:'2020-01-02',
+        type:'null'},]
 
     return(
         <div>
@@ -69,12 +98,31 @@ function Home(){
                 {games.map(game=>
                 <tr style={style}>
                     <td>{game.ID}</td>
-                <td>{game.name}</td>
-                <td>{game.status}</td>
-                <td>{game.date}</td>
-                <td>{game.noOfPlayers}</td>
-                <td>{game.tournamentID}</td>
+                    <td>{game.name}</td>
+                    <td>{game.status}</td>
+                    <td>{game.date}</td>
+                    <td>{game.noOfPlayers}</td>
+                    <td>{game.tournamentID}</td>
                 </tr>)}
+            </table>
+
+            <br></br>
+            <h3 style={{textDecorationLine:'underline'}}>Recent Tournaments</h3>
+            <table style={style}>
+            <th style={style} >Tournament ID</th>
+                <th style={style}>Name</th>
+                <th style={style}>Start Date</th>
+                <th style={style}>End Date</th>
+                <th style={style}>Type</th>
+                {tournaments.map(t=> 
+                    <tr style={style}>
+                        <td>{t.ID}</td>
+                        <td>{t.name}</td>
+                        <td>{t.startDate}</td>
+                        <td>{t.endDate}</td>
+                        <td>{t.type}</td>
+                    </tr>)}
+
             </table>
             
             

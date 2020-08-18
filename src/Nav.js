@@ -9,8 +9,8 @@ function Nav(){
     };
     return(
         <nav className="topnav">
-        <Link style={style} to='/'><a>LOGO</a></Link>
-        <a><input type="text" placeholder="Search ..." ></input></a>
+        <Link style={style} to='/'>LOGO</Link>
+        <input type="text" placeholder="Search ..." ></input>
         <Link style={style} to='/'className="active">Home</Link>
         <Link style={style} to='/matches'>Matches</Link>
         <Link style={style} to='/players'>Players</Link>

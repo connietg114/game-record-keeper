@@ -7,6 +7,7 @@ function Matches(){
         <div>
             <h1>Matches</h1>
             <hr></hr>
+            
         </div>
     );
 }
