@@ -11,6 +11,8 @@ import Theresults from './Theresults.js';
 import Matches from './matches.js';
 import Players from './players.js';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import EnhancedTable from './draft';
+
 
 //import 'bootstrap/dist/css/bootstrap.min.css';
 // import { ReactComponent } from '*.svg';
@@ -28,6 +30,7 @@ function App(){
                 <Route path='/about' component={About}/>
                 <Route path='/theresults' component={Theresults}/>
                 <Route path='/login' component={Login}/>
+                <Route path='/draft' component={EnhancedTable}/>
             </Switch>
             </div> 
         </Router>                  
