@@ -6,7 +6,7 @@ const style ={
     border: '1px solid black'
 }
 function Matches(){
-    var _ = require('lodash');
+    
     var games = [
         {ID: '100',
         name: 'Catan',
