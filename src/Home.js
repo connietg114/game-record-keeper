@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-
-
+import moment from 'moment';
 
 const style ={
     border: '1px solid black'
@@ -10,46 +9,20 @@ const style ={
 // change css for the table
 
 function Home(){
-    var _ = require('lodash');
-    var games = [
-        {ID: '100',
-        name: 'Catan',
-        status: 'dontknow',
-        date: '2020-03-03',
-        noOfPlayers: 10,
-        tournamentID: '200'},
+    var _ = require('lodash');//do we need this?
 
-        {ID: '110',
-        name: 'Monopoly',
-        status: 'null',
-        date: '2020-03-06',
-        noOfPlayers: 10,
-        tournamentID: '200'},
+    const[games, setGames] = useState([]);
 
-        {ID: '111',
-        name: 'Go',
-        status: 'dontknow',
-        date: '2020-03-03',
-        noOfPlayers: 10,
-        tournamentID: '200'},
-
-        {ID: '100',
-        name: 'Connect Four',
-        status: 'dontknow',
-        date: '2020-02-20',
-        noOfPlayers: 10,
-        tournamentID: '200'},
-
-        {ID: '100',
-        name: 'Chess',
-        status: 'dontknow',
-        date: '2020-10-01',
-        noOfPlayers: 10,
-        tournamentID: '200'},
+    fetch('https://localhost:5001/api/gameMatch/', {
+    method: 'GET', 
+    headers: {'Content-Type': 'application/json',}
+    })
+    .then(response => response.json())
+    .then(data => {
+    setGames(data);
+    })
         
-    ];
-    
-    games= _.orderBy(games, ['date','name'], ['asc','asc']); //sort by date then name
+    // games= _.orderBy(games, ['date','name'], ['asc','asc']); //sort by date then name
     
     var tournaments = [
         {ID: '100',
@@ -97,10 +70,10 @@ function Home(){
                 <th style={style}>Tournament ID</th>
                 {games.map(game=>
                 <tr style={style}>
-                    <td>{game.ID}</td>
-                    <td>{game.name}</td>
+                    <td>{game.game.id}</td>
+                    <td>{game.game.name}</td>
                     <td>{game.status}</td>
-                    <td>{game.date}</td>
+                    <td>{moment(game.matchDate).format ("YYYY-MM-DD, h:mm:ss a")}</td>
                     <td>{game.noOfPlayers}</td>
                     <td>{game.tournamentID}</td>
                 </tr>)}
