@@ -2,6 +2,13 @@ import React, {useState, useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import moment from 'moment';
+import Table from '@material-ui/core/Table';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableBody from '@material-ui/core/TableBody';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
+import TablePagination from '@material-ui/core/TablePagination';
 
 const style ={
     border: '1px solid black'
@@ -61,45 +68,52 @@ function Home(){
             <hr></hr>
             <br></br>
             <h3 style={{textDecorationLine:'underline'}}>Recent Games</h3>
-            <table style={style}>
-                <th style={style} >Game ID</th>
-                <th style={style}>Name</th>
-                <th style={style}>Status</th>
-                <th style={style}>Date</th>
-                <th style={style}>Number of Players</th>
-                <th style={style}>Tournament ID</th>
+            <Table>
+                <TableHead>
+                    <TableRow>
+                        <TableCell> Game ID </TableCell>
+                        <TableCell>Name</TableCell>
+                        <TableCell>Status</TableCell>
+                        <TableCell>Date</TableCell>
+                        <TableCell>Number of Players</TableCell>
+                        <TableCell>Tournament ID</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
                 {games.map(game=>
-                <tr style={style}>
-                    <td>{game.game.id}</td>
-                    <td>{game.game.name}</td>
-                    <td>{game.status}</td>
-                    <td>{moment(game.matchDate).format ("YYYY-MM-DD, h:mm:ss a")}</td>
-                    <td>{game.noOfPlayers}</td>
-                    <td>{game.tournamentID}</td>
-                </tr>)}
-            </table>
-
+                <TableRow>
+                    <TableCell>{game.game.id}</TableCell>
+                    <TableCell>{game.game.name}</TableCell>
+                    <TableCell>{game.status}</TableCell>
+                    <TableCell>{moment(game.matchDate).format ("YYYY-MM-DD, h:mm:ss a")}</TableCell>
+                    <TableCell>{game.noOfPlayers}</TableCell>
+                    <TableCell>{game.tournamentID}</TableCell>
+                </TableRow>)}
+                </TableBody>
+            </Table>
+           
             <br></br>
             <h3 style={{textDecorationLine:'underline'}}>Recent Tournaments</h3>
-            <table style={style}>
-            <th style={style} >Tournament ID</th>
-                <th style={style}>Name</th>
-                <th style={style}>Start Date</th>
-                <th style={style}>End Date</th>
-                <th style={style}>Type</th>
+            <Table>
+                <TableHead>
+                    <TableRow>
+                        <TableCell>Tournament ID</TableCell>
+                        <TableCell>Name</TableCell>
+                        <TableCell>Start Date</TableCell>
+                        <TableCell>End Date</TableCell>
+                        <TableCell>Type</TableCell>
+                    </TableRow>
+                </TableHead>
+                    
                 {tournaments.map(t=> 
-                    <tr style={style}>
-                        <td>{t.ID}</td>
-                        <td>{t.name}</td>
-                        <td>{t.startDate}</td>
-                        <td>{t.endDate}</td>
-                        <td>{t.type}</td>
-                    </tr>)}
-
-            </table>
-            
-            
-            
+                    <TableRow>
+                        <TableCell>{t.ID}</TableCell>
+                        <TableCell>{t.name}</TableCell>
+                        <TableCell>{t.startDate}</TableCell>
+                        <TableCell>{t.endDate}</TableCell>
+                        <TableCell>{t.type}</TableCell>
+                    </TableRow>)}
+            </Table>   
         </div>
     );
 }

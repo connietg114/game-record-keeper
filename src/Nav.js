@@ -10,15 +10,14 @@ function Nav(){
     return(
         <nav className="topnav">
         <Link style={style} to='/'>LOGO</Link>
-        <input type="text" placeholder="Search ..." ></input>
+        
         <Link style={style} to='/'className="active">Home</Link>
         <Link style={style} to='/matches'>Matches</Link>
         <Link style={style} to='/players'>Players</Link>
 
         <Link style={style} to='/about'>About</Link>
         <Link style={style} to='/theresults'>TheResults</Link>
-        <Link style={style} to='/login'>LogIn</Link>
-        <Link style={style}> Hello Admin!</Link> {/*<Link> moves items position...need styling */}
+        
         
     </nav>
     );

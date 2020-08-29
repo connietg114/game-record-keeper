@@ -49,7 +49,9 @@ function Matches(){
             <h1>Matches</h1>
             <hr></hr>
             <br></br>
-            
+            <input type="text" placeholder="Search for matches..." ></input>
+            <br></br>
+            <br></br>
             <table style={style}>
                 <th style={style} >Game ID</th>
                 <th style={style}>Name</th>
@@ -67,8 +69,7 @@ function Matches(){
                     <td>{game.tournamentID}</td>
                 </tr>)}
             </table>
-            <button>Manage</button>
-            <button>Edit</button>
+           
 
         </div>
     );
