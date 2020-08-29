@@ -20,14 +20,25 @@ function Home(){
 
     const[games, setGames] = useState([]);
 
-    fetch('https://localhost:5001/api/gameMatch/', {
-    method: 'GET', 
-    headers: {'Content-Type': 'application/json',}
+    fetch('./config.json', {
+        method: 'GET', 
+        headers: {'Content-Type': 'application/json',}
     })
     .then(response => response.json())
     .then(data => {
-    setGames(data);
-    })
+        var url = data.apiURL + 'api/gameMatch/';
+
+        fetch(url, {
+            method: 'GET', 
+            headers: {'Content-Type': 'application/json',}
+            })
+            .then(response => response.json())
+            .then(item => {
+            setGames(item);
+            });
+    });
+
+    
         
     // games= _.orderBy(games, ['date','name'], ['asc','asc']); //sort by date then name
     
