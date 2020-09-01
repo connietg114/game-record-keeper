@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import moment from 'moment';
 import Table from '@material-ui/core/Table';
@@ -15,29 +15,24 @@ const style ={
 }
 function Matches(){
     
-    var games = [
-        {ID: '100',
-        name: 'Catan',
-        status: 'dontknow',
-        date: '2020-03-03',
-        noOfPlayers: 10,
-        tournamentID: '200'},
+    const[games, setGames] = useState([]);
+    fetch('./config.json', {
+        method: 'GET', 
+        headers: {'Content-Type': 'application/json',}
+    })
+    .then(response => response.json())
+    .then(data => {
+        var url = data.apiURL + 'api/gameMatch/allmatches';
 
-        {ID: '110',
-        name: 'Monopoly',
-        status: 'null',
-        date: '2020-03-06',
-        noOfPlayers: 10,
-        tournamentID: '200'},
-
-        {ID: '111',
-        name: 'Go',
-        status: 'dontknow',
-        date: '2020-03-03',
-        noOfPlayers: 10,
-        tournamentID: '200'}
-        
-    ];
+        fetch(url, {
+            method: 'GET', 
+            headers: {'Content-Type': 'application/json',}
+            })
+            .then(response => response.json())
+            .then(item => {
+            setGames(item);
+            });
+    });
     return(
         <div>
             <h1>Matches</h1>
@@ -53,22 +48,22 @@ function Matches(){
                         <TableCell style={{fontWeight: "bold"}}>Name</TableCell>
                         <TableCell style={{fontWeight: "bold"}}>Status</TableCell>
                         <TableCell style={{fontWeight: "bold"}}>Date</TableCell>
+                        <TableCell style={{fontWeight: "bold"}}>Time</TableCell>
                         <TableCell style={{fontWeight: "bold"}}>Number of Players</TableCell>
                         <TableCell style={{fontWeight: "bold"}}>Tournament Name</TableCell>
                     </TableRow>
                 </TableHead>
                 {games.map(game=>
                 <TableRow>
-                    <TableCell>{game.ID}</TableCell>
-                    <TableCell>{game.name}</TableCell>
+                    <TableCell>{game.game.id}</TableCell>
+                    <TableCell>{game.game.name}</TableCell>
                     <TableCell>{game.status}</TableCell>
-                    <TableCell>{game.date}</TableCell>
+                    <TableCell>{moment(game.matchDate).format ("YYYY-MM-DD")}</TableCell>
+                    <TableCell>{moment(game.matchDate).format ("h:mm:ss a")}</TableCell>
                     <TableCell>{game.noOfPlayers}</TableCell>
-                    <TableCell>{game.tournamentID}</TableCell>
+                    <TableCell>{game.tournament.name}</TableCell>
                 </TableRow>)}
             </Table>
-           
-
         </div>
     );
 }

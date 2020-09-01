@@ -95,7 +95,7 @@ function Home(){
                     <TableCell>{moment(game.matchDate).format ("YYYY-MM-DD")}</TableCell>
                     <TableCell>{moment(game.matchDate).format ("h:mm:ss a")}</TableCell>
                     <TableCell>{game.noOfPlayers}</TableCell>
-                    <TableCell>{game.tournamentID}</TableCell>
+                    <TableCell>{game.tournament.id}</TableCell>
                 </TableRow>)}
                 </TableBody>
             </Table>
