@@ -6,7 +6,7 @@ import _ from 'lodash';
 import Nav from './Nav.js';
 import Home from './Home.js';
 import About from './About.js';
-import Login from './Login.js';
+
 import Theresults from './Theresults.js';
 import Matches from './matches.js';
 import Players from './players.js';
@@ -29,7 +29,7 @@ function App(){
                 <Route path='/players' component={Players}/>
                 <Route path='/about' component={About}/>
                 <Route path='/theresults' component={Theresults}/>
-                <Route path='/login' component={Login}/>
+                
                 <Route path='/draft' component={EnhancedTable}/>
             </Switch>
             </div> 

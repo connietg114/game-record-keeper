@@ -20,7 +20,7 @@ function Nav(){
         <Link style={style} to='/players'>Players</Link>
 
         <Link style={style} to='/about'>About</Link>
-        <Link style={style} to='/theresults'>TheResults</Link>
+        
         
         
     </nav>
