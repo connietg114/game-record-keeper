@@ -7,9 +7,13 @@ function Nav(){
     const style ={
         color:'black'
     };
+    const imgStyle={
+        height: '30px',
+        width: '30px'
+    };
     return(
         <nav className="topnav">
-        <Link style={style} to='/'>LOGO</Link>
+        <Link style={style} to='/'><img style = {imgStyle} src='./logo192.png' ></img> </Link>
         
         <Link style={style} to='/'className="active">Home</Link>
         <Link style={style} to='/matches'>Matches</Link>
