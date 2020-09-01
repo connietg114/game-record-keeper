@@ -10,11 +10,6 @@ import TableBody from '@material-ui/core/TableBody';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import TablePagination from '@material-ui/core/TablePagination';
 
-const style ={
-    border: '1px solid black'
-}
-// change css for the table
-
 function Home(){
     var _ = require('lodash');//do we need this?
 
@@ -82,12 +77,13 @@ function Home(){
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell> Game ID </TableCell>
-                        <TableCell>Name</TableCell>
-                        <TableCell>Status</TableCell>
-                        <TableCell>Date</TableCell>
-                        <TableCell>Number of Players</TableCell>
-                        <TableCell>Tournament ID</TableCell>
+                        <TableCell style={{fontWeight: "bold"}}> Game ID </TableCell>
+                        <TableCell style={{fontWeight: "bold"}}>Name</TableCell>
+                        <TableCell style={{fontWeight: "bold"}}>Status</TableCell>
+                        <TableCell style={{fontWeight: "bold"}}>Date</TableCell>
+                        <TableCell style={{fontWeight: "bold"}}>Time</TableCell>
+                        <TableCell style={{fontWeight: "bold"}}>Number of Players</TableCell>
+                        <TableCell style={{fontWeight: "bold"}}>Tournament ID</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -96,7 +92,8 @@ function Home(){
                     <TableCell>{game.game.id}</TableCell>
                     <TableCell>{game.game.name}</TableCell>
                     <TableCell>{game.status}</TableCell>
-                    <TableCell>{moment(game.matchDate).format ("YYYY-MM-DD, h:mm:ss a")}</TableCell>
+                    <TableCell>{moment(game.matchDate).format ("YYYY-MM-DD")}</TableCell>
+                    <TableCell>{moment(game.matchDate).format ("h:mm:ss a")}</TableCell>
                     <TableCell>{game.noOfPlayers}</TableCell>
                     <TableCell>{game.tournamentID}</TableCell>
                 </TableRow>)}
@@ -108,11 +105,11 @@ function Home(){
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell>Tournament ID</TableCell>
-                        <TableCell>Name</TableCell>
-                        <TableCell>Start Date</TableCell>
-                        <TableCell>End Date</TableCell>
-                        <TableCell>Type</TableCell>
+                        <TableCell style={{fontWeight: "bold"}}>Tournament ID</TableCell>
+                        <TableCell style={{fontWeight: "bold"}}>Name</TableCell>
+                        <TableCell style={{fontWeight: "bold"}}>Start Date</TableCell>
+                        <TableCell style={{fontWeight: "bold"}}>End Date</TableCell>
+                        <TableCell style={{fontWeight: "bold"}}>Type</TableCell>
                     </TableRow>
                 </TableHead>
                     

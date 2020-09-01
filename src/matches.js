@@ -1,5 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import moment from 'moment';
+import Table from '@material-ui/core/Table';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableBody from '@material-ui/core/TableBody';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
+import TablePagination from '@material-ui/core/TablePagination';
 // import EditIcon from '@material-ui/core/icons/Edit'; --> Can't resolve '@material-ui/core/icons/Edit'
 
 const style ={
@@ -27,21 +35,7 @@ function Matches(){
         status: 'dontknow',
         date: '2020-03-03',
         noOfPlayers: 10,
-        tournamentID: '200'},
-
-        {ID: '100',
-        name: 'Connect Four',
-        status: 'dontknow',
-        date: '2020-02-20',
-        noOfPlayers: 10,
-        tournamentID: '200'},
-
-        {ID: '100',
-        name: 'Chess',
-        status: 'dontknow',
-        date: '2020-10-01',
-        noOfPlayers: 10,
-        tournamentID: '200'},
+        tournamentID: '200'}
         
     ];
     return(
@@ -52,23 +46,27 @@ function Matches(){
             <input type="text" placeholder="Search for matches..." ></input>
             <br></br>
             <br></br>
-            <table style={style}>
-                <th style={style} >Game ID</th>
-                <th style={style}>Name</th>
-                <th style={style}>Status</th>
-                <th style={style}>Date</th>
-                <th style={style}>Number of Players</th>
-                <th style={style}>Tournament ID</th>
+            <Table>
+                <TableHead>
+                    <TableRow>
+                        <TableCell style={{fontWeight: "bold"}}>Game ID</TableCell>
+                        <TableCell style={{fontWeight: "bold"}}>Name</TableCell>
+                        <TableCell style={{fontWeight: "bold"}}>Status</TableCell>
+                        <TableCell style={{fontWeight: "bold"}}>Date</TableCell>
+                        <TableCell style={{fontWeight: "bold"}}>Number of Players</TableCell>
+                        <TableCell style={{fontWeight: "bold"}}>Tournament Name</TableCell>
+                    </TableRow>
+                </TableHead>
                 {games.map(game=>
-                <tr style={style}>
-                    <td>{game.ID}</td>
-                    <td>{game.name}</td>
-                    <td>{game.status}</td>
-                    <td>{game.date}</td>
-                    <td>{game.noOfPlayers}</td>
-                    <td>{game.tournamentID}</td>
-                </tr>)}
-            </table>
+                <TableRow>
+                    <TableCell>{game.ID}</TableCell>
+                    <TableCell>{game.name}</TableCell>
+                    <TableCell>{game.status}</TableCell>
+                    <TableCell>{game.date}</TableCell>
+                    <TableCell>{game.noOfPlayers}</TableCell>
+                    <TableCell>{game.tournamentID}</TableCell>
+                </TableRow>)}
+            </Table>
            
 
         </div>
