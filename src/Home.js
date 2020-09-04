@@ -7,34 +7,43 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
-import TablePagination from '@material-ui/core/TablePagination';
+import { useHistory } from "react-router-dom";
+import {getID} from './GameDetail.js';
 
-function Home(){
+function GameRow(props) {
+
+    let history = useHistory();
+    function navigateToDetailsPage() {
+        history.push('/gamedetail/' + props.game.id);
+    }
+
+    return (
+    <TableRow type="button" onClick={navigateToDetailsPage}>
+        <TableCell>{props.game.id}</TableCell>
+        <TableCell>{props.game.game.name}</TableCell>
+        <TableCell>{props.game.status}</TableCell>
+        <TableCell>{moment(props.game.matchDate).format ("YYYY-MM-DD")}</TableCell>
+        <TableCell>{moment(props.game.matchDate).format ("h:mm:ss a")}</TableCell>
+        <TableCell>{props.game.noOfPlayers}</TableCell>
+        <TableCell>{props.game.tournament.id}</TableCell>
+    </TableRow>
+    );
+}
+
+function Home(props){
     var _ = require('lodash');//do we need this?
 
-    const[games, setGames] = useState([]);
-
-    fetch('./config.json', {
+    const[games, setGames] = useState([]); 
+    var url = props.config.apiURL + 'api/gameMatch/';
+    fetch(url, {
         method: 'GET', 
         headers: {'Content-Type': 'application/json',}
-    })
-    .then(response => response.json())
-    .then(data => {
-        var url = data.apiURL + 'api/gameMatch/';
-
-        fetch(url, {
-            method: 'GET', 
-            headers: {'Content-Type': 'application/json',}
-            })
-            .then(response => response.json())
-            .then(item => {
-            setGames(item);
-            });
-    });
-
+        })
+        .then(response => response.json())
+        .then(item => {
+        setGames(item);
+        });
     
-        
     // games= _.orderBy(games, ['date','name'], ['asc','asc']); //sort by date then name
     
     var tournaments = [
@@ -42,31 +51,8 @@ function Home(){
         name: 'Go',
         startDate: '2019-03-04',
         endDate:'2020-01-02',
-        type:'null'},
-        
-        {ID: '101',
-        name: 'Catan',
-        startDate: '2019-03-04',
-        endDate:'2020-01-02',
-        type:'null'},
-    
-        {ID: '120',
-        name: 'Chess',
-        startDate: '2019-03-04',
-        endDate:'2020-01-02',
-        type:'null'},
-    
-        {ID: '120',
-        name: 'Connect Four',
-        startDate: '2019-03-04',
-        endDate:'2020-01-02',
-        type:'null'},
-    
-        {ID: '105',
-        name: 'Monopoly',
-        startDate: '2019-03-04',
-        endDate:'2020-01-02',
-        type:'null'},]
+        type:'null'}]
+ 
 
     return(
         <div>
@@ -74,6 +60,7 @@ function Home(){
             <hr></hr>
             <br></br>
             <h3 style={{textDecorationLine:'underline'}}>Recent Games</h3>
+
             <Table>
                 <TableHead>
                     <TableRow>
@@ -87,16 +74,8 @@ function Home(){
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                {games.map(game=>
-                <TableRow>
-                    <TableCell>{game.game.id}</TableCell>
-                    <TableCell>{game.game.name}</TableCell>
-                    <TableCell>{game.status}</TableCell>
-                    <TableCell>{moment(game.matchDate).format ("YYYY-MM-DD")}</TableCell>
-                    <TableCell>{moment(game.matchDate).format ("h:mm:ss a")}</TableCell>
-                    <TableCell>{game.noOfPlayers}</TableCell>
-                    <TableCell>{game.tournament.id}</TableCell>
-                </TableRow>)}
+                {games.map((game , index) =>
+                    <GameRow game={game}/>)}
                 </TableBody>
             </Table>
            

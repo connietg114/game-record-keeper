@@ -55,7 +55,7 @@ function Matches(){
                 </TableHead>
                 {games.map(game=>
                 <TableRow>
-                    <TableCell>{game.game.id}</TableCell>
+                    <TableCell>{game.id}</TableCell>
                     <TableCell>{game.game.name}</TableCell>
                     <TableCell>{game.status}</TableCell>
                     <TableCell>{moment(game.matchDate).format ("YYYY-MM-DD")}</TableCell>
