@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import _ from 'lodash';
-import Nav from './Nav.js';
+import TopNavBar from './Nav.js';
 import Home from './Home.js';
 import About from './About.js';
 import Theresults from './Theresults.js';
-import Matches from './matches.js';
-import Players from './players.js';
+import Matches from './Matches.js';
+import Players from './Players.js';
 import GameDetail from './GameDetail.js';
 import Tournaments from './Tournaments.js';
 import Games from './Games.js';
@@ -27,7 +27,7 @@ function App(props){
     return(
         <Router>
         <div>           
-            <Nav/>
+            <TopNavBar/>
             <Switch> {/* after detect '/', then stop - Home */}
                 <Route path='/' exact render={routeProps => (<Home {...routeProps} config={config}/>)}/> {/*put exact so that / works for Home only*/}
                 <Route path='/tournaments' component={Tournaments}/>

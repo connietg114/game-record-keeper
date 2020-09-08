@@ -2,9 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './Nav.css';
 import {Link} from 'react-router-dom';
-import { Button, Navbar, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+import { Button, Navbar, NavItem, NavDropdown, Nav, MenuItem } from 'react-bootstrap';
 
-function Nav(){
+function TopNavBar(){
     const style ={
         color:'black'
     };
@@ -43,4 +43,4 @@ function Nav(){
     </nav> 
     );
 }
-export default Nav;
+export default TopNavBar;
