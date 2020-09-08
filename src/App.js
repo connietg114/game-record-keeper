@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import ReactDOM from 'react-dom';
-import Row from './createTable';
 import _ from 'lodash';
 import Nav from './Nav.js';
 import Home from './Home.js';

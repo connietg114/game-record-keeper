@@ -8,26 +8,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
 import { useHistory } from "react-router-dom";
-
-export function GameRow(props) {
-
-    let history = useHistory();
-    function navigateToDetailsPage() {
-        history.push('/gamedetail/' + props.game.id);
-    }
-
-    return (
-    <TableRow type="button" onClick={navigateToDetailsPage}>
-        <TableCell>{props.game.id}</TableCell>
-        <TableCell>{props.game.game.name}</TableCell>
-        <TableCell>{props.game.status}</TableCell>
-        <TableCell>{moment(props.game.matchDate).format ("YYYY-MM-DD")}</TableCell>
-        <TableCell>{moment(props.game.matchDate).format ("h:mm:ss a")}</TableCell>
-        <TableCell>{props.game.noOfPlayers}</TableCell>
-        <TableCell>{props.game.tournament.id}</TableCell>
-    </TableRow>
-    );
-}
+import GameMatchList from './GameMatchList.js';
 
 function Home(props){
     var _ = require('lodash');//do we need this?
@@ -59,24 +40,7 @@ function Home(props){
             <hr></hr>
             <br></br>
             <h3 style={{textDecorationLine:'underline'}}>Recent Games</h3>
-
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell style={{fontWeight: "bold"}}> Game ID </TableCell>
-                        <TableCell style={{fontWeight: "bold"}}>Name</TableCell>
-                        <TableCell style={{fontWeight: "bold"}}>Status</TableCell>
-                        <TableCell style={{fontWeight: "bold"}}>Date</TableCell>
-                        <TableCell style={{fontWeight: "bold"}}>Time</TableCell>
-                        <TableCell style={{fontWeight: "bold"}}>Number of Players</TableCell>
-                        <TableCell style={{fontWeight: "bold"}}>Tournament ID</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                {games.map((game , index) =>
-                    <GameRow game={game}/>)}
-                </TableBody>
-            </Table>
+            <GameMatchList games = {games}/>
            
             <br></br>
             <h3 style={{textDecorationLine:'underline'}}>Recent Tournaments</h3>

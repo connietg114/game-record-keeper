@@ -9,7 +9,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import TablePagination from '@material-ui/core/TablePagination';
 import { useHistory } from "react-router-dom";
-import { GameRow } from './Home.js';
+import GameMatchList from './GameMatchList.js';
 
 // import EditIcon from '@material-ui/core/icons/Edit'; --> Can't resolve '@material-ui/core/icons/Edit'
 function Matches(props){
@@ -33,21 +33,7 @@ function Matches(props){
             <input type="text" placeholder="Search for matches..." ></input>
             <br></br>
             <br></br>
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell style={{fontWeight: "bold"}}>Game ID</TableCell>
-                        <TableCell style={{fontWeight: "bold"}}>Name</TableCell>
-                        <TableCell style={{fontWeight: "bold"}}>Status</TableCell>
-                        <TableCell style={{fontWeight: "bold"}}>Date</TableCell>
-                        <TableCell style={{fontWeight: "bold"}}>Time</TableCell>
-                        <TableCell style={{fontWeight: "bold"}}>Number of Players</TableCell>
-                        <TableCell style={{fontWeight: "bold"}}>Tournament Name</TableCell>
-                    </TableRow>
-                </TableHead>
-                {games.map((game , index) =>
-                    <GameRow game={game}/>)}
-            </Table>
+            <GameMatchList games = {games}/>
         </div>
     );
 }
