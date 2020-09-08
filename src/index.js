@@ -11,6 +11,8 @@ import Theresults from './Theresults.js';
 import Matches from './matches.js';
 import Players from './players.js';
 import GameDetail from './GameDetail.js';
+import Tournaments from './Tournaments.js';
+import Games from './Games.js';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import EnhancedTable from './draft';
 
@@ -36,7 +38,9 @@ function App(props){
             <Nav/>
             <Switch> {/* after detect '/', then stop - Home */}
                 <Route path ='/' exact render={routeProps => (<Home {...routeProps} config={config}/>)}/> {/*put exact so that / works for Home only*/}
+                <Route path='/tournaments' component={Tournaments}/>
                 <Route path='/matches' component={Matches}/>
+                <Route path='/games' component={Games}/>
                 <Route path='/players' component={Players}/>
                 <Route path='/about' component={About}/>
                 <Route path='/theresults' component={Theresults}/>

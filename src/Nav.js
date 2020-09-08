@@ -15,7 +15,9 @@ function Nav(){
         <nav className="topnav">
         <Link style={style} to='/'><img style = {imgStyle} src='./logo192.png' ></img> </Link>
         <Link style={style} to='/'className="active">Home</Link>
+        <Link style={style} to='/tournaments'>Tournaments</Link>
         <Link style={style} to='/matches'>Matches</Link>
+        <Link style={style} to='/games'>Games</Link>
         <Link style={style} to='/players'>Players</Link>
         
         <Link style={style} to='/about'>About</Link>
