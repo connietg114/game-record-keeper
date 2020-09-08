@@ -8,31 +8,23 @@ import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import TablePagination from '@material-ui/core/TablePagination';
-// import EditIcon from '@material-ui/core/icons/Edit'; --> Can't resolve '@material-ui/core/icons/Edit'
+import { useHistory } from "react-router-dom";
+import { GameRow } from './Home.js';
 
-const style ={
-    border: '1px solid black'
-}
-function Matches(){
+// import EditIcon from '@material-ui/core/icons/Edit'; --> Can't resolve '@material-ui/core/icons/Edit'
+function Matches(props){
     
     const[games, setGames] = useState([]);
-    fetch('./config.json', {
+    var url = props.config.apiURL + 'api/gameMatch/allmatches';
+    fetch(url, {
         method: 'GET', 
         headers: {'Content-Type': 'application/json',}
-    })
-    .then(response => response.json())
-    .then(data => {
-        var url = data.apiURL + 'api/gameMatch/allmatches';
-
-        fetch(url, {
-            method: 'GET', 
-            headers: {'Content-Type': 'application/json',}
-            })
-            .then(response => response.json())
-            .then(item => {
-            setGames(item);
-            });
-    });
+        })
+        .then(response => response.json())
+        .then(item => {
+        setGames(item);
+        });
+ 
     return(
         <div>
             <h1>Matches</h1>
@@ -53,16 +45,8 @@ function Matches(){
                         <TableCell style={{fontWeight: "bold"}}>Tournament Name</TableCell>
                     </TableRow>
                 </TableHead>
-                {games.map(game=>
-                <TableRow>
-                    <TableCell>{game.id}</TableCell>
-                    <TableCell>{game.game.name}</TableCell>
-                    <TableCell>{game.status}</TableCell>
-                    <TableCell>{moment(game.matchDate).format ("YYYY-MM-DD")}</TableCell>
-                    <TableCell>{moment(game.matchDate).format ("h:mm:ss a")}</TableCell>
-                    <TableCell>{game.noOfPlayers}</TableCell>
-                    <TableCell>{game.tournament.name}</TableCell>
-                </TableRow>)}
+                {games.map((game , index) =>
+                    <GameRow game={game}/>)}
             </Table>
         </div>
     );

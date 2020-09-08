@@ -8,9 +8,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
 import { useHistory } from "react-router-dom";
-import {getID} from './GameDetail.js';
 
-function GameRow(props) {
+export function GameRow(props) {
 
     let history = useHistory();
     function navigateToDetailsPage() {
