@@ -40,12 +40,12 @@ function GameDetail (props){
             <p>Minimum Number of Players: {game.game.minPlayerCount}</p>
             <p>Maximum Number of Players: {game.game.maxPlayerCount}</p>
             <br></br>
-            <p>Tournament ID: {game.tournament.id}</p>
-            <p>Tournament Name: {game.tournament.name}</p>
-            <p>Start Date: {moment(game.tournament.startDate).format ("YYYY-MM-DD")}</p>
-            <p>End Date: {moment(game.tournament.endDate).format ("YYYY-MM-DD")}</p>
-            <p>Tournament Type Name: {game.tournament.tournamentType.name}</p>
-            <p>Tournament Type Description: {game.tournament.tournamentType.description}</p>
+            <p>Tournament ID: {game.tournament && game.tournament.id}</p>
+            <p>Tournament Name: {game.tournament && game.tournament.name}</p>
+            <p>Start Date: {moment(game.tournament && game.tournament.startDate).format ("YYYY-MM-DD")}</p>
+            <p>End Date: {moment(game.tournament && game.tournament.endDate).format ("YYYY-MM-DD")}</p>
+            <p>Tournament Type Name: {game.tournament && game.tournament.tournamentType.name}</p>
+            <p>Tournament Type Description: {game.tournament && game.tournament.tournamentType.description}</p>
 
         </div>
         )}
