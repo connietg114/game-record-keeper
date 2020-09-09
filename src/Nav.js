@@ -2,47 +2,180 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './Nav.css';
 import {Link} from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, Navbar, NavItem, NavDropdown, Nav, MenuItem } from 'react-bootstrap';
 
-function TopNavBar(){
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+import ListIcon from '@material-ui/icons/List';
+import MenuItem from "@material-ui/core/MenuItem";
+import Menu from "@material-ui/core/Menu";
+import Button from "@material-ui/core/Button";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { withRouter } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { spacing } from "@material-ui/system";
+
+//material ui starts
+const useStyles = makeStyles(theme => ({
+    root: {
+      flexGrow: 1
+    },
+    menuButton: {
+      marginRight: theme.spacing(2)
+    },
+    title: {
+      [theme.breakpoints.down("xs")]: {
+        flexGrow: 1
+      },
+      margin: theme.spacing(1),
+      marginTop: theme.spacing(1.5)
+    },
+    headerOptions: {
+      display: "flex",
+      flex: 1,
+      
+    //   justifyContent: "space-evenly"
+    },
+    headerOptionsButton:{
+        marginLeft: theme.spacing(2),
+        marginRight: theme.spacing(2)
+    }
+  }));
+
+function TopNavBar(props){
     const style ={
         color:'black'
     };
     const imgStyle={
         height: '30px',
-        width: '30px'
+        width: '30px',
+       
     };
+
+    let history = useHistory();
+    const classes = useStyles();
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
+  
+    const handleMenu = event => {
+      setAnchorEl(event.currentTarget);
+    };
+  
+    const handleMenuClick = pageURL => {
+      history.push(pageURL);
+      setAnchorEl(null);
+    };
+  
+    const handleButtonClick = pageURL => {
+      history.push(pageURL);
+    };
+  
+    const menuItems = [
+      {
+        menuTitle: "Home",
+        pageURL: "/"
+      },
+      {
+        menuTitle: "Tournaments",
+        pageURL: "/tournaments"
+      },
+      {
+        menuTitle: "Matches",
+        pageURL: "/matches"
+      },
+      {
+        menuTitle: "Games",
+        pageURL: "/games"
+      },
+      {
+        menuTitle: "Players",
+        pageURL: "/players"
+      },
+      {
+        menuTitle: "About",
+        pageURL: "/about"
+      },
+
+
+    ];
     return(
         <div>
-        <Navbar bg="light" expand="lg">
-        <Navbar.Brand href="/">
-            <img style = {imgStyle} src='./logo192.png' ></img>
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
-            <Nav.Link  className="active" href="/">Home</Nav.Link>
-            <Nav.Link href="/tournaments">Tournaments</Nav.Link>
-            <Nav.Link href="/matches">Matches</Nav.Link>
-            <Nav.Link href="/games">Games</Nav.Link>
-            <Nav.Link href="/players">Players</Nav.Link>
-            <Nav.Link href="/about">About</Nav.Link>
+            <div className={classes.root}>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" className={classes.title} onClick={() => handleButtonClick("/")}>
+          <img style = {imgStyle} src='./logo192.png' ></img>
+          </Typography>{isMobile ? (
+            <>
+              <IconButton
+                edge="start"
+                className={classes.menuButton}
+                color="inherit"
+                aria-label="menu"
+                onClick={handleMenu}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right"
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right"
+                }}
+                open={open}
+                onClose={() => setAnchorEl(null)}
+              >
+                {menuItems.map(menuItem => {
+                  const { menuTitle, pageURL } = menuItem;
+                  return (
+                    <MenuItem onClick={() => handleMenuClick(pageURL)}>
+                      {menuTitle}
+                    </MenuItem>
+                  );
+                })}
+              </Menu>
+            </>
+          ) : (
+            <div className={classes.headerOptions}>
+            <Button className={classes.headerOptionsButton} color="inherit" onClick={() => handleButtonClick("/")}>
+                Home
+              </Button>
+              <Button className={classes.headerOptionsButton} color="inherit" onClick={() => handleButtonClick("/tournaments")}>
+              Tournaments
+              </Button>
+              <Button className={classes.headerOptionsButton} color="inherit" onClick={() => handleButtonClick("/matches")}>
+              Matches
+              </Button>
+              <Button className={classes.headerOptionsButton} color="inherit" onClick={() => handleButtonClick("/games")}>
+              Games
+              </Button>
+              <Button className={classes.headerOptionsButton} color="inherit" onClick={() => handleButtonClick("/players")}>
+              Players
+              </Button>
+              <Button className={classes.headerOptionsButton} color="inherit" onClick={() => handleButtonClick("/about")}>
+              About
+              </Button>
+            </div>
+          )}
+        </Toolbar>
+      </AppBar>
+    </div>
 
-      {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-        <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-        <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-        <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-        <NavDropdown.Divider />
-        <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-      </NavDropdown> */}
-    </Nav>
-  </Navbar.Collapse>
-</Navbar>
 
 
 
-    <nav className="topnav">
+    {/* <nav className="topnav">
     <Link style={style} to='/'><img style = {imgStyle} src='./logo192.png' ></img> </Link>
     <Link style={style} to='/'className="active">Home</Link>
     <Link style={style} to='/tournaments'>Tournaments</Link>
@@ -50,8 +183,8 @@ function TopNavBar(){
     <Link style={style} to='/games'>Games</Link>
     <Link style={style} to='/players'>Players</Link>
     <Link style={style} to='/about'>About</Link>    
-    </nav> 
+    </nav>  */}
     </div>
     );
-}
+};
 export default TopNavBar;

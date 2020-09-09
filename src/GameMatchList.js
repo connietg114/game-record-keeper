@@ -18,7 +18,7 @@ function GameRow(props) {
     }
 
     return (
-    <TableRow type="button" onClick={navigateToDetailsPage}>
+    <TableRow type="button" onClick={navigateToDetailsPage} hover>
         <TableCell>{props.gameMatch.id}</TableCell>
         <TableCell>{props.gameMatch.game.name}</TableCell>
         <TableCell>{props.gameMatch.status}</TableCell>
