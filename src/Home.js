@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import moment from 'moment';
+import Paper from '@material-ui/core/Paper';
+import TableContainer from '@material-ui/core/TableContainer';
 import Table from '@material-ui/core/Table';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
@@ -9,6 +11,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
 import { useHistory } from "react-router-dom";
 import GameMatchList from './GameMatchList.js';
+import Toolbar from '@material-ui/core/Toolbar';
 
 function Home(props){
     var _ = require('lodash');//do we need this?
@@ -39,11 +42,14 @@ function Home(props){
             <h1>Home</h1>
             <hr></hr>
             <br></br>
+
             <h3 style={{textDecorationLine:'underline'}}>Recent Games</h3>
-            <GameMatchList games = {games}/>
+            <GameMatchList tableName = 'Recent Games' games = {games}/>
            
             <br></br>
             <h3 style={{textDecorationLine:'underline'}}>Recent Tournaments</h3>
+            <Paper>
+        <TableContainer>
             <Table>
                 <TableHead>
                     <TableRow>
@@ -56,14 +62,16 @@ function Home(props){
                 </TableHead>
                     
                 {tournaments.map(t=> 
-                    <TableRow>
+                    <TableRow hover>
                         <TableCell>{t.ID}</TableCell>
                         <TableCell>{t.name}</TableCell>
                         <TableCell>{t.startDate}</TableCell>
                         <TableCell>{t.endDate}</TableCell>
                         <TableCell>{t.type}</TableCell>
                     </TableRow>)}
-            </Table>   
+            </Table>  
+            </TableContainer>
+            </Paper> 
         </div>
     );
 }

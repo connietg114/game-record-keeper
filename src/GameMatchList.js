@@ -3,15 +3,28 @@ import React, {useState, useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import moment from 'moment';
 import Table from '@material-ui/core/Table';
+import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
+import Paper from '@material-ui/core/Paper';
 import { useHistory } from "react-router-dom";
+import { makeStyles } from '@material-ui/core/styles';
+import Toolbar from '@material-ui/core/Toolbar';
 
+const useStyles = makeStyles((theme) => ({
+    table: {
+      border: 0,
+      clip: 'rect(0 0 0 0)',
+      margin: -1,
+      overflow: 'hidden',
+      padding: 0,
+    },
+  }));
 
 function GameRow(props) {
-
+    
     let history = useHistory();
     function navigateToDetailsPage() {
         history.push('/gamedetail/' + props.gameMatch.id);
@@ -32,8 +45,13 @@ function GameRow(props) {
 
 
 function GameMatchList (props){
+    const classes = useStyles();
     return(
-        <Table>
+        <div>
+    {/* <Toolbar><h3>{props.tableName}</h3></Toolbar> */}
+        <Paper>
+        <TableContainer>
+        <Table className={classes.table}>
                 <TableHead>
                     <TableRow>
                         <TableCell style={{fontWeight: "bold"}}> Game ID </TableCell>
@@ -49,6 +67,9 @@ function GameMatchList (props){
                 {props.games.map((gameMatch , index) => <GameRow gameMatch={gameMatch}/>)}
                 </TableBody>
             </Table>
+            </TableContainer>
+            </Paper>
+            </div>
     );
 }
 export default GameMatchList;
