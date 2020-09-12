@@ -15,6 +15,7 @@ import GameMatchList from './GameMatchList.js';
 function Matches(props){
     
     const[games, setGames] = useState([]);
+    useEffect(() => {
     var url = props.config.apiURL + 'api/gameMatch/allmatches';
     fetch(url, {
         method: 'GET', 
@@ -24,6 +25,7 @@ function Matches(props){
         .then(item => {
         setGames(item);
         });
+    }, []);
  
     return(
         <div>

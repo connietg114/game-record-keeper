@@ -15,14 +15,19 @@ import EnhancedTable from './draft';
 
 function App(props){
     
-    const [config, setConfig] = useState({});
+    const [config, setConfig] = useState(null);
 
-    fetch('/config.json', {
-        method: 'GET', 
-        headers: {'Content-Type': 'application/json',}
-    })
-    .then(response => response.json())
-    .then(data => setConfig(data)); 
+    useEffect(() => {
+        fetch('/config.json', {
+            method: 'GET', 
+            headers: {'Content-Type': 'application/json',}
+        })
+        .then(response => response.json())
+        .then(data => setConfig(data)); 
+    }, []);
+    
+    if (config === null)
+        return null;
 
     return(
         <Router>

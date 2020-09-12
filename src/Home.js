@@ -17,6 +17,7 @@ function Home(props){
     var _ = require('lodash');//do we need this?
 
     const[games, setGames] = useState([]); 
+    useEffect(() => {
     var url = props.config.apiURL + 'api/gameMatch/';
     fetch(url, {
         method: 'GET', 
@@ -26,6 +27,7 @@ function Home(props){
         .then(item => {
         setGames(item);
         });
+    }, []);
     
     // games= _.orderBy(games, ['date','name'], ['asc','asc']); //sort by date then name
     
@@ -61,8 +63,8 @@ function Home(props){
                     </TableRow>
                 </TableHead>
                     
-                {tournaments.map(t=> 
-                    <TableRow hover>
+                {tournaments.map((t, index)=> 
+                    <TableRow key = {index} hover>
                         <TableCell>{t.ID}</TableCell>
                         <TableCell>{t.name}</TableCell>
                         <TableCell>{t.startDate}</TableCell>

@@ -29,6 +29,7 @@ function GameRow(props) {
     function navigateToDetailsPage() {
         history.push('/gamedetail/' + props.gameMatch.id);
     }
+    
 
     return (
     <TableRow type="button" onClick={navigateToDetailsPage} hover>
@@ -64,7 +65,7 @@ function GameMatchList (props){
                     </TableRow>
                 </TableHead>
                 <TableBody >
-                {props.games.map((gameMatch , index) => <GameRow gameMatch={gameMatch}/>)}
+                {props.games.map((gameMatch , index) => <GameRow key = {index} gameMatch={gameMatch}/>)}
                 </TableBody>
             </Table>
             </TableContainer>
