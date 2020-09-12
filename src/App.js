@@ -32,8 +32,8 @@ function App(props){
                 <Route path='/' exact render={routeProps => (<Home {...routeProps} config={config}/>)}/> {/*put exact so that / works for Home only*/}
                 <Route path='/tournaments' component={Tournaments}/>
                 <Route path='/matches' exact render={routeProps => (<Matches {...routeProps} config={config}/>)}/>
-                {/* <Route path='/matches' component={Matches}/> */}
-                <Route path='/games' component={Games}/>
+                <Route path='/games' exact render={routeProps => (<Games {...routeProps} config={config}/>)}/>
+                {/* <Route path='/games' component={Games}/> */}
                 <Route path='/players' component={Players}/>
                 <Route path='/about' component={About}/>
                 <Route path='/theresults' component={Theresults}/>
