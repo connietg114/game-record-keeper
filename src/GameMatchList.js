@@ -27,7 +27,7 @@ function GameRow(props) {
     
     let history = useHistory();
     function navigateToDetailsPage() {
-        history.push('/gamedetail/' + props.gameMatch.id);
+        history.push('/gamematchdetail/' + props.gameMatch.id);
     }
     
 

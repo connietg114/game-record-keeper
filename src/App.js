@@ -7,6 +7,7 @@ import About from './About.js';
 import Theresults from './Theresults.js';
 import Matches from './Matches.js';
 import Players from './Players.js';
+import GameMatchDetail from './GameMatchDetail.js';
 import GameDetail from './GameDetail.js';
 import Tournaments from './Tournaments.js';
 import Games from './Games.js';
@@ -38,10 +39,10 @@ function App(props){
                 <Route path='/tournaments' component={Tournaments}/>
                 <Route path='/matches' exact render={routeProps => (<Matches {...routeProps} config={config}/>)}/>
                 <Route path='/games' exact render={routeProps => (<Games {...routeProps} config={config}/>)}/>
-                {/* <Route path='/games' component={Games}/> */}
                 <Route path='/players' component={Players}/>
                 <Route path='/about' component={About}/>
                 <Route path='/theresults' component={Theresults}/>
+                <Route path='/gamematchdetail' render={routeProps => (<GameMatchDetail {...routeProps} config={config}/>)}/>
                 <Route path='/gamedetail' render={routeProps => (<GameDetail {...routeProps} config={config}/>)}/>
                 <Route path='/draft' component={EnhancedTable}/>
             </Switch>
