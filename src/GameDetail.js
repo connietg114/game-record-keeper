@@ -10,30 +10,38 @@ function GameDetail(props){
     var url = location.pathname;
     var gameId = url.substr(url.lastIndexOf('/') + 1);
 
-    const[games, setGames] = useState([]);
+    const[game, setGame] = useState('');
     useEffect(() => {
-    var url = props.config.apiURL + 'api/game?id=' + gameId;
+    var url = props.config.apiURL + 'api/game/getGameDetails?id=' + gameId;
     fetch(url, {
         method: 'GET', 
         headers: {'Content-Type': 'application/json',}
         })
         .then(response => response.json())
         .then(item => {
-        setGames(item);
+        setGame(item);
         });
     }, []);
+    const [gameModes, setGameModes] = useState([]);
     return(
         <div>   
             <h1>Game Details</h1>
             <hr></hr>
-            {games.map((game, index)=>
-        <div key={index}>
-            <p>Game Match ID:{game.id}</p>
-            <p>Game Name: {game.name}</p>
-            <p>Number of Minimum Players: {game.minPlayerCount}</p>
-            <p>Number of Maximum Players: {game.maxPlayerCount}</p>
-
-        </div>)}
+            
+            <div>
+                <p>Game Match ID:{game.id}</p>
+                <p>Game Name: {game.name}</p>
+                <p>Number of Minimum Players: {game.minPlayerCount}</p>
+                <p>Number of Maximum Players: {game.maxPlayerCount}</p>
+                {/* {setGameModes(game.gameModes)}
+                {gameModes.map((gm, index)=>
+                <div key={index}>
+                    <p>Game Mode ID: {gm.id}</p>
+                    <p>Game Mode Name: {gm.name}</p>
+                    
+                </div>
+                )} */}
+            </div>
         </div>
 
     );
