@@ -12,6 +12,7 @@ function GameMatchDetail (props){
     // https://localhost:3000/gamedetails/config.json - if fetch './config.json' here - WRONG
     // https://localhost:300/config.json - this is the correct one
     const[games, setGames] = useState([]);
+    useEffect(() => {
     var url = props.config.apiURL + 'api/gameMatch/allmatches?id=' + gameMatchId;
     fetch(url, {
         method: 'GET', 
@@ -21,6 +22,7 @@ function GameMatchDetail (props){
         .then(item => {
         setGames(item);
         });
+    }, []);
     
     return (
         <div>   

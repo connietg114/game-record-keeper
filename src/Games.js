@@ -26,9 +26,12 @@ const useStyles = makeStyles((theme) => ({
   
 
 function GameRow(props) {
-    console.log('GameRow ' + props.game.id);
+    let history = useHistory();
+    function navigateToDetailsPage() {
+        history.push('/gamedetail/' + props.game.id);
+    }
     return (
-    <TableRow hover>
+    <TableRow type="button" onClick={navigateToDetailsPage} hover>
         <TableCell>{props.game.id}</TableCell>
         <TableCell>{props.game.name}</TableCell>
         <TableCell>{props.game.minPlayerCount}</TableCell>
