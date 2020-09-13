@@ -50,7 +50,6 @@ function Games (props){
 
     useEffect(() => {
         var url = props.config.apiURL + 'api/game/';
-        console.log('games');
         fetch(url, {
             method: 'GET', 
             headers: {'Content-Type': 'application/json',}

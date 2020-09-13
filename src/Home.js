@@ -13,12 +13,18 @@ import { useHistory } from "react-router-dom";
 import GameMatchList from './GameMatchList.js';
 import Toolbar from '@material-ui/core/Toolbar';
 
+function findStartDate(days){
+    var date = new Date();
+    date.setDate(date.getDate()-days);
+    return moment(date).format ("YYYY-MM-DD");
+}
+
 function Home(props){
     var _ = require('lodash');//do we need this?
 
     const[games, setGames] = useState([]); 
     useEffect(() => {
-    var url = props.config.apiURL + 'api/gameMatch/';
+    var url = props.config.apiURL + 'api/gameMatch?startDate=' + findStartDate(90);
     fetch(url, {
         method: 'GET', 
         headers: {'Content-Type': 'application/json',}
@@ -28,6 +34,8 @@ function Home(props){
         setGames(item);
         });
     }, []);
+
+    
     
     // games= _.orderBy(games, ['date','name'], ['asc','asc']); //sort by date then name
     
