@@ -39,7 +39,7 @@ function GameRow(props) {
         <TableCell>{moment(props.gameMatch.matchDate).format ("YYYY-MM-DD")}</TableCell>
         <TableCell>{moment(props.gameMatch.matchDate).format ("h:mm:ss a")}</TableCell>
         <TableCell>{props.gameMatch.noOfPlayers}</TableCell>
-        <TableCell>{props.gameMatch.tournament && props.gameMatch.tournament.id}</TableCell>
+        <TableCell>{props.gameMatch.tournament && props.gameMatch.tournament.name}</TableCell>
     </TableRow>
     );
 }
@@ -61,7 +61,7 @@ function GameMatchList (props){
                         <TableCell style={{fontWeight: "bold"}}>Date</TableCell>
                         <TableCell style={{fontWeight: "bold"}}>Time</TableCell>
                         <TableCell style={{fontWeight: "bold"}}>Number of Players</TableCell>
-                        <TableCell style={{fontWeight: "bold"}}>Tournament ID</TableCell>
+                        <TableCell style={{fontWeight: "bold"}}>Tournament Name</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody >
