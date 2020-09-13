@@ -16,7 +16,7 @@ function Matches(props){
     
     const[games, setGames] = useState([]);
     useEffect(() => {
-    var url = props.config.apiURL + 'api/gameMatch/allmatches';
+    var url = props.config.apiURL + 'api/gameMatch/';
     fetch(url, {
         method: 'GET', 
         headers: {'Content-Type': 'application/json',}

@@ -11,46 +11,45 @@ function GameMatchDetail (props){
    
     // https://localhost:3000/gamedetails/config.json - if fetch './config.json' here - WRONG
     // https://localhost:300/config.json - this is the correct one
-    const[games, setGames] = useState([]);
+    const[gameMatch, setGameMatch] = useState([]);
     useEffect(() => {
-    var url = props.config.apiURL + 'api/gameMatch/allmatches?id=' + gameMatchId;
+    var url = props.config.apiURL + 'api/gameMatch/getGameMatchDetails?id=' + gameMatchId;
     fetch(url, {
         method: 'GET', 
         headers: {'Content-Type': 'application/json',}
         })
         .then(response => response.json())
         .then(item => {
-        setGames(item);
+        setGameMatch(item);
         });
     }, []);
     
     return (
         <div>   
             <h1>Game Match Details</h1>
-            <hr></hr>
-            
-            
-        {games.map(game=>
+            <hr></hr>  
+       
         <div>
-            <p>Game Match ID:{game.id}</p>
-            <p>Game Name: {game.game.name}</p>
-            <p>Match Date: {moment(game.matchDate).format ("YYYY-MM-DD")}</p>
-            <p>Match Time: {moment(game.matchDate).format ("h:mm:ss a")}</p>
+            <p>Game Match ID:{gameMatch.id}</p>
+            <p>Game ID:{gameMatch.game && gameMatch.game.id}</p>
+            <p>Game Name: {gameMatch.game && gameMatch.game.name}</p>
+            <p>Match Date: {moment(gameMatch.matchDate).format ("YYYY-MM-DD")}</p>
+            <p>Match Time: {moment(gameMatch.matchDate).format ("h:mm:ss a")}</p>
             <br></br>
             <p>List of Players:</p>
             <br></br>
-            <p>Minimum Number of Players: {game.game.minPlayerCount}</p>
-            <p>Maximum Number of Players: {game.game.maxPlayerCount}</p>
+            <p>Minimum Number of Players: {gameMatch.game && gameMatch.game.minPlayerCount}</p>
+            <p>Maximum Number of Players: {gameMatch.game && gameMatch.game.maxPlayerCount}</p>
             <br></br>
-            <p>Tournament ID: {game.tournament && game.tournament.id}</p>
-            <p>Tournament Name: {game.tournament && game.tournament.name}</p>
-            <p>Start Date: {moment(game.tournament && game.tournament.startDate).format ("YYYY-MM-DD")}</p>
-            <p>End Date: {moment(game.tournament && game.tournament.endDate).format ("YYYY-MM-DD")}</p>
-            <p>Tournament Type Name: {game.tournament && game.tournament.tournamentType.name}</p>
-            <p>Tournament Type Description: {game.tournament && game.tournament.tournamentType.description}</p>
+            <p>Tournament ID: {gameMatch.tournament && gameMatch.tournament.id}</p>
+            <p>Tournament Name: {gameMatch.tournament && gameMatch.tournament.name}</p>
+            <p>Start Date: {moment(gameMatch.tournament && gameMatch.tournament.startDate).format ("YYYY-MM-DD")}</p>
+            <p>End Date: {moment(gameMatch.tournament && gameMatch.tournament.endDate).format ("YYYY-MM-DD")}</p>
+            <p>Tournament Type Name: {gameMatch.tournament && gameMatch.tournament.tournamentType.name}</p>
+            <p>Tournament Type Description: {gameMatch.tournament && gameMatch.tournament.tournamentType.description}</p>
             {/* Havent added GameMode details */}
         </div>
-        )}
+       
         </div>
     );
 }
