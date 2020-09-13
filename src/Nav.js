@@ -27,6 +27,7 @@ const useStyles = makeStyles(theme => ({
       marginRight: theme.spacing(2)
     },
     title: {
+
       [theme.breakpoints.down(770)]: {
         flexGrow: 1
       },
@@ -60,8 +61,9 @@ function TopNavBar(props){
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const theme = useTheme();
+
     const isMobile = useMediaQuery(theme.breakpoints.down("770")); //xs: 0,sm: 600,md: 960,lg: 1280, xl: 1920,
-  
+
     const handleMenu = event => {
       setAnchorEl(event.currentTarget);
     };
