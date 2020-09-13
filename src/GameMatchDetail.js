@@ -47,7 +47,7 @@ function GameMatchDetail (props){
             <p>End Date: {moment(gameMatch.tournament && gameMatch.tournament.endDate).format ("YYYY-MM-DD")}</p>
             <p>Tournament Type Name: {gameMatch.tournament && gameMatch.tournament.tournamentType.name}</p>
             <p>Tournament Type Description: {gameMatch.tournament && gameMatch.tournament.tournamentType.description}</p>
-            {/* Havent added GameMode details */}
+            {/* Havent added GameMode & winCondition */}
         </div>
        
         </div>
