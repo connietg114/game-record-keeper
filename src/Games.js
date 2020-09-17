@@ -12,6 +12,9 @@ import Paper from '@material-ui/core/Paper';
 import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
+import AddIcon from '@material-ui/icons/Add';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
     table: {
@@ -61,6 +64,11 @@ function Games (props){
             });
     }, []);
 
+    let history = useHistory();
+    const directToCreateGames= () =>{
+        history.push('/creategames/');
+    }
+
 
     if (!isLoaded)
         return null;
@@ -88,7 +96,12 @@ function Games (props){
                     </Table>
                 </TableContainer>
             </Paper>
+            <IconButton onClick = {directToCreateGames}>
+                <AddIcon/><Typography variant="body1">Add Games</Typography>
+            </IconButton>
+            
         </div>
+        
     );
 }
 export default Games;

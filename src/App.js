@@ -11,6 +11,7 @@ import GameMatchDetail from './GameMatchDetail.js';
 import GameDetail from './GameDetail.js';
 import Tournaments from './Tournaments.js';
 import Games from './Games.js';
+import CreateGames from './CreateGames.js';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import EnhancedTable from './draft';
 
@@ -44,6 +45,7 @@ function App(props){
                 <Route path='/theresults' component={Theresults}/>
                 <Route path='/gamematchdetail' render={routeProps => (<GameMatchDetail {...routeProps} config={config}/>)}/>
                 <Route path='/gamedetail' render={routeProps => (<GameDetail {...routeProps} config={config}/>)}/>
+                <Route path='/creategames' render={routeProps => (<CreateGames {...routeProps} config={config}/>)}/>
                 <Route path='/draft' component={EnhancedTable}/>
             </Switch>
             </div> 
