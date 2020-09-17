@@ -5,33 +5,43 @@ import moment from 'moment';
 import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 
+
 function CreateGames(props){
-    
-    const[game, setGame] = useState({name: "", minPlayerCount: "",maxPlayerCount: ""}); 
-    const changeHandler = (event) => {
-        setGame((prevState) => ({
-           ...prevState,
-           [event.target.name]: event.target.value
-        }));
-    }
-    // var changeHandler = (e) =>{
-    //     setGame({[e.target.name]:e.target.value});
-    // };
+    const [gameName, setGameName] = useState('');
+    const [minPlayer, setMinPlayer] = useState('');
+    const [maxPlayer, setMaxPlayer] = useState('');
+
+    const[games, setGames] = useState([]);
+    var gameList = [];
+
     var submitHandler = e =>{
         e.preventDefault();
-        // console.log(name, minPlayerCount, maxPlayerCount);
+        post(gameName, minPlayer, maxPlayer);
+        setGameName('');
+        setMinPlayer('');
+        setMaxPlayer('');
+       alert(gameName + " has been added successfully!");
     };
-
-    var url = props.config.apiURL + 'api/game/';
-    // useEffect(() => {
-    // fetch(url, {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify({ title:  })
-    //     })
-    //     .then(response => response.json())
-        
-    // }, []);
+   
+    function post(gameName, minPlayer, maxPlayer) {
+        var url = props.config.apiURL + 'api/game/';
+        const requestOptions = {
+            method: 'POST',
+            headers: { 
+                'Accept': 'application/json',
+                'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                Name: gameName,
+                MinPlayerCount: minPlayer,
+                MaxPlayerCount: maxPlayer })
+        };
+        fetch(url, requestOptions)
+            .then(response => response.json())
+            .catch(error => {
+                console.log(error);
+            });
+            // .then(data => setPostId(data.id));
+    }
 
     return (
         <div>
@@ -41,23 +51,25 @@ function CreateGames(props){
             <form onSubmit={submitHandler}>
                 <div>
                     Name: 
-                    <input type = "text" name="name" value={game.name} onChange={e => setGame({ ...game, name: e.target.value})}></input>
+                    <input type = "text" name="gameName" value={gameName} onChange={e => setGameName(e.target.value)}></input>
                     
                 </div>
                 <div>
                     Min. Number of Players: 
-                    <input type = "text" name="minPlayerCount" value={game.minPlayerCount} onChange={e => setGame({ ...game, minPlayerCount: e.target.value})}></input>
+                    <input type = "text" name="minPlayer" pattern="[0-9]*" value={minPlayer} onChange={e => setMinPlayer(e.target.value)}>
+                        {/* alert"Please enter a number" */}
+                    </input>
                 </div>
                 <div>
                     Max. Number of Players: 
-                    <input type = "text" name="maxPlayerCount" value={game.maxPlayerCount} onChange={e => setGame({...game, maxPlayerCount: e.target.value})}></input>
+                    <input type = "text" name="maxPlayer" pattern="[0-9]*" value={maxPlayer} onChange={e => setMaxPlayer(e.target.value)}></input>
                 </div>
                 <br></br>
                 <button type='submit' >Submit</button>
             </form>
             <br></br>
             
-            <hr></hr>
+            
             
         </div>
     );

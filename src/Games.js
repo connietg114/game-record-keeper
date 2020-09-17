@@ -34,14 +34,16 @@ function GameRow(props) {
         history.push('/gamedetail/' + props.game.id);
     }
     return (
+    
     <TableRow type="button" onClick={navigateToDetailsPage} hover>
         <TableCell>{props.game.id}</TableCell>
         <TableCell>{props.game.name}</TableCell>
         <TableCell>{props.game.minPlayerCount}</TableCell>
         <TableCell>{props.game.maxPlayerCount}</TableCell>
         <TableCell>{props.game.gameModes}</TableCell>
-        <TableCell></TableCell>
-    </TableRow>
+        <TableCell><button>Delete</button></TableCell>
+    </TableRow> 
+    
     );
 }
 
@@ -75,7 +77,9 @@ function Games (props){
     
     return(
         <div>
-            <h1>Games</h1>
+            <h1>Games</h1> <IconButton onClick = {directToCreateGames}>
+                <AddIcon/><Typography variant="body1">Add Games</Typography>
+            </IconButton>
             <hr></hr>
             <br></br>
             <Paper>
@@ -96,9 +100,7 @@ function Games (props){
                     </Table>
                 </TableContainer>
             </Paper>
-            <IconButton onClick = {directToCreateGames}>
-                <AddIcon/><Typography variant="body1">Add Games</Typography>
-            </IconButton>
+            
             
         </div>
         
