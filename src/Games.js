@@ -15,6 +15,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from "@material-ui/core/Typography";
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 
 const useStyles = makeStyles((theme) => ({
     table: {
@@ -33,18 +35,42 @@ function GameRow(props) {
     function navigateToDetailsPage() {
         history.push('/gamedetail/' + props.game.id);
     }
+
+    const games = props;
+
     return (
-    
-    <TableRow type="button" onClick={navigateToDetailsPage} hover>
-        <TableCell>{props.game.id}</TableCell>
-        <TableCell>{props.game.name}</TableCell>
-        <TableCell>{props.game.minPlayerCount}</TableCell>
-        <TableCell>{props.game.maxPlayerCount}</TableCell>
-        <TableCell>{props.game.gameModes}</TableCell>
-        <TableCell><button>Delete</button></TableCell>
+        
+    <TableRow type="button" hover>
+        
+        <TableCell onClick={navigateToDetailsPage}>{props.game.id}</TableCell>
+        <TableCell onClick={navigateToDetailsPage}>{props.game.name}</TableCell>
+        <TableCell onClick={navigateToDetailsPage}>{props.game.minPlayerCount}</TableCell>
+        <TableCell onClick={navigateToDetailsPage}>{props.game.maxPlayerCount}</TableCell>
+        <TableCell onClick={navigateToDetailsPage}>{props.game.gameModes}</TableCell>
+        <TableCell>
+            <IconButton>
+                <DeleteIcon onClick={e=> {handleDeleteTask(props.game.id)}}/>
+            </IconButton>
+            {/* <DeleteButton id={props.game.id}></DeleteButton> */}
+        </TableCell>
+        <TableCell><IconButton><EditIcon /></IconButton></TableCell>
     </TableRow> 
     
     );
+}
+
+
+
+function handleDeleteTask(index){
+    // var list = [...list];
+    // list.splice(index, 1);
+    // setGames(list);
+    console.log(index);
+    
+}
+
+function setNewGames(setGames, list){
+    setGames(list);
 }
 
 
@@ -77,7 +103,8 @@ function Games (props){
     
     return(
         <div>
-            <h1>Games</h1> <IconButton onClick = {directToCreateGames}>
+            <h1>Games</h1> 
+            <IconButton onClick = {directToCreateGames}>
                 <AddIcon/><Typography variant="body1">Add Games</Typography>
             </IconButton>
             <hr></hr>
@@ -92,10 +119,13 @@ function Games (props){
                                 <TableCell style={{fontWeight: "bold"}}>Number of Minimum Players</TableCell>
                                 <TableCell style={{fontWeight: "bold"}}>Number of Maximum Players</TableCell>
                                 <TableCell style={{fontWeight: "bold"}}>Number of Game Mode</TableCell>
+                                <TableCell style={{fontWeight: "bold"}}></TableCell>
+                                <TableCell style={{fontWeight: "bold"}}></TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody >
-                        {games.map((g, index)=> <GameRow key={index} game={g}/>)}
+                        {games.map((g, index)=> 
+                            <GameRow key={index} game={g} games={games}/>)}
                         </TableBody>
                     </Table>
                 </TableContainer>

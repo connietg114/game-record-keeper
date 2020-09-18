@@ -23,14 +23,12 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-function GameRow(props) {
-    
+function GameRow(props) {   
     let history = useHistory();
     function navigateToDetailsPage() {
         history.push('/gamematchdetail/' + props.gameMatch.id);
     }
     
-
     return (
     <TableRow type="button" onClick={navigateToDetailsPage} hover>
         <TableCell>{props.gameMatch.id}</TableCell>
