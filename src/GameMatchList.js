@@ -38,10 +38,13 @@ function GameRow(props) {
         <TableCell>{moment(props.gameMatch.matchDate).format ("h:mm:ss a")}</TableCell>
         <TableCell>{props.gameMatch.noOfPlayers}</TableCell>
         <TableCell>{props.gameMatch.tournament && props.gameMatch.tournament.name}</TableCell>
+        {/* <button>Delete</button> */}
     </TableRow>
     );
 }
-
+// function delete(){
+//     setGames(newGameList)
+// }
 
 function GameMatchList (props){
     const classes = useStyles();

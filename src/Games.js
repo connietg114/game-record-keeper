@@ -30,48 +30,35 @@ const useStyles = makeStyles((theme) => ({
 
   
 
-function GameRow(props) {
-    let history = useHistory();
-    function navigateToDetailsPage() {
-        history.push('/gamedetail/' + props.game.id);
-    }
+// function GameRow(props) {
+//     let history = useHistory();
+//     function navigateToDetailsPage() {
+//         history.push('/gamedetail/' + props.game.id);
+//     }
 
-    const games = props;
+//     const games = props;
 
-    return (
+//     return (
         
-    <TableRow type="button" hover>
-        
-        <TableCell onClick={navigateToDetailsPage}>{props.game.id}</TableCell>
-        <TableCell onClick={navigateToDetailsPage}>{props.game.name}</TableCell>
-        <TableCell onClick={navigateToDetailsPage}>{props.game.minPlayerCount}</TableCell>
-        <TableCell onClick={navigateToDetailsPage}>{props.game.maxPlayerCount}</TableCell>
-        <TableCell onClick={navigateToDetailsPage}>{props.game.gameModes}</TableCell>
-        <TableCell>
-            <IconButton>
-                <DeleteIcon onClick={e=> {handleDeleteTask(props.game.id)}}/>
-            </IconButton>
-            {/* <DeleteButton id={props.game.id}></DeleteButton> */}
-        </TableCell>
-        <TableCell><IconButton><EditIcon /></IconButton></TableCell>
-    </TableRow> 
+//     <TableRow type="button" hover>
+//         <TableCell onClick={navigateToDetailsPage}>{props.game.id}</TableCell>
+//         <TableCell onClick={navigateToDetailsPage}>{props.game.name}</TableCell>
+//         <TableCell onClick={navigateToDetailsPage}>{props.game.minPlayerCount}</TableCell>
+//         <TableCell onClick={navigateToDetailsPage}>{props.game.maxPlayerCount}</TableCell>
+//         <TableCell onClick={navigateToDetailsPage}>{props.game.gameModes}</TableCell>
+//         <TableCell>
+//             <IconButton>
+//                 <DeleteIcon onClick={e=> {handleDeleteTask(props.game.id)}}/>
+//             </IconButton>
+//             {/* <DeleteButton id={props.game.id}></DeleteButton> */}
+//         </TableCell>
+//         <TableCell><IconButton><EditIcon /></IconButton></TableCell>
+//     </TableRow> 
     
-    );
-}
+//     );
+// }
 
 
-
-function handleDeleteTask(index){
-    // var list = [...list];
-    // list.splice(index, 1);
-    // setGames(list);
-    console.log(index);
-    
-}
-
-function setNewGames(setGames, list){
-    setGames(list);
-}
 
 
 function Games (props){
@@ -91,11 +78,46 @@ function Games (props){
                 setIsLoaded(true);
             });
     }, []);
-
+    console.log("Before: " + games.length);
     let history = useHistory();
     const directToCreateGames= () =>{
         history.push('/creategames/');
     }
+
+    let his = useHistory();
+    function navigateToDetailsPage(id) {
+        his.push('/gamedetail/' + id);
+    }
+
+    function handleDeleteTask(index, gameID){
+        var newGames = [...games];
+        newGames.splice(index, 1);
+        setGames(newGames);
+        deleteGame(gameID);
+        console.log("After: " + games.length);
+    }
+
+    function deleteGame(gameID) {
+        var url = props.config.apiURL + 'api/game?id='+ gameID;
+        const requestOptions = {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin' : '*' ,
+            "Access-Control-Allow-Methods": "DELETE" }   
+        };
+        fetch(url, requestOptions)
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                
+            })
+            .catch(error => {
+                console.log(error);
+            });
+            // .then(data => setPostId(data.id));
+    }
+
 
 
     if (!isLoaded)
@@ -114,6 +136,7 @@ function Games (props){
                     <Table className={classes.table}>
                         <TableHead>
                             <TableRow>
+                            <TableCell style={{fontWeight: "bold"}}> No. </TableCell>
                                 <TableCell style={{fontWeight: "bold"}}> Game ID </TableCell>
                                 <TableCell style={{fontWeight: "bold"}}>Name</TableCell>
                                 <TableCell style={{fontWeight: "bold"}}>Number of Minimum Players</TableCell>
@@ -124,8 +147,24 @@ function Games (props){
                             </TableRow>
                         </TableHead>
                         <TableBody >
-                        {games.map((g, index)=> 
-                            <GameRow key={index} game={g} games={games}/>)}
+                            {games.map((g,index)=>
+                            <TableRow type="button" hover>
+                                <TableCell onClick={e=>navigateToDetailsPage(g.id)}>{index+1}</TableCell>
+                                <TableCell onClick={e=>navigateToDetailsPage(g.id)}>{g.id}</TableCell>
+                                <TableCell onClick={e=>navigateToDetailsPage(g.id)}>{g.name}</TableCell>
+                                <TableCell onClick={e=>navigateToDetailsPage(g.id)}>{g.minPlayerCount}</TableCell>
+                                <TableCell onClick={e=>navigateToDetailsPage(g.id)}>{g.maxPlayerCount}</TableCell>
+                                <TableCell onClick={e=>navigateToDetailsPage(g.id)}>{g.gameModes}</TableCell>
+                                <TableCell>
+                                    <IconButton>
+                                        <DeleteIcon onClick={e=> {handleDeleteTask(index, g.id)}}/>
+                                    </IconButton>
+                                    {/* <DeleteButton id={props.game.id}></DeleteButton> */}
+                                </TableCell>
+                                <TableCell><IconButton><EditIcon /></IconButton></TableCell>
+                        </TableRow> )}
+                        {/* {games.map((g, index)=> 
+                            <GameRow key={index} game={g} games={games}/>)} */}
                         </TableBody>
                     </Table>
                 </TableContainer>
