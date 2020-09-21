@@ -21,7 +21,6 @@ function Theresults(){
         setText('');
     }
    
-    //for remove item from players array
     return(
         <div>
             <h1>The Results (draft content)</h1>
