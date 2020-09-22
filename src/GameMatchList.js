@@ -23,16 +23,14 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-function GameRow(props) {
-    
+function GameRow(props) {   
     let history = useHistory();
     function navigateToDetailsPage() {
         history.push('/gamematchdetail/' + props.gameMatch.id);
     }
     
-
     return (
-    <TableRow type="button" onClick={navigateToDetailsPage} hover>
+    <TableRow type="button" hover>
         <TableCell>{props.gameMatch.id}</TableCell>
         <TableCell>{props.gameMatch.game.name}</TableCell>
         <TableCell>{props.gameMatch.status}</TableCell>
@@ -40,10 +38,11 @@ function GameRow(props) {
         <TableCell>{moment(props.gameMatch.matchDate).format ("h:mm:ss a")}</TableCell>
         <TableCell>{props.gameMatch.noOfPlayers}</TableCell>
         <TableCell>{props.gameMatch.tournament && props.gameMatch.tournament.name}</TableCell>
+        <TableCell><button onClick={navigateToDetailsPage}>Click to View</button></TableCell>
+        <TableCell><button onClick={e => props.onDelete(props.gameMatch.id)}>Delete</button></TableCell>
     </TableRow>
     );
 }
-
 
 function GameMatchList (props){
     const classes = useStyles();
@@ -62,10 +61,12 @@ function GameMatchList (props){
                         <TableCell style={{fontWeight: "bold"}}>Time</TableCell>
                         <TableCell style={{fontWeight: "bold"}}>Number of Players</TableCell>
                         <TableCell style={{fontWeight: "bold"}}>Tournament Name</TableCell>
+                        <TableCell style={{fontWeight: "bold"}}></TableCell>
+                        <TableCell style={{fontWeight: "bold"}}></TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody >
-                {props.games.map((gameMatch , index) => <GameRow key = {index} gameMatch={gameMatch}/>)}
+                {props.games.map((gameMatch , index) => <GameRow key = {index} gameMatch={gameMatch} onDelete={props.onDelete}/>)}
                 </TableBody>
             </Table>
             </TableContainer>
