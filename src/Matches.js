@@ -10,6 +10,7 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import TablePagination from '@material-ui/core/TablePagination';
 import { useHistory } from "react-router-dom";
 import GameMatchList from './GameMatchList.js';
+import _ from 'lodash';
 
 // import EditIcon from '@material-ui/core/icons/Edit'; --> Can't resolve '@material-ui/core/icons/Edit'
 function Matches(props){
@@ -27,6 +28,14 @@ function Matches(props){
         });
     }, []);
  
+    function handleDelete(id) {
+        console.log('deleting ' + id);
+        // var evens = _.remove(array, function(n) {
+        //     return n % 2 == 0;
+        //   });
+        setGames([]);
+    }
+
     return(
         <div>
             <h1>Matches</h1>
@@ -35,7 +44,7 @@ function Matches(props){
             <input type="text" placeholder="Search for matches..." ></input>
             <br></br>
             <br></br>
-            <GameMatchList games = {games}/>
+            <GameMatchList games = {games} onDelete={handleDelete}/>
         </div>
     );
 }

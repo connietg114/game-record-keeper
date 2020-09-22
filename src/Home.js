@@ -12,6 +12,7 @@ import TableBody from '@material-ui/core/TableBody';
 import { useHistory } from "react-router-dom";
 import GameMatchList from './GameMatchList.js';
 import Toolbar from '@material-ui/core/Toolbar';
+import _ from 'lodash';
 
 function findStartDate(days){
     var date = new Date();
@@ -20,7 +21,6 @@ function findStartDate(days){
 }
 
 function Home(props){
-    var _ = require('lodash');//do we need this?
 
     const[games, setGames] = useState([]); 
     useEffect(() => {
