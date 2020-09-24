@@ -27,6 +27,27 @@ function Matches(props){
         setGames(item);
         });
     }, []);
+
+    // function deleteMatch(gameID) {
+    //     var url = props.config.apiURL + 'api/game?id='+ gameID;
+    //     const requestOptions = {
+    //         method: 'DELETE',
+    //         headers: { 'Content-Type': 'application/json',
+    //         'Access-Control-Allow-Origin' : '*' ,
+    //         "Access-Control-Allow-Methods": "DELETE" }   
+    //     };
+    //     fetch(url, requestOptions)
+    //         .then(response => {
+    //             return response.json();
+    //         })
+    //         .then(data => {
+
+    //         })
+    //         .catch(error => {
+    //             console.log(error);
+    //         });
+    // }
+
  
     function handleDelete(id) {
         console.log('deleting ' + id);
@@ -43,7 +64,7 @@ function Matches(props){
             <input type="text" placeholder="Search for matches..." ></input>
             <br></br>
             <br></br>
-            <GameMatchList games = {games} onDelete={handleDelete}/>
+            <GameMatchList games = {games} onDelete={handleDelete} delete={true}/>
         </div>
     );
 }

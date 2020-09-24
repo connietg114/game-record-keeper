@@ -39,7 +39,7 @@ function GameRow(props) {
         <TableCell>{props.gameMatch.noOfPlayers}</TableCell>
         <TableCell>{props.gameMatch.tournament && props.gameMatch.tournament.name}</TableCell>
         <TableCell><button onClick={navigateToDetailsPage}>Click to View</button></TableCell>
-        <TableCell><button onClick={e => props.onDelete(props.gameMatch.id)}>Delete</button></TableCell>
+        {props.delete && <TableCell><button onClick={e => props.onDelete(props.gameMatch.id)}>Delete</button></TableCell>}
     </TableRow>
     );
 }
@@ -66,7 +66,7 @@ function GameMatchList (props){
                     </TableRow>
                 </TableHead>
                 <TableBody >
-                {props.games.map((gameMatch , index) => <GameRow key = {index} gameMatch={gameMatch} onDelete={props.onDelete}/>)}
+                {props.games.map((gameMatch , index) => <GameRow key = {index} gameMatch={gameMatch} onDelete={props.onDelete} delete={props.delete}/>)}
                 </TableBody>
             </Table>
             </TableContainer>

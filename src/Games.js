@@ -79,7 +79,7 @@ function Games (props){
                 setIsLoaded(true);
             });
     }, []);
-    console.log("Before: " + games.length);
+    // console.log("Before: " + games.length);
     let history = useHistory();
     const directToCreateGames= () =>{
         history.push('/creategames/');
