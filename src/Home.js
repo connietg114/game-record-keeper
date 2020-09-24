@@ -50,16 +50,6 @@ function Home(props){
             });
     }, []);
     
-    // games= _.orderBy(games, ['date','name'], ['asc','asc']); //sort by date then name
-    
-    //var tournaments = [
-    //    {ID: '100',
-    //    name: 'Go',
-    //    startDate: '2019-03-04',
-    //    endDate:'2020-01-02',
-    //    type:'null'}]
- 
-
     return(
         <div>
             <h1>Home</h1>

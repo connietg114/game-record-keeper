@@ -89,7 +89,7 @@ function Games (props){
         his.push('/gamedetail/' + id);
     }
 
-    function handleDeleteTask(index, gameID){
+    function handleDeleteTask(index, gameID){//change to ID
         var newGames = [...games];
         newGames.splice(index, 1);
         setGames(newGames);
@@ -110,7 +110,7 @@ function Games (props){
                 return response.json();
             })
             .then(data => {
-                
+
             })
             .catch(error => {
                 console.log(error);
