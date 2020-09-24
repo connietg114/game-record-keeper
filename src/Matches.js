@@ -30,10 +30,9 @@ function Matches(props){
  
     function handleDelete(id) {
         console.log('deleting ' + id);
-        // var evens = _.remove(array, function(n) {
-        //     return n % 2 == 0;
-        //   });
-        setGames([]);
+        var newGames = [...games];
+        _.remove(newGames, game => game.id == id)
+        setGames(newGames);
     }
 
     return(
