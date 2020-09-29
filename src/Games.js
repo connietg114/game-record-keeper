@@ -69,8 +69,7 @@ function Games (props){
     const [isLoaded, setIsLoaded] = useState(false);
     const[games, setGames] = useState([]); 
     const [selected, setSelected] = useState([]);
-    
-
+    const [selectAll, setSelectAll]=useState(false);
 
     useEffect(() => {
         var url = props.config.apiURL + 'api/game/';
@@ -122,12 +121,8 @@ function Games (props){
             "Access-Control-Allow-Methods": "DELETE" }   
         };
         fetch(url, requestOptions)
-            .then(response => {
-                return response.json();
-            })
-            .then(data => {
-
-            })
+            .then(response => {return response.json();})
+            .then(data => {})
             .catch(error => {
                 console.log(error);
             });
@@ -135,28 +130,33 @@ function Games (props){
     }
 
     function handleBulkDelete(){
+        let ids = [];
+        for(var i = 0; i < selected.length; i++) {
+            ids.push(selected[i].id);   
+        }
         setGames(games.filter((game) => !selected.includes(game)));
+        // setGames(games.map(g=>{
+        //     g.select=false;
+        //     return g;
+        // }))
+        deleteMultipleGames(ids);
         setSelected([]);
+        setSelectAll(false);
     }
     
     function deleteMultipleGames(gameList){
-        var url = props.config.apiURL + 'api/game?id=';
+        var url = props.config.apiURL + 'api/game/deleteMultipleGames';
         const requestOptions = {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json',
             'Access-Control-Allow-Origin' : '*' ,
-            "Access-Control-Allow-Methods": "DELETE" }   
+            "Access-Control-Allow-Methods": "DELETE" },
+            body: JSON.stringify(gameList)
         };
         fetch(url, requestOptions)
-            .then(response => {
-                return response.json();
-            })
-            .then(data => {
-
-            })
-            .catch(error => {
-                console.log(error);
-            });
+            .then(response => {return response.json();})
+            .then(data => {})
+            .catch(error => {console.log(error);});
     }
 
     if (!isLoaded)
@@ -183,21 +183,22 @@ function Games (props){
                     <Table className={classes.table}>
                         <TableHead>
                             <TableRow>
-                                <TableCell><Checkbox onChange={e=>{
-                                    let checked = e.target.checked;
-                                    setGames(games.map(g=>{
-                                        g.select=checked;
-                                        return g;
-                                    }))
-                                    if(e.target.checked){
-                                        let newSelected=games.map(g=>g);
-                                        setSelected(newSelected);
-                                    }
-                                    else{
-                                        setSelected([]);
-                                    }
-                                    
-                                }}/></TableCell>
+                                <TableCell>
+                                    <Checkbox checked ={selectAll} onChange={e=>{
+                                        let checked = e.target.checked;
+                                        setSelectAll(e.target.checked);
+                                        setGames(games.map(g=>{
+                                            g.select=checked;
+                                            return g;
+                                        }))
+                                        if(e.target.checked){
+                                            let newSelected=games.map(g=>g);
+                                            setSelected(newSelected);
+                                        }
+                                        else{
+                                            setSelected([]);
+                                        }}}/>
+                                    </TableCell>
                                 <TableCell style={{fontWeight: "bold"}}> No. </TableCell>                                
                                 <TableCell style={{fontWeight: "bold"}}> Game ID </TableCell>
                                 <TableCell style={{fontWeight: "bold"}}>Name</TableCell>
@@ -213,6 +214,7 @@ function Games (props){
                             <TableRow type="button" hover>
                                 <TableCell>
                                     <Checkbox checked={g.select} onChange={(e)=>{
+                                        setSelectAll(false);
                                         let checked=e.target.checked;
                                         var newSelected = [];
                                         setGames(
