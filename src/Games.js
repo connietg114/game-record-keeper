@@ -17,6 +17,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from "@material-ui/core/Typography";
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import Checkbox from '@material-ui/core/Checkbox';
 import _ from 'lodash';
 
 const useStyles = makeStyles((theme) => ({
@@ -27,6 +28,9 @@ const useStyles = makeStyles((theme) => ({
       overflow: 'hidden',
       padding: 0,
     },
+    title: {
+        flex: '1 1 100%',
+      }
   }));
 
   
@@ -60,12 +64,13 @@ const useStyles = makeStyles((theme) => ({
 // }
 
 
-
-
 function Games (props){
     const classes = useStyles();
     const [isLoaded, setIsLoaded] = useState(false);
     const[games, setGames] = useState([]); 
+    const [selected, setSelected] = useState([]);
+    
+
 
     useEffect(() => {
         var url = props.config.apiURL + 'api/game/';
@@ -75,11 +80,22 @@ function Games (props){
             })
             .then(response => response.json())
             .then(item => {
-                setGames(item);
+                setGames(
+                item.map(i=>{
+                    return{
+                        select: false,
+                        id: i.id,
+                        minPlayerCount: i.minPlayerCount,
+                        maxPlayerCount: i.maxPlayerCount,
+                        gameModes: i.gameModes
+                        }
+                    })
+                );
+                
                 setIsLoaded(true);
             });
     }, []);
-    // console.log("Before: " + games.length);
+  
     let history = useHistory();
     const directToCreateGames= () =>{
         history.push('/creategames/');
@@ -95,7 +111,6 @@ function Games (props){
         _.remove(newGames, game => game.id == gameID)
         setGames(newGames);
         deleteGame(gameID);
-        // console.log("After: " + games.length);
     }
 
     function deleteGame(gameID) {
@@ -119,14 +134,45 @@ function Games (props){
             // .then(data => setPostId(data.id));
     }
 
+    function handleBulkDelete(){
+        setGames(games.filter((game) => !selected.includes(game)));
+        setSelected([]);
+    }
+    
+    function deleteMultipleGames(gameList){
+        var url = props.config.apiURL + 'api/game?id=';
+        const requestOptions = {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin' : '*' ,
+            "Access-Control-Allow-Methods": "DELETE" }   
+        };
+        fetch(url, requestOptions)
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
 
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
 
     if (!isLoaded)
         return null;
     
     return(
         <div>
-            <h1>Games</h1> 
+            {selected.length > 0?
+            (<Typography variant="h6" color="inherit">Delete {selected.length} games selected
+                <IconButton>
+                    <DeleteIcon onClick = {handleBulkDelete}/>
+                </IconButton>
+            </Typography>
+            ):(
+            <h1>Games</h1> )}
+
             <IconButton onClick = {directToCreateGames}>
                 <AddIcon/><Typography variant="body1">Add Games</Typography>
             </IconButton>
@@ -137,7 +183,22 @@ function Games (props){
                     <Table className={classes.table}>
                         <TableHead>
                             <TableRow>
-                            <TableCell style={{fontWeight: "bold"}}> No. </TableCell>
+                                <TableCell><Checkbox onChange={e=>{
+                                    let checked = e.target.checked;
+                                    setGames(games.map(g=>{
+                                        g.select=checked;
+                                        return g;
+                                    }))
+                                    if(e.target.checked){
+                                        let newSelected=games.map(g=>g);
+                                        setSelected(newSelected);
+                                    }
+                                    else{
+                                        setSelected([]);
+                                    }
+                                    
+                                }}/></TableCell>
+                                <TableCell style={{fontWeight: "bold"}}> No. </TableCell>                                
                                 <TableCell style={{fontWeight: "bold"}}> Game ID </TableCell>
                                 <TableCell style={{fontWeight: "bold"}}>Name</TableCell>
                                 <TableCell style={{fontWeight: "bold"}}>Number of Minimum Players</TableCell>
@@ -150,6 +211,26 @@ function Games (props){
                         <TableBody >
                             {games.map((g,index)=>
                             <TableRow type="button" hover>
+                                <TableCell>
+                                    <Checkbox checked={g.select} onChange={(e)=>{
+                                        let checked=e.target.checked;
+                                        var newSelected = [];
+                                        setGames(
+                                            games.map(game=>{
+                                            if(g.id===game.id){
+                                                game.select=checked; 
+                                                    for(var i = 0; i < selected.length; i++) {
+                                                        newSelected.push(selected[i]);
+                                                    }
+                                                    newSelected.push(g);
+                                                    _.remove(newSelected, selectedGame => selectedGame.select == false);                                                                                                                                                                           
+                                            }    
+                                            return game;
+                                            })
+                                        );                                       
+                                        setSelected(newSelected);                                                                               
+                                    }}/>
+                                </TableCell>
                                 <TableCell onClick={e=>navigateToDetailsPage(g.id)}>{index+1}</TableCell>
                                 <TableCell onClick={e=>navigateToDetailsPage(g.id)}>{g.id}</TableCell>
                                 <TableCell onClick={e=>navigateToDetailsPage(g.id)}>{g.name}</TableCell>
@@ -160,7 +241,6 @@ function Games (props){
                                     <IconButton>
                                         <DeleteIcon onClick={e=> {handleDeleteTask(g.id)}}/>
                                     </IconButton>
-                                    {/* <DeleteButton id={props.game.id}></DeleteButton> */}
                                 </TableCell>
                                 <TableCell><IconButton><EditIcon /></IconButton></TableCell>
                         </TableRow> )}
