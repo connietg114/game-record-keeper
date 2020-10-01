@@ -71,10 +71,24 @@ function Games (props){
     const[games, setGames] = useState([]); 
     const [selected, setSelected] = useState([]);
     const [selectAll, setSelectAll]=useState(false);
-    
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [total, setTotal]=useState();
 
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        
+        setPage(0);
+        
+    };
+    const handleChangePage = (event, newPage) => {
+        
+        setPage(newPage);
+        
+    };
+    
     useEffect(() => {
-        var url = props.config.apiURL + 'api/game/';
+        var url = props.config.apiURL + 'api/game?page=' + page + '&rowsPerPage=' + rowsPerPage;
         fetch(url, {
             method: 'GET', 
             headers: {'Content-Type': 'application/json',}
@@ -82,7 +96,7 @@ function Games (props){
             .then(response => response.json())
             .then(item => {
                 setGames(
-                item.map(i=>{
+                item.games.map(i=>{
                     return{
                         select: false,
                         id: i.id,
@@ -92,10 +106,11 @@ function Games (props){
                         }
                     })
                 );
-                
+                setTotal(item.total);
                 setIsLoaded(true);
             });
-    }, []);
+    }, [page, rowsPerPage]);
+
   
     let history = useHistory();
     const directToCreateGames= () =>{
@@ -161,15 +176,6 @@ function Games (props){
             .catch(error => {console.log(error);});
     }
 
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
-    };
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
     
 
     if (!isLoaded)
@@ -224,7 +230,7 @@ function Games (props){
                         </TableHead>
                         <TableBody >
                             {games
-                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                             .map((g,index)=>
                             <TableRow type="button" hover>
                                 <TableCell>
@@ -269,7 +275,7 @@ function Games (props){
                 <TablePagination
                     rowsPerPageOptions={[10, 25, 50, 100]}
                     component="div"
-                    count={games.length}
+                    count={total}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onChangePage={handleChangePage}
