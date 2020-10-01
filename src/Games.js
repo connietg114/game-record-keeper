@@ -18,6 +18,7 @@ import Typography from "@material-ui/core/Typography";
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import Checkbox from '@material-ui/core/Checkbox';
+import TablePagination from '@material-ui/core/TablePagination';
 import _ from 'lodash';
 
 const useStyles = makeStyles((theme) => ({
@@ -70,6 +71,7 @@ function Games (props){
     const[games, setGames] = useState([]); 
     const [selected, setSelected] = useState([]);
     const [selectAll, setSelectAll]=useState(false);
+    
 
     useEffect(() => {
         var url = props.config.apiURL + 'api/game/';
@@ -159,6 +161,17 @@ function Games (props){
             .catch(error => {console.log(error);});
     }
 
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+    
+
     if (!isLoaded)
         return null;
     
@@ -210,7 +223,9 @@ function Games (props){
                             </TableRow>
                         </TableHead>
                         <TableBody >
-                            {games.map((g,index)=>
+                            {games
+                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            .map((g,index)=>
                             <TableRow type="button" hover>
                                 <TableCell>
                                     <Checkbox checked={g.select} onChange={(e)=>{
@@ -233,7 +248,7 @@ function Games (props){
                                         setSelected(newSelected);                                                                               
                                     }}/>
                                 </TableCell>
-                                <TableCell onClick={e=>navigateToDetailsPage(g.id)}>{index+1}</TableCell>
+                                <TableCell onClick={e=>navigateToDetailsPage(g.id)}>{(index+1)+((page-1) * rowsPerPage + rowsPerPage)}</TableCell>
                                 <TableCell onClick={e=>navigateToDetailsPage(g.id)}>{g.id}</TableCell>
                                 <TableCell onClick={e=>navigateToDetailsPage(g.id)}>{g.name}</TableCell>
                                 <TableCell onClick={e=>navigateToDetailsPage(g.id)}>{g.minPlayerCount}</TableCell>
@@ -251,6 +266,15 @@ function Games (props){
                         </TableBody>
                     </Table>
                 </TableContainer>
+                <TablePagination
+                    rowsPerPageOptions={[10, 25, 50, 100]}
+                    component="div"
+                    count={games.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onChangePage={handleChangePage}
+                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                    />
             </Paper>
             
             
