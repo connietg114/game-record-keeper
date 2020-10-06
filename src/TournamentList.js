@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+
 function TournamentRow(props) {
 
     let history = useHistory();
@@ -38,8 +39,9 @@ function TournamentRow(props) {
             <TableCell>{moment(props.tournament.startDate).format("YYYY-MM-DD")}</TableCell>
             <TableCell>{moment(props.tournament.startDate).format("h:mm:ss a")}</TableCell>
             <TableCell>{moment(props.tournament.EndDate).format("YYYY-MM-DD")}</TableCell>
-            <TableCell>{moment(props.tournament.EndDate).format("h:mm:ss a")}</TableCell>
+            <TableCell>{moment(props.tournamenEndDate).format("h:mm:ss a")}</TableCell>
             <TableCell>{props.tournament.tournamentType.name}</TableCell>
+            {props.delete && <TableCell><button onClick={e => props.onDelete(props.tour.id)}>Delete</button></TableCell>}
         </TableRow>
     );
 }
@@ -49,7 +51,7 @@ function TournamentList(props) {
     const classes = useStyles();
     return (
         <div>
-            {/* <Toolbar><h3>{props.tableName}</h3></Toolbar> */}
+            {/*<Toolbar><h3>{props.tableName}</h3></Toolbar>*/}
             <Paper>
                 <TableContainer>
                     <Table className={classes.table}>
@@ -65,7 +67,7 @@ function TournamentList(props) {
                             </TableRow>
                         </TableHead>
                         <TableBody >
-                            {props.tournaments.map((tournament, index) => <TournamentRow key={index} tournament={tournament} />)}
+                            {props.tournaments.map((tournament, index) => <TournamentRow key={index} tournament={tournament} onDelete={props.onDelete} delete={props.delete}/>)}
                         </TableBody>
                         
                     </Table>
