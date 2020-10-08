@@ -80,10 +80,10 @@ function Tournaments (props){
         var newTournaments = [...tournaments];
         _.remove(newTournaments, tournament => tournament.id == tournamentID)
         setTournaments(newTournaments);
-        deleteGame(tournamentID);
+        deleteTournamet(tournamentID);
     }
 
-    function deleteGame(tournamentID) {
+    function deleteTournamet(tournamentID) {
         var url = props.config.apiURL + 'api/tournament/deletetournament?id=' + tournamentID;
         const requestOptions = {
             method: 'DELETE',
@@ -113,7 +113,7 @@ function Tournaments (props){
     }
 
     function deleteMultipleTournaments(tournamentList) {
-        var url = props.config.apiURL + 'api/game/deleteMultipleGames';
+        var url = props.config.apiURL + 'api/tournament/deleteMultiTournament';
         const requestOptions = {
             method: 'DELETE',
             headers: {
