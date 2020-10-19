@@ -89,13 +89,21 @@ function Games (props){
     };
     
     useEffect(() => {
-        var url = config.apiURL + 'api/game?page=' + page + '&rowsPerPage=' + rowsPerPage;
+        var url = config.apiURL + 'api/Games';//?page=' + page + '&rowsPerPage=' + rowsPerPage;
         fetch(url, {
-            method: 'GET', 
-            headers: {'Content-Type': 'application/json',}
+            method: 'POST', 
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                page: page,
+                rowsPerPage: rowsPerPage,
+                sortItems:["ID"]
             })
-            .then(response => response.json())
+            })
+            .then(response => {
+                 return response.json();
+            })
             .then(item => {
+                console.log(item);
                 setGames(
                 item.games.map(i=>{
                     return{
@@ -186,8 +194,8 @@ function Games (props){
         <div>
             {selected.length > 0?
             (<Typography variant="h6" color="inherit">Delete {selected.length} games selected
-                <IconButton>
-                    <DeleteIcon onClick = {handleBulkDelete}/>
+                <IconButton onClick = {handleBulkDelete}>
+                    <DeleteIcon/>
                 </IconButton>
             </Typography>
             ):(
@@ -262,8 +270,8 @@ function Games (props){
                                 <TableCell onClick={e=>navigateToDetailsPage(g.id)}>{g.maxPlayerCount}</TableCell>
                                 <TableCell onClick={e=>navigateToDetailsPage(g.id)}>{g.gameModes}</TableCell>
                                 <TableCell>
-                                    <IconButton>
-                                        <DeleteIcon onClick={e=> {handleDeleteTask(g.id)}}/>
+                                    <IconButton onClick={e=> {handleDeleteTask(g.id)}}>
+                                        <DeleteIcon/>
                                     </IconButton>
                                 </TableCell>
                                 <TableCell><IconButton><EditIcon /></IconButton></TableCell>
