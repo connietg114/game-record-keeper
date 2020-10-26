@@ -1,5 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import ReactDOM from 'react-dom';
+import ConfigContext from './ConfigContext';
 import moment from 'moment';
 import Table from '@material-ui/core/Table';
 import TableRow from '@material-ui/core/TableRow';
@@ -15,9 +16,11 @@ import _ from 'lodash';
 // import EditIcon from '@material-ui/core/icons/Edit'; --> Can't resolve '@material-ui/core/icons/Edit'
 function Matches(props){
     
+    const config = useContext(ConfigContext);
+
     const[games, setGames] = useState([]);
     useEffect(() => {
-    var url = props.config.apiURL + 'api/gameMatch/';
+    var url = config.apiURL + 'api/gameMatch/';
     fetch(url, {
         method: 'GET', 
         headers: {'Content-Type': 'application/json',}

@@ -1,5 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import ReactDOM from 'react-dom';
+import ConfigContext from './ConfigContext';
 import './index.css';
 import moment from 'moment';
 import Paper from '@material-ui/core/Paper';
@@ -24,9 +25,10 @@ function findStartDate(days){
 
 function Home(props){
 
+    const config = useContext(ConfigContext);
     const[games, setGames] = useState([]); 
     useEffect(() => {
-    var url = props.config.apiURL + 'api/gameMatch?startDate=' + findStartDate(90);
+    var url = config.apiURL + 'api/gameMatch?startDate=' + findStartDate(90);
     fetch(url, {
         method: 'GET', 
         headers: {'Content-Type': 'application/json',}
@@ -39,7 +41,7 @@ function Home(props){
 
     const [tournaments, setTournaments] = useState([]);
     useEffect(() => {
-        var url = props.config.apiURL + 'api/tournament?startDate=' + findStartDate(90);
+        var url = config.apiURL + 'api/tournament?startDate=' + findStartDate(90);
         fetch(url, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json', }

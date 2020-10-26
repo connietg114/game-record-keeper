@@ -1,5 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import ReactDOM from 'react-dom';
+import ConfigContext from './ConfigContext';
 import './index.css';
 import moment from 'moment';
 import Table from '@material-ui/core/Table';
@@ -34,6 +35,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Tournaments (props){
+
+    const config = useContext(ConfigContext);
+
     const [tournaments, setTournaments] = useState([]);
     const [selected, setSelected] = useState([]);
     const classes = useStyles();
@@ -41,7 +45,7 @@ function Tournaments (props){
     const [selectAll, setSelectAll] = useState(false);
 
     useEffect(() => {
-        var url = props.config.apiURL + 'api/tournament/';
+        var url = config.apiURL + 'api/tournament/';
         fetch(url, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json', }
@@ -84,7 +88,7 @@ function Tournaments (props){
     }
 
     function deleteTournamet(tournamentID) {
-        var url = props.config.apiURL + 'api/tournament/deletetournament?id=' + tournamentID;
+        var url = config.apiURL + 'api/tournament/deletetournament?id=' + tournamentID;
         const requestOptions = {
             method: 'DELETE',
             headers: {
@@ -113,7 +117,7 @@ function Tournaments (props){
     }
 
     function deleteMultipleTournaments(tournamentList) {
-        var url = props.config.apiURL + 'api/tournament/deleteMultiTournament';
+        var url = config.apiURL + 'api/tournament/deleteMultiTournament';
         const requestOptions = {
             method: 'DELETE',
             headers: {

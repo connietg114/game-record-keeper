@@ -1,5 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext } from 'react';
 import ReactDOM from 'react-dom';
+import ConfigContext from './ConfigContext';
 import './index.css';
 import moment from 'moment';
 import Table from '@material-ui/core/Table';
@@ -66,6 +67,9 @@ const useStyles = makeStyles((theme) => ({
 
 
 function Games (props){
+
+    const config = useContext(ConfigContext);
+
     const classes = useStyles();
     const [isLoaded, setIsLoaded] = useState(false);
     const[games, setGames] = useState([]); 
@@ -88,7 +92,7 @@ function Games (props){
     };
     
     useEffect(() => {
-        var url = props.config.apiURL + 'api/game?page=' + page + '&rowsPerPage=' + rowsPerPage;
+        var url = config.apiURL + 'api/game?page=' + page + '&rowsPerPage=' + rowsPerPage;
         fetch(url, {
             method: 'GET', 
             headers: {'Content-Type': 'application/json',}
@@ -130,7 +134,7 @@ function Games (props){
     }
 
     function deleteGame(gameID) {
-        var url = props.config.apiURL + 'api/game?id='+ gameID;
+        var url = config.apiURL + 'api/game?id='+ gameID;
         const requestOptions = {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json',
@@ -162,7 +166,7 @@ function Games (props){
     }
     
     function deleteMultipleGames(gameList){
-        var url = props.config.apiURL + 'api/game/deleteMultipleGames';
+        var url = config.apiURL + 'api/game/deleteMultipleGames';
         const requestOptions = {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json',

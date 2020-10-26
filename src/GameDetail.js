@@ -1,5 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import ReactDOM from 'react-dom';
+import ConfigContext from './ConfigContext';
 import './index.css';
 import moment from 'moment';
 import Table from '@material-ui/core/Table';
@@ -22,6 +23,9 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 function GameDetail(props){
+
+    const config = useContext(ConfigContext);
+
     const classes = useStyles();
     let location = useLocation();
     var url = location.pathname;
@@ -30,7 +34,7 @@ function GameDetail(props){
     const[game, setGame] = useState('');
     const [gameModes, setGameModes] = useState([]);
     useEffect(() => {
-    var url = props.config.apiURL + 'api/game/getGameDetails?id=' + gameId;
+    var url = config.apiURL + 'api/game/getGameDetails?id=' + gameId;
     fetch(url, {
         method: 'GET', 
         headers: {'Content-Type': 'application/json',}

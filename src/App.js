@@ -15,6 +15,7 @@ import CreateGames from './CreateGames.js';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import EnhancedTable from './draft';
 import TournamentDetail from './TournamentDetail.js';
+import { ConfigProvider } from './ConfigContext.js';
 
 function App(props){
     
@@ -34,23 +35,26 @@ function App(props){
 
     return(
         <Router>
-        <div>           
-            <TopNavBar/>
-            <Switch> {/* after detect '/', then stop - Home */}
-                <Route path='/' exact render={routeProps => (<Home {...routeProps} config={config}/>)}/> {/*put exact so that / works for Home only*/}
-                    <Route path='/tournaments' exact render={routeProps => (<Tournaments {...routeProps} config={config} />)}/>
-                <Route path='/matches' exact render={routeProps => (<Matches {...routeProps} config={config}/>)}/>
-                <Route path='/games' exact render={routeProps => (<Games {...routeProps} config={config}/>)}/>
-                <Route path='/players' component={Players}/>
-                <Route path='/about' component={About}/>
-                <Route path='/theresults' component={Theresults}/>
-                <Route path='/gamematchdetail' render={routeProps => (<GameMatchDetail {...routeProps} config={config}/>)}/>
-                <Route path='/gamedetail' render={routeProps => (<GameDetail {...routeProps} config={config}/>)}/>
-                <Route path='/creategames' render={routeProps => (<CreateGames {...routeProps} config={config}/>)}/>
-                <Route path='/draft' component={EnhancedTable} />
-                <Route path='/tournamentdetail' render={routeProps => (<TournamentDetail {...routeProps} config={config} />)} />
-            </Switch>
-            </div> 
+            <ConfigProvider value={config} >
+                <div>
+                    
+                    <TopNavBar/>
+                    <Switch> {/* after detect '/', then stop - Home */}
+                        <Route path='/' exact render={routeProps => (<Home {...routeProps}/>)}/> {/*put exact so that / works for Home only*/}
+                            <Route path='/tournaments' exact render={routeProps => (<Tournaments {...routeProps} />)}/>
+                        <Route path='/matches' exact render={routeProps => (<Matches {...routeProps} />)}/>
+                        <Route path='/games' exact render={routeProps => (<Games {...routeProps} />)}/>
+                        <Route path='/players' component={Players}/>
+                        <Route path='/about' component={About}/>
+                        <Route path='/theresults' component={Theresults}/>
+                        <Route path='/gamematchdetail' render={routeProps => (<GameMatchDetail {...routeProps} />)}/>
+                        <Route path='/gamedetail' render={routeProps => (<GameDetail {...routeProps}/>)}/>
+                        <Route path='/creategames' render={routeProps => (<CreateGames {...routeProps}/>)}/>
+                        <Route path='/draft' component={EnhancedTable} />
+                        <Route path='/tournamentdetail' render={routeProps => (<TournamentDetail {...routeProps} />)} />
+                    </Switch>
+                </div> 
+            </ConfigProvider>
         </Router>                  
     );   
 }

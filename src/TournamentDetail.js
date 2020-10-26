@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import ConfigContext from './ConfigContext';
 import ReactDOM from 'react-dom';
 import './index.css';
 import moment from 'moment';
@@ -16,13 +17,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function TournamentDetail(props) {
+
+    const config = useContext(ConfigContext);
+
     const classes = useStyles();
     let location = useLocation();
     var url = location.pathname;
     var tournamentId = url.substr(url.lastIndexOf('/') + 1);
     const [tournament, setTournament] = useState([]);
     useEffect(() => {
-        var url = props.config.apiURL + 'api/tournament/getTournamentDetails?id=' + tournamentId;
+        var url = config.apiURL + 'api/tournament/getTournamentDetails?id=' + tournamentId;
         fetch(url, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json', }

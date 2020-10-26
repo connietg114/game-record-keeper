@@ -1,5 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import ReactDOM from 'react-dom';
+import ConfigContext from './ConfigContext';
 import './index.css';
 import moment from 'moment';
 import { useHistory } from "react-router-dom";
@@ -7,6 +8,9 @@ import { makeStyles } from '@material-ui/core/styles';
 
 
 function CreateGames(props){
+
+    const config = useContext(ConfigContext);
+
     const [gameName, setGameName] = useState('');
     const [minPlayer, setMinPlayer] = useState('');
     const [maxPlayer, setMaxPlayer] = useState('');
@@ -24,7 +28,7 @@ function CreateGames(props){
     };
    
     function post(gameName, minPlayer, maxPlayer) {
-        var url = props.config.apiURL + 'api/game/';
+        var url = config.apiURL + 'api/game/';
         const requestOptions = {
             method: 'POST',
             headers: { 

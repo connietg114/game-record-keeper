@@ -1,5 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import ReactDOM from 'react-dom';
+import ConfigContext from './ConfigContext';
 import './index.css';
 import moment from 'moment';
 import {BrowserRouter as Router,Switch,useLocation} from "react-router-dom";
@@ -26,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 function GameMatchDetail (props){
+
+    const config = useContext(ConfigContext);
+
     const classes = useStyles();
     let location = useLocation();
     var url = location.pathname;
@@ -36,7 +40,7 @@ function GameMatchDetail (props){
     const [gameModes, setGameModes] = useState([]);
     const[gameMatch, setGameMatch] = useState([]);
     useEffect(() => {
-    var url = props.config.apiURL + 'api/gameMatch/getGameMatchDetails?id=' + gameMatchId;
+    var url = config.apiURL + 'api/gameMatch/getGameMatchDetails?id=' + gameMatchId;
     fetch(url, {
         method: 'GET', 
         headers: {'Content-Type': 'application/json',}
