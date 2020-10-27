@@ -15,20 +15,12 @@ import CreateGames from './CreateGames.js';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import EnhancedTable from './draft';
 import TournamentDetail from './TournamentDetail.js';
+import { useConfig } from './useConfig';
 import { ConfigProvider } from './ConfigContext.js';
 
 function App(props){
     
-    const [config, setConfig] = useState(null);
-
-    useEffect(() => {
-        fetch('/config.json', {
-            method: 'GET', 
-            headers: {'Content-Type': 'application/json',}
-        })
-        .then(response => response.json())
-        .then(data => setConfig(data)); 
-    }, []);
+    const config = useConfig();
     
     if (config === null)
         return null;
