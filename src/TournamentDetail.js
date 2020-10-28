@@ -1,26 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import ConfigContext from './ConfigContext';
-import ReactDOM from 'react-dom';
 import './index.css';
 import moment from 'moment';
-import { BrowserRouter as Router, Switch, useLocation } from "react-router-dom";
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme) => ({
-    table: {
-        border: 0,
-        clip: 'rect(0 0 0 0)',
-        margin: -1,
-        overflow: 'hidden',
-        padding: 0,
-    },
-}));
+import { BrowserRouter as useLocation } from "react-router-dom";
 
 function TournamentDetail(props) {
 
     const config = useContext(ConfigContext);
 
-    const classes = useStyles();
     let location = useLocation();
     var url = location.pathname;
     var tournamentId = url.substr(url.lastIndexOf('/') + 1);
@@ -35,7 +22,7 @@ function TournamentDetail(props) {
             .then(item => {
                 setTournament(item);
             });
-    }, []);
+    }, [config.apiURL, tournamentId]);
 
     return (
         <div>

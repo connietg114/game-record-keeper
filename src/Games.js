@@ -1,8 +1,6 @@
 import React, {useState, useEffect, useContext } from 'react';
-import ReactDOM from 'react-dom';
 import ConfigContext from './ConfigContext';
 import './index.css';
-import moment from 'moment';
 import Table from '@material-ui/core/Table';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
@@ -12,7 +10,6 @@ import TableBody from '@material-ui/core/TableBody';
 import Paper from '@material-ui/core/Paper';
 import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
-import Toolbar from '@material-ui/core/Toolbar';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from "@material-ui/core/Typography";
@@ -113,7 +110,7 @@ function Games (props){
                 setTotal(item.total);
                 setIsLoaded(true);
             });
-    }, [page, rowsPerPage]);
+    }, [page, rowsPerPage, config.apiURL]);
 
   
     let history = useHistory();
@@ -128,7 +125,7 @@ function Games (props){
 
     function handleDeleteTask(gameID){
         var newGames = [...games];
-        _.remove(newGames, game => game.id == gameID)
+        _.remove(newGames, game => game.id === gameID)
         setGames(newGames);
         deleteGame(gameID);
     }
@@ -250,7 +247,7 @@ function Games (props){
                                                         newSelected.push(selected[i]);
                                                     }
                                                     newSelected.push(g);
-                                                    _.remove(newSelected, selectedGame => selectedGame.select == false);                                                                                                                                                                           
+                                                    _.remove(newSelected, selectedGame => selectedGame.select === false);                                                                                                                                                                           
                                             }    
                                             return game;
                                             })

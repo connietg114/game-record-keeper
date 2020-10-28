@@ -1,8 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
-import ReactDOM from 'react-dom';
 import ConfigContext from './ConfigContext';
 import './index.css';
-import moment from 'moment';
 import Table from '@material-ui/core/Table';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
@@ -10,7 +8,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
 import Paper from '@material-ui/core/Paper';
-import {BrowserRouter as Router,Switch,useLocation} from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
     table: {
@@ -44,7 +42,7 @@ function GameDetail(props){
         setGame(game);
         setGameModes(game.gameModes);
         });
-    }, []);
+    }, [config.apiURL, gameId]);
     
 
     return(

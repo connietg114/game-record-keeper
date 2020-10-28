@@ -1,15 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
-import ReactDOM from 'react-dom';
 import ConfigContext from './ConfigContext';
-import moment from 'moment';
-import Table from '@material-ui/core/Table';
-import TableRow from '@material-ui/core/TableRow';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableBody from '@material-ui/core/TableBody';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
-import TablePagination from '@material-ui/core/TablePagination';
-import { useHistory } from "react-router-dom";
 import GameMatchList from './GameMatchList.js';
 import _ from 'lodash';
 
@@ -29,7 +19,7 @@ function Matches(props){
         .then(item => {
         setGames(item);
         });
-    }, []);
+    }, [config.apiURL]);
 
     // function deleteMatch(gameID) {
     //     var url = props.config.apiURL + 'api/game?id='+ gameID;
@@ -55,7 +45,7 @@ function Matches(props){
     function handleDelete(id) {
         console.log('deleting ' + id);
         var newGames = [...games];
-        _.remove(newGames, game => game.id == id)
+        _.remove(newGames, game => game.id === id)
         setGames(newGames);
     }
 

@@ -1,11 +1,6 @@
-import React, {useState, useEffect, useContext} from 'react';
-import ReactDOM from 'react-dom';
+import React, {useState, useContext} from 'react';
 import ConfigContext from './ConfigContext';
 import './index.css';
-import moment from 'moment';
-import { useHistory } from "react-router-dom";
-import { makeStyles } from '@material-ui/core/styles';
-
 
 function CreateGames(props){
 
@@ -14,9 +9,6 @@ function CreateGames(props){
     const [gameName, setGameName] = useState('');
     const [minPlayer, setMinPlayer] = useState('');
     const [maxPlayer, setMaxPlayer] = useState('');
-
-    const[games, setGames] = useState([]);
-    var gameList = [];
 
     var submitHandler = e =>{
         e.preventDefault();

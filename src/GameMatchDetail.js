@@ -1,9 +1,8 @@
 import React, {useState, useEffect, useContext} from 'react';
-import ReactDOM from 'react-dom';
 import ConfigContext from './ConfigContext';
 import './index.css';
 import moment from 'moment';
-import {BrowserRouter as Router,Switch,useLocation} from "react-router-dom";
+import {BrowserRouter as useLocation} from "react-router-dom";
 
 import Table from '@material-ui/core/Table';
 import TableContainer from '@material-ui/core/TableContainer';
@@ -50,7 +49,7 @@ function GameMatchDetail (props){
         setGameMatch(gm);
         setGameModes(gm.game.gameModes);
         });
-    }, []);
+    }, [config.apiURL, gameMatchId]);
     
     return (
         <div>   

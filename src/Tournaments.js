@@ -1,8 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
-import ReactDOM from 'react-dom';
 import ConfigContext from './ConfigContext';
 import './index.css';
-import moment from 'moment';
 import Table from '@material-ui/core/Table';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
@@ -67,7 +65,7 @@ function Tournaments (props){
 
                 setIsLoaded(true);
             });
-    }, []);
+    }, [config.apiURL]);
 
 
     let history = useHistory();
@@ -82,7 +80,7 @@ function Tournaments (props){
 
     function handleDeleteTask(tournamentID) {
         var newTournaments = [...tournaments];
-        _.remove(newTournaments, tournament => tournament.id == tournamentID)
+        _.remove(newTournaments, tournament => tournament.id === tournamentID)
         setTournaments(newTournaments);
         deleteTournamet(tournamentID);
     }
@@ -199,7 +197,7 @@ function Tournaments (props){
                                                             newSelected.push(selected[i]);
                                                         }
                                                         newSelected.push(t);
-                                                        _.remove(newSelected, selectedTournament => selectedTournament.select == false);
+                                                        _.remove(newSelected, selectedTournament => selectedTournament.select === false);
                                                     }
                                                     return tournament;
                                                 })
