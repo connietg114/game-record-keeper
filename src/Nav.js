@@ -1,22 +1,17 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import './Nav.css';
-import {Link} from 'react-router-dom';
-
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-import ListIcon from '@material-ui/icons/List';
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import Button from "@material-ui/core/Button";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { withRouter } from "react-router-dom";
 import { useHistory } from "react-router-dom";
-import { spacing } from "@material-ui/system";
+import LoginMenu from './LoginMenu';
 
 //material ui starts
 const useStyles = makeStyles(theme => ({
@@ -47,9 +42,6 @@ const useStyles = makeStyles(theme => ({
   }));
 
 function TopNavBar(props){
-    const style ={
-        color:'black'
-    };
     const imgStyle={
         height: '30px',
         width: '30px',
@@ -111,7 +103,7 @@ function TopNavBar(props){
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" className={classes.title} onClick={() => handleButtonClick("/")}>
-          <img style = {imgStyle} src='./logo192.png' ></img>
+          <img style = {imgStyle} src='./logo192.png' alt=""></img>
           </Typography>{isMobile ? (
             <>
               <IconButton
@@ -138,10 +130,10 @@ function TopNavBar(props){
                 open={open}
                 onClose={() => setAnchorEl(null)}
               >
-                {menuItems.map(menuItem => {
+                {menuItems.map((menuItem, index) => {
                   const { menuTitle, pageURL } = menuItem;
                   return (
-                    <MenuItem onClick={() => handleMenuClick(pageURL)}>
+                    <MenuItem key={`menu_${index}`} onClick={() => handleMenuClick(pageURL)}>
                       {menuTitle}
                     </MenuItem>
                   );
@@ -168,6 +160,7 @@ function TopNavBar(props){
               <Button className={classes.headerOptionsButton} color="inherit" onClick={() => handleButtonClick("/about")}>
               About
               </Button>
+              <LoginMenu buttonClassName={classes.headerOptionsButton} />
             </div>
           )}
         </Toolbar>

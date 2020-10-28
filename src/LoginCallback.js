@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import ConfigContext from './ConfigContext';
 import { useAuthService } from './useAuthService';
-import './Login.css';
 
-export default function Login(){
+export default function LoginCallback(props) {
 
     let config = useContext(ConfigContext);
     var authService = useAuthService(config);
@@ -26,27 +25,28 @@ export default function Login(){
 
     useEffect(() => {
         (async () => {
-            var returnUrl = getReturnUrl();
-
-            const result = await authService.signIn({ returnUrl });
+            const url = window.location.href;
+            const result = await authService.completeSignIn(url);
 
             switch (result.status) {
                 case 'redirect':
-                    break;
+                    throw new Error('Should not redirect.');
                 case 'success':
-                    navigateToReturnUrl(returnUrl);
+                    await navigateToReturnUrl(getReturnUrl(result.state));
                     break;
                 case 'fail':
                     setMessage(result.message);
                     break;
                 default:
-                    throw new Error(`Invalid status result ${result.status}.`);
+                    throw new Error(`Invalid authenticaion result status '${result.status}'.`);
             }
         })()
     }, [authService]);
 
     if (!!message)
-        return (<div>{message}</div>);
-
-    return (<div>Processing login</div>);
+        return <div>{message}</div>;
+    
+    return (
+        <div>Processing login callback</div>
+    );
 }

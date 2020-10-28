@@ -1,6 +1,4 @@
-import React, {useState, useEffect} from 'react';
-import ReactDOM from 'react-dom';
-import _ from 'lodash';
+import React from 'react';
 import TopNavBar from './Nav.js';
 import Home from './Home.js';
 import About from './About.js';
@@ -15,6 +13,11 @@ import CreateGames from './CreateGames.js';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import EnhancedTable from './draft';
 import TournamentDetail from './TournamentDetail.js';
+import Login from './Login';
+import LoginCallback from './LoginCallback';
+import Logout from './Logout';
+import LogoutCallback from './LogoutCallback';
+import LoggedOut from './LoggedOut';
 import { useConfig } from './useConfig';
 import { ConfigProvider } from './ConfigContext.js';
 
@@ -44,6 +47,11 @@ function App(props){
                         <Route path='/creategames' render={routeProps => (<CreateGames {...routeProps}/>)}/>
                         <Route path='/draft' component={EnhancedTable} />
                         <Route path='/tournamentdetail' render={routeProps => (<TournamentDetail {...routeProps} />)} />
+                        <Route path='/login' exact render={() => (<Login />)} />
+                        <Route path='/login-callback' exact render={() => (<LoginCallback />)} />
+                        <Route path='/logout' exact render={() => (<Logout />)} />
+                        <Route path='/logout-callback' exact render={() => (<LogoutCallback />)} />
+                        <Route path='/logged-out' exact render={() => (<LoggedOut />)} />
                     </Switch>
                 </div> 
             </ConfigProvider>
