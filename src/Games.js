@@ -17,6 +17,9 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import Checkbox from '@material-ui/core/Checkbox';
 import TablePagination from '@material-ui/core/TablePagination';
+import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+
 import _ from 'lodash';
 
 const useStyles = makeStyles((theme) => ({
@@ -29,7 +32,10 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
         flex: '1 1 100%',
-      }
+    },
+    sortingIcon:{
+        display:'none'
+    },
   }));
 
   
@@ -76,16 +82,81 @@ function Games (props){
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [total, setTotal]=useState();
 
+    const[ID, setID] = useState("ID");
+    const[Name, setName] = useState("Name");
+    const[MinPlayerCount, setMinPlayerCount] = useState("MinPlayerCount");
+    const[MaxPlayerCount, setMaxPlayerCount] = useState("MaxPlayerCount");
+    
+    const [sortItems, setSortItems] = useState([]);
+
+    const invertDirection ={
+        "ID":"ID desc",
+        "ID desc": "ID",
+        "Name": "Name desc", 
+        "Name desc":"Name",
+        "MinPlayerCount":"MinPlayerCount desc", 
+        "MinPlayerCount desc": "MinPlayerCount",
+        "MaxPlayerCount": "MaxPlayerCount desc"
+    }
+    const handleSorting = (event) =>{
+        var sortItem = event.target.getAttribute('columntosort');
+        var sortList = [];
+        for(var i = 0; i < sortItems.length; i++) {
+            sortList.push(sortItems[i]);
+        }
+        //ID, Name => ID, Name desc
+        var index;
+        if(sortList.includes(sortItem + " desc")){//Name desc vs Name
+            index = sortList.indexOf(sortItem+ " desc");
+            sortList.splice(index, 1);
+        }else if(sortList.includes(sortItem.split(' ')[0])){//Name vs Name desc
+            index = sortList.indexOf(sortItem.split(' ')[0]);
+            sortList.splice(index, 1);
+        }else if(sortList.includes(sortItem)){
+            index = sortList.indexOf(sortItem);
+            sortList.splice(index, 1);
+        }
+        // sortList.splice(index, 1);
+        sortList.push(sortItem);
+        setSortItems(sortList);
+
+       if(sortItem =="ID" || sortItem=="ID desc"){
+           setID(invertDirection[ID]);
+            //sortItem==="ID"?setID("ID desc"):setID("ID");
+
+       }else if (sortItem =="Name" || sortItem=="Name desc"){
+           setName(invertDirection[Name]);
+            // sortItem==="Name"?setName("Name desc"):setName("Name");
+
+       }else if (sortItem =="MinPlayerCount" || sortItem=="MinPlayerCount desc"){
+            setMinPlayerCount(invertDirection[MinPlayerCount]);
+            // sortItem==="MinPlayerCount"?setMinPlayerCount("MinPlayerCount desc"):setMinPlayerCount("MinPlayerCount");
+
+        }else if (sortItem =="MaxPlayerCount" || sortItem=="MaxPlayerCount desc"){
+            setMaxPlayerCount(invertDirection[MaxPlayerCount]);
+            // sortItem==="MaxPlayerCount"?setMinPlayerCount("MaxPlayerCount desc"):setMinPlayerCount("MaxPlayerCount");
+        }
+    };
+    function checkColumnToSort(columntosort){
+        if(sortItems.includes(columntosort+" desc")||sortItems.includes(columntosort.split(' ')[0]) || sortItems.includes(columntosort)){
+            if(columntosort.includes('desc')){
+                return <ArrowDropUpIcon/>;
+            }
+            else{
+                return <ArrowDropDownIcon/>;
+            }
+        } 
+        else{
+            return null;
+        }
+    }
+
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
-        
-        setPage(0);
-        
+        setPage(0);  
     };
     const handleChangePage = (event, newPage) => {
-        
         setPage(newPage);
-        
     };
     
     useEffect(() => {
@@ -96,19 +167,20 @@ function Games (props){
             body: JSON.stringify({
                 page: page,
                 rowsPerPage: rowsPerPage,
-                sortItems:["ID"]
+                sortItems:sortItems
             })
             })
             .then(response => {
                  return response.json();
             })
             .then(item => {
-                console.log(item);
+                // console.log(item);
                 setGames(
                 item.games.map(i=>{
                     return{
                         select: false,
                         id: i.id,
+                        name: i.name,
                         minPlayerCount: i.minPlayerCount,
                         maxPlayerCount: i.maxPlayerCount,
                         gameModes: i.gameModes
@@ -118,8 +190,7 @@ function Games (props){
                 setTotal(item.total);
                 setIsLoaded(true);
             });
-    }, [page, rowsPerPage, config.apiURL]);
-
+    }, [page, rowsPerPage, sortItems, config.apiURL]);
   
     let history = useHistory();
     const directToCreateGames= () =>{
@@ -228,10 +299,18 @@ function Games (props){
                                         }}}/>
                                     </TableCell>
                                 <TableCell style={{fontWeight: "bold"}}> No. </TableCell>                                
-                                <TableCell style={{fontWeight: "bold"}}> Game ID </TableCell>
-                                <TableCell style={{fontWeight: "bold"}}>Name</TableCell>
-                                <TableCell style={{fontWeight: "bold"}}>Number of Minimum Players</TableCell>
-                                <TableCell style={{fontWeight: "bold"}}>Number of Maximum Players</TableCell>
+                                <TableCell style={{fontWeight: "bold"}} columntosort={ID} onClick={handleSorting}> 
+                                    {checkColumnToSort(ID)}  Game ID 
+                                </TableCell>
+                                <TableCell style={{fontWeight: "bold"}} columntosort={Name} onClick={handleSorting}>
+                                    {checkColumnToSort(Name)} Name
+                                </TableCell>
+                                <TableCell style={{fontWeight: "bold"}}columntosort={MinPlayerCount} onClick={handleSorting}>
+                                    {checkColumnToSort(MinPlayerCount)} Number of Minimum Players
+                                </TableCell>
+                                <TableCell style={{fontWeight: "bold"}}columntosort={MaxPlayerCount} onClick={handleSorting}>
+                                    {checkColumnToSort(MaxPlayerCount)} Number of Maximum Players
+                                </TableCell>
                                 <TableCell style={{fontWeight: "bold"}}>Number of Game Mode</TableCell>
                                 <TableCell style={{fontWeight: "bold"}}></TableCell>
                                 <TableCell style={{fontWeight: "bold"}}></TableCell>

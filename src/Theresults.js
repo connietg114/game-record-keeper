@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import './Theresults.css';
 
 function Theresults(){
-    const [players, setPlayers]=useState([]);
-    const[text, setText] = useState('');
+    const [players, setPlayers]=useState([]);//[connie]
+    const[text, setText] = useState('');//connie
 
     var addPlayer = () => {
         if (text === '') {
