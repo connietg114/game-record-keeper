@@ -84,8 +84,35 @@ function Games (props){
     
     const [sortItems, setSortItems] = useState([]);
 
-    const handleSorting = (event) =>{
-        var sortItem = event.target.getAttribute('columntosort');
+    const tableHeaderItems=[
+        {
+            name: "Game ID",
+            columntosort: "ID"
+        },
+        {
+            name: "Name",
+            columntosort: "Name"
+        },
+        {
+            name: "Minimum Number of Players",
+            columntosort: "MinPlayerCount"
+        },
+        {
+            name: "Maximum Number of Players",
+            columntosort: "MaxPlayerCount"
+        },
+        {
+            name: "Number of Game Modes",
+            columntosort: "GameModeCount"
+        },
+
+    ]
+
+    const handleSorting = (columntosort) =>{
+        var sortItem = columntosort;
+        if(sortItem=== null){
+            return ;
+        }
         var sortList = [];
         for(var i = 0; i < sortItems.length; i++) {
             sortList.push(sortItems[i]);
@@ -107,10 +134,10 @@ function Games (props){
     };
     function checkColumnToSort(columntosort){
         if(sortItems.includes(columntosort+" desc")){
-            return <ArrowDropUpIcon/>;
+            return <ArrowDropDownIcon/>;
         }
         else if (sortItems.includes(columntosort)){
-            return <ArrowDropDownIcon/>;
+            return <ArrowDropUpIcon/>;
         }
         else{
             return null;
@@ -264,20 +291,15 @@ function Games (props){
                                             setSelected([]);
                                         }}}/>
                                     </TableCell>
-                                <TableCell style={{fontWeight: "bold"}}> No. </TableCell>                                
-                                <TableCell style={{fontWeight: "bold"}} columntosort="ID" onClick={handleSorting}> 
-                                    {checkColumnToSort("ID")}  Game ID 
-                                </TableCell>
-                                <TableCell style={{fontWeight: "bold"}} columntosort="Name" onClick={handleSorting}>
-                                    {checkColumnToSort("Name")} Name
-                                </TableCell>
-                                <TableCell style={{fontWeight: "bold"}}columntosort="MinPlayerCount" onClick={handleSorting}>
-                                    {checkColumnToSort("MinPlayerCount")} Number of Minimum Players
-                                </TableCell>
-                                <TableCell style={{fontWeight: "bold"}}columntosort="MaxPlayerCount" onClick={handleSorting}>
-                                    {checkColumnToSort("MaxPlayerCount")} Number of Maximum Players
-                                </TableCell>
-                                <TableCell style={{fontWeight: "bold"}}>Number of Game Mode</TableCell>
+                                    <TableCell style={{fontWeight: "bold"}}> No. </TableCell>        
+                                    {
+                                        tableHeaderItems.map((headerItem)=>
+                                            <TableCell style={{fontWeight: "bold"}} onClick={() => handleSorting(headerItem.columntosort)}>
+                                                {checkColumnToSort(headerItem.columntosort)}{headerItem.name}
+                                            </TableCell>
+                                        )
+                                    }
+
                                 <TableCell style={{fontWeight: "bold"}}></TableCell>
                                 <TableCell style={{fontWeight: "bold"}}></TableCell>
                             </TableRow>
