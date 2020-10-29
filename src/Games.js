@@ -68,7 +68,6 @@ const useStyles = makeStyles((theme) => ({
 //     );
 // }
 
-
 function Games (props){
 
     const config = useContext(ConfigContext);
@@ -151,9 +150,9 @@ function Games (props){
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
-    
-    useEffect(() => {
-        var url = config.apiURL + 'api/Games';//?page=' + page + '&rowsPerPage=' + rowsPerPage;
+
+
+    function fetchGames(url){
         fetch(url, {
             method: 'POST', 
             headers: {'Content-Type': 'application/json'},
@@ -167,7 +166,6 @@ function Games (props){
                  return response.json();
             })
             .then(item => {
-                // console.log(item);
                 setGames(
                 item.games.map(i=>{
                     return{
@@ -183,7 +181,14 @@ function Games (props){
                 setTotal(item.total);
                 setIsLoaded(true);
             });
-    }, [page, rowsPerPage, sortItems, config.apiURL]);
+
+    }
+    var url = config.apiURL + 'api/Games';
+    useEffect(() => {
+        fetchGames(url);
+    }, [page, rowsPerPage, sortItems,config.apiURL]);
+
+
   
     let history = useHistory();
     const directToCreateGames= () =>{
@@ -196,10 +201,12 @@ function Games (props){
     }
 
     function handleDeleteTask(gameID){
-        var newGames = [...games];
-        _.remove(newGames, game => game.id === gameID)
-        setGames(newGames);
-        deleteGame(gameID);
+        deleteGame(gameID)
+            .then(message=>{
+                fetchGames(url);
+                alert(message)
+            }
+        );
     }
 
     function deleteGame(gameID) {
@@ -210,13 +217,15 @@ function Games (props){
             'Access-Control-Allow-Origin' : '*' ,
             "Access-Control-Allow-Methods": "DELETE" }   
         };
-        fetch(url, requestOptions)
-            .then(response => {return response.json();})
-            .then(data => {})
+        return fetch(url, requestOptions)
+            .then(response =>
+                response.text()
+                // { if(!response.ok){return response.text()}return response.json()}
+            )
+            // .then(data => setErrorMessage(data))
             .catch(error => {
-                console.log(error);
+                console.log("Error: " + error);
             });
-            // .then(data => setPostId(data.id));
     }
 
     function handleBulkDelete(){
@@ -225,10 +234,6 @@ function Games (props){
             ids.push(selected[i].id);   
         }
         setGames(games.filter((game) => !selected.includes(game)));
-        // setGames(games.map(g=>{
-        //     g.select=false;
-        //     return g;
-        // }))
         deleteMultipleGames(ids);
         setSelected([]);
         setSelectAll(false);
@@ -249,7 +254,6 @@ function Games (props){
             .catch(error => {console.log(error);});
     }
 
-    
 
     if (!isLoaded)
         return null;
@@ -299,7 +303,6 @@ function Games (props){
                                             </TableCell>
                                         )
                                     }
-
                                 <TableCell style={{fontWeight: "bold"}}></TableCell>
                                 <TableCell style={{fontWeight: "bold"}}></TableCell>
                             </TableRow>
