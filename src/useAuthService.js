@@ -16,7 +16,7 @@ class AuthService {
             client_id: 'GameRecordKeeper',
             redirect_uri: `${config.appURL}login-callback`,
             response_type: 'code',
-            scope: 'openid profile',
+            scope: 'openid profile GameRecordKeeperAPI',
             post_logout_redirect_uri: `${config.appURL}logout-callback`,
             automaticSilentRenew: true,
             includeIdTokenInSilentRenew: true
@@ -37,6 +37,11 @@ class AuthService {
 
         const user = await this.userManager.getUser();
         return user && user.profile;
+    }
+
+    async getAccessToken() {
+        const user = await this.userManager.getUser();
+        return user && user.access_token;
     }
 
     async signIn(state) {
