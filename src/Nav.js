@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './Nav.css';
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -12,6 +12,8 @@ import Button from "@material-ui/core/Button";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useHistory } from "react-router-dom";
 import LoginMenu from './LoginMenu';
+import ConfigContext from './ConfigContext';
+import { useAuthService } from './useAuthService';
 
 //material ui starts
 const useStyles = makeStyles(theme => ({
@@ -38,6 +40,17 @@ const useStyles = makeStyles(theme => ({
     headerOptionsButton:{
         marginLeft: theme.spacing(2),
         marginRight: theme.spacing(2)
+    },
+    bar: {
+      display: 'flex',
+      width: '100%',
+      justifyContent: "space-between"
+    },
+    account: {
+      display: 'flex',
+      alignSelf: 'center',
+      marginLeft: theme.spacing(2),
+      marginRight: theme.spacing(2)
     }
   }));
 
@@ -48,6 +61,9 @@ function TopNavBar(props){
        
     };
 
+    let config = useContext(ConfigContext);
+    var authService = useAuthService(config);
+
     let history = useHistory();
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -55,6 +71,23 @@ function TopNavBar(props){
     const theme = useTheme();
 
     const isMobile = useMediaQuery(theme.breakpoints.down("770")); //xs: 0,sm: 600,md: 960,lg: 1280, xl: 1920,
+
+    const [authenticatedUser, setAuthenticatedUser] = useState(null);
+
+    useEffect(() => {
+
+        let cancel = false;
+
+        (async () => {
+          const user = await authService.getUser();
+
+          if (!cancel)
+            setAuthenticatedUser(user);
+            
+        })()
+
+        return () => cancel = true;
+    }, [authService]);
 
     const handleMenu = event => {
       setAnchorEl(event.currentTarget);
@@ -105,7 +138,7 @@ function TopNavBar(props){
           <Typography variant="h6" className={classes.title} onClick={() => handleButtonClick("/")}>
           <img style = {imgStyle} src='./logo192.png' alt=""></img>
           </Typography>{isMobile ? (
-            <>
+            <React.Fragment>
               <IconButton
                 edge="start"
                 className={classes.menuButton}
@@ -138,29 +171,41 @@ function TopNavBar(props){
                     </MenuItem>
                   );
                 })}
+                <LoginMenu isMobile={isMobile} />
               </Menu>
-            </>
+            </React.Fragment>
           ) : (
-            <div className={classes.headerOptions}>
-            <Button className={classes.headerOptionsButton} color="inherit" onClick={() => handleButtonClick("/")}>
-                Home
-              </Button>
-              <Button className={classes.headerOptionsButton} color="inherit" onClick={() => handleButtonClick("/tournaments")}>
-              Tournaments
-              </Button>
-              <Button className={classes.headerOptionsButton} color="inherit" onClick={() => handleButtonClick("/matches")}>
-              Matches
-              </Button>
-              <Button className={classes.headerOptionsButton} color="inherit" onClick={() => handleButtonClick("/games")}>
-              Games
-              </Button>
-              <Button className={classes.headerOptionsButton} color="inherit" onClick={() => handleButtonClick("/players")}>
-              Players
-              </Button>
-              <Button className={classes.headerOptionsButton} color="inherit" onClick={() => handleButtonClick("/about")}>
-              About
-              </Button>
-              <LoginMenu buttonClassName={classes.headerOptionsButton} />
+            <div className={classes.bar}>
+              <div className={classes.headerOptions}>
+                <Button className={classes.headerOptionsButton} color="inherit" onClick={() => handleButtonClick("/")}>
+                  Home
+                </Button>
+                <Button className={classes.headerOptionsButton} color="inherit" onClick={() => handleButtonClick("/tournaments")}>
+                Tournaments
+                </Button>
+                <Button className={classes.headerOptionsButton} color="inherit" onClick={() => handleButtonClick("/matches")}>
+                Matches
+                </Button>
+                <Button className={classes.headerOptionsButton} color="inherit" onClick={() => handleButtonClick("/games")}>
+                Games
+                </Button>
+                <Button className={classes.headerOptionsButton} color="inherit" onClick={() => handleButtonClick("/players")}>
+                Players
+                </Button>
+                <Button className={classes.headerOptionsButton} color="inherit" onClick={() => handleButtonClick("/about")}>
+                About
+                </Button>
+                <LoginMenu buttonClassName={classes.headerOptionsButton} isMoble={isMobile}/>
+                
+              </div>
+              {
+                authenticatedUser && authenticatedUser.name &&
+                <div className={classes.account}>
+                  <Typography>
+                    #{authenticatedUser.name}
+                  </Typography>
+                </div>
+              }
             </div>
           )}
         </Toolbar>

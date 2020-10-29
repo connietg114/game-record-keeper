@@ -108,7 +108,8 @@ const authService = new AuthService();
 
 function useAuthService(config) {
 
-    authService.initializeUserManager(config);
+    if (config)
+        authService.initializeUserManager(config);
 
     return authService;
 }
