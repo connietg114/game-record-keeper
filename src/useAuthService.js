@@ -16,7 +16,7 @@ class AuthService {
             client_id: 'GameRecordKeeper',
             redirect_uri: `${config.appURL}login-callback`,
             response_type: 'code',
-            scope: 'openid',
+            scope: 'openid profile',
             post_logout_redirect_uri: `${config.appURL}logout-callback`,
             automaticSilentRenew: true,
             includeIdTokenInSilentRenew: true
@@ -93,8 +93,6 @@ class AuthService {
     }
 
     updateState(user) {
-        console.log('user:');
-        console.log(user);
         this._user = user;
         this._isAuthenticated = !!this._user;
     }
