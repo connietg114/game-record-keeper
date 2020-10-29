@@ -1,4 +1,5 @@
 import React from 'react';
+import PrivateRoute from './PrivateRoute';
 import TopNavBar from './Nav.js';
 import Home from './Home.js';
 import About from './About.js';
@@ -13,6 +14,7 @@ import CreateGames from './CreateGames.js';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import EnhancedTable from './draft';
 import TournamentDetail from './TournamentDetail.js';
+import Profile from './Profile';
 import Login from './Login';
 import LoginCallback from './LoginCallback';
 import Logout from './Logout';
@@ -52,6 +54,7 @@ function App(props){
                         <Route path='/logout' exact render={() => (<Logout />)} />
                         <Route path='/logout-callback' exact render={() => (<LogoutCallback />)} />
                         <Route path='/logged-out' exact render={() => (<LoggedOut />)} />
+                        <PrivateRoute path='/profile' component={Profile} />
                     </Switch>
                 </div> 
             </ConfigProvider>
