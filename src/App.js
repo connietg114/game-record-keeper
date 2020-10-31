@@ -35,19 +35,19 @@ function App(props){
             <ConfigProvider value={config} >
                 <div>
                     
-                    <TopNavBar/>
-                    <Switch> {/* after detect '/', then stop - Home */}
+            <TopNavBar/>
+            <Switch> {/* after detect '/', then stop - Home */}
                         <Route path='/' exact render={routeProps => (<Home {...routeProps}/>)}/> {/*put exact so that / works for Home only*/}
                             <Route path='/tournaments' exact render={routeProps => (<Tournaments {...routeProps} />)}/>
                         <Route path='/matches' exact render={routeProps => (<Matches {...routeProps} />)}/>
                         <Route path='/games' exact render={routeProps => (<Games {...routeProps} />)}/>
-                        <Route path='/players' component={Players}/>
-                        <Route path='/about' component={About}/>
-                        <Route path='/theresults' component={Theresults}/>
+                <Route path='/players' component={Players}/>
+                <Route path='/about' exact render={routeProps => (<About {...routeProps} config={config} />)}/>
+                <Route path='/theresults' component={Theresults}/>
                         <Route path='/gamematchdetail' render={routeProps => (<GameMatchDetail {...routeProps} />)}/>
                         <Route path='/gamedetail' render={routeProps => (<GameDetail {...routeProps}/>)}/>
                         <Route path='/creategames' render={routeProps => (<CreateGames {...routeProps}/>)}/>
-                        <Route path='/draft' component={EnhancedTable} />
+                <Route path='/draft' component={EnhancedTable} />
                         <Route path='/tournamentdetail' render={routeProps => (<TournamentDetail {...routeProps} />)} />
                         <Route path='/login' exact render={() => (<Login />)} />
                         <Route path='/login-callback' exact render={() => (<LoginCallback />)} />
@@ -55,8 +55,8 @@ function App(props){
                         <Route path='/logout-callback' exact render={() => (<LogoutCallback />)} />
                         <Route path='/logged-out' exact render={() => (<LoggedOut />)} />
                         <PrivateRoute path='/profile' component={Profile} />
-                    </Switch>
-                </div> 
+            </Switch>
+            </div> 
             </ConfigProvider>
         </Router>                  
     );   

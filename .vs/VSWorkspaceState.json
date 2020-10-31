@@ -2,8 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\public",
-    "\\src"
+    "\\src",
+    "\\src\\image"
   ],
-  "SelectedNode": "\\src\\Tournaments.js",
+  "SelectedNode": "\\src\\Nav.js",
   "PreviewInSolutionExplorer": false
 }

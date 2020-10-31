@@ -72,3 +72,8 @@ ul {
     background-color: #ddd;
     color: black;
   } */
+/**/
+body, html {
+    height: 100%;
+    margin: 0;
+}
