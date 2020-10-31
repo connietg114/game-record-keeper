@@ -3,8 +3,8 @@
     "",
     "\\public",
     "\\src",
-    "\\src\\image"
+    "\\src\\Image"
   ],
-  "SelectedNode": "\\src\\Nav.js",
+  "SelectedNode": "\\src\\Image\\blank-profile-picture.png",
   "PreviewInSolutionExplorer": false
 }

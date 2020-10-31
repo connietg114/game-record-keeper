@@ -15,7 +15,7 @@
 }
 
 .p {
-    font-size: 15px;
+    font-size: 17px;
     font-family: Verdana;
     color: white;
     padding: 25px;
@@ -26,7 +26,17 @@
     width: 90%;
 }
 
+/*body {
+    min-width: 500px;
+    width: auto;
+    width: 1000px;
+    
+}*/
 
+body, html {
+    height: 100%;
+    margin: 0;
+}
 
 
 
