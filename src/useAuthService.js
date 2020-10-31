@@ -1,4 +1,4 @@
-import { UserManager } from 'oidc-client';
+import { UserManager, WebStorageStateStore } from 'oidc-client';
 
 class AuthService {
 
@@ -19,7 +19,8 @@ class AuthService {
             scope: 'openid profile GameRecordKeeperAPI',
             post_logout_redirect_uri: `${config.appURL}logout-callback`,
             automaticSilentRenew: true,
-            includeIdTokenInSilentRenew: true
+            includeIdTokenInSilentRenew: true,
+            userStore: new WebStorageStateStore({ prefix: "GameRecordKeeper"})
         };
     
         this.userManager = new UserManager(settings);
