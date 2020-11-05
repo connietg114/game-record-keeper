@@ -20,7 +20,7 @@ import TablePagination from '@material-ui/core/TablePagination';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
-import _, { filter } from 'lodash';
+import _ from 'lodash';
 
 const useStyles = makeStyles((theme) => ({
     table: {
@@ -93,13 +93,11 @@ function Games (props){
         {
             name: "Name",
             columnName: "Name",
-            // pattern: "[A-Za-z]"
             type: "text"
         },
         {
             name: "Minimum Number of Players",
             columnName: "MinPlayerCount",
-            // pattern: "[0-9]"
             type: "number"
         },
         {
@@ -116,29 +114,20 @@ function Games (props){
     ]
 
     const handleFilter = (columnToFilter, value)=>{
-        // console.log(columnToFilter + " " + value);
         var filterList = [];
-        var validate = false;
         var index;
         for(var i = 0; i < filterItems.length; i++) {
             filterList.push(filterItems[i]);
             if (filterItems[i].split(" ")[0]===columnToFilter){
                 index = filterList.indexOf(filterItems[i]);
-                // validate = true;
                 filterList.splice(index, 1);
             }
         }
         
-        // if (validate){
-        //     filterList.splice(index, 1);
-        // }
         if(!value.length==0){
             filterList.push(columnToFilter + " " + value);
         }
-        
-        // console.log(filterList);
         setFilterItems(filterList);
-
     }
 
     const handleSorting = (columnName) =>{
@@ -184,7 +173,6 @@ function Games (props){
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
-
 
     function fetchGames(url){
         fetch(url, {
@@ -349,7 +337,10 @@ function Games (props){
                                             
                                                 <input 
                                                     onChange={(event)=>handleFilter(headerItem.columnName, event.target.value)} 
-                                                    type={headerItem.type}></input>
+                                                    type={headerItem.type}
+                                                    placeholder="type something...">
+
+                                                </input>
                                             </TableCell>
                                         )
                                     }

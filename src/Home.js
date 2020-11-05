@@ -4,6 +4,7 @@ import './index.css';
 import moment from 'moment';
 import GameMatchList from './GameMatchList.js';
 import TournamentList from './TournamentList';
+import './Home.css';
 
 
 function findStartDate(days){
@@ -42,7 +43,7 @@ function Home(props){
     }, [config.apiURL]);
     
     return(
-        <div>
+        <div className="homePage">
             <h1>Home</h1>
             <hr></hr>
             <br></br>
