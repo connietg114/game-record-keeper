@@ -20,7 +20,7 @@ import TablePagination from '@material-ui/core/TablePagination';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
-import _ from 'lodash';
+import _, { filter } from 'lodash';
 
 const useStyles = makeStyles((theme) => ({
     table: {
@@ -82,33 +82,67 @@ function Games (props){
     const [total, setTotal]=useState();
     
     const [sortItems, setSortItems] = useState([]);
+    const [filterItems, setFilterItems] = useState([]);
 
     const tableHeaderItems=[
         {
             name: "Game ID",
-            columntosort: "ID"
+            columnName: "ID",
+            type: "number"
         },
         {
             name: "Name",
-            columntosort: "Name"
+            columnName: "Name",
+            // pattern: "[A-Za-z]"
+            type: "text"
         },
         {
             name: "Minimum Number of Players",
-            columntosort: "MinPlayerCount"
+            columnName: "MinPlayerCount",
+            // pattern: "[0-9]"
+            type: "number"
         },
         {
             name: "Maximum Number of Players",
-            columntosort: "MaxPlayerCount"
+            columnName: "MaxPlayerCount",
+            type: "number"
         },
         {
             name: "Number of Game Modes",
-            columntosort: "GameModeCount"
+            columnName: "GameModeCount",
+            type: "number"
         },
 
     ]
 
-    const handleSorting = (columntosort) =>{
-        var sortItem = columntosort;
+    const handleFilter = (columnToFilter, value)=>{
+        // console.log(columnToFilter + " " + value);
+        var filterList = [];
+        var validate = false;
+        var index;
+        for(var i = 0; i < filterItems.length; i++) {
+            filterList.push(filterItems[i]);
+            if (filterItems[i].split(" ")[0]===columnToFilter){
+                index = filterList.indexOf(filterItems[i]);
+                // validate = true;
+                filterList.splice(index, 1);
+            }
+        }
+        
+        // if (validate){
+        //     filterList.splice(index, 1);
+        // }
+        if(!value.length==0){
+            filterList.push(columnToFilter + " " + value);
+        }
+        
+        // console.log(filterList);
+        setFilterItems(filterList);
+
+    }
+
+    const handleSorting = (columnName) =>{
+        var sortItem = columnName;
         if(sortItem=== null){
             return ;
         }
@@ -159,7 +193,8 @@ function Games (props){
             body: JSON.stringify({
                 page: page,
                 rowsPerPage: rowsPerPage,
-                sortItems:sortItems
+                sortItems:sortItems,
+                filterItems: filterItems
             })
             })
             .then(response => {
@@ -186,10 +221,8 @@ function Games (props){
     var url = config.apiURL + 'api/Games';
     useEffect(() => {
         fetchGames(url);
-    }, [page, rowsPerPage, sortItems,config.apiURL]);
+    }, [page, rowsPerPage, sortItems,filterItems,config.apiURL]);
 
-
-  
     let history = useHistory();
     const directToCreateGames= () =>{
         history.push('/creategames/');
@@ -233,8 +266,13 @@ function Games (props){
         for(var i = 0; i < selected.length; i++) {
             ids.push(selected[i].id);   
         }
-        setGames(games.filter((game) => !selected.includes(game)));
-        deleteMultipleGames(ids);
+        // setGames(games.filter((game) => !selected.includes(game)));
+        deleteMultipleGames(ids)
+        .then(message=>{
+            fetchGames(url);
+            alert(message);
+        }
+    );
         setSelected([]);
         setSelectAll(false);
     }
@@ -248,10 +286,15 @@ function Games (props){
             "Access-Control-Allow-Methods": "DELETE" },
             body: JSON.stringify(gameList)
         };
-        fetch(url, requestOptions)
-            .then(response => {return response.json();})
-            .then(data => {})
-            .catch(error => {console.log(error);});
+        return fetch(url, requestOptions)
+            .then(response => 
+                response.text()
+                // if(response.ok){
+                //     setSelected([]);
+                // }    
+            )
+            .catch(error => {console.log(error);}
+            );
     }
 
 
@@ -298,8 +341,15 @@ function Games (props){
                                     <TableCell style={{fontWeight: "bold"}}> No. </TableCell>        
                                     {
                                         tableHeaderItems.map((headerItem)=>
-                                            <TableCell style={{fontWeight: "bold"}} onClick={() => handleSorting(headerItem.columntosort)}>
-                                                {checkColumnToSort(headerItem.columntosort)}{headerItem.name}
+                                            <TableCell >
+                                                <Typography style={{fontWeight: "bold"}} 
+                                                    onClick={() => handleSorting(headerItem.columnName)}>
+                                                    {checkColumnToSort(headerItem.columnName)}{headerItem.name}
+                                                </Typography>
+                                            
+                                                <input 
+                                                    onChange={(event)=>handleFilter(headerItem.columnName, event.target.value)} 
+                                                    type={headerItem.type}></input>
                                             </TableCell>
                                         )
                                     }
@@ -308,29 +358,35 @@ function Games (props){
                             </TableRow>
                         </TableHead>
                         <TableBody >
-                            {games
-                            // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            .map((g,index)=>
+                            {games.length == 0?  
+                            (<TableRow> 
+                                <TableCell style={{textAlign: "center",fontWeight: "bold"}} colSpan={tableHeaderItems.length+4}>
+                                No Records Available
+                                </TableCell>
+                            </TableRow>): 
+                            games.map((g,index)=>
                             <TableRow type="button" hover>
                                 <TableCell>
-                                    <Checkbox checked={g.select} onChange={(e)=>{
-                                        setSelectAll(false);
-                                        let checked=e.target.checked;
-                                        var newSelected = [];
-                                        setGames(
-                                            games.map(game=>{
-                                            if(g.id===game.id){
-                                                game.select=checked; 
-                                                    for(var i = 0; i < selected.length; i++) {
-                                                        newSelected.push(selected[i]);
-                                                    }
-                                                    newSelected.push(g);
-                                                    _.remove(newSelected, selectedGame => selectedGame.select === false);                                                                                                                                                                           
-                                            }    
-                                            return game;
-                                            })
-                                        );                                       
-                                        setSelected(newSelected);                                                                               
+                                    <Checkbox 
+                                        checked={g.select} 
+                                        onChange={(e)=>{
+                                            setSelectAll(false);
+                                            let checked=e.target.checked;
+                                            var newSelected = [];
+                                            setGames(
+                                                games.map(game=>{
+                                                if(g.id===game.id){
+                                                    game.select=checked; 
+                                                        for(var i = 0; i < selected.length; i++) {
+                                                            newSelected.push(selected[i]);
+                                                        }
+                                                        newSelected.push(g);
+                                                        _.remove(newSelected, selectedGame => selectedGame.select === false);                                                                                                                                                                           
+                                                }    
+                                                return game;
+                                                })
+                                            );                                       
+                                            setSelected(newSelected);                                                                               
                                     }}/>
                                 </TableCell>
                                 <TableCell onClick={e=>navigateToDetailsPage(g.id)}>{(index+1)+((page-1) * rowsPerPage + rowsPerPage)}</TableCell>
@@ -345,9 +401,7 @@ function Games (props){
                                     </IconButton>
                                 </TableCell>
                                 <TableCell><IconButton><EditIcon /></IconButton></TableCell>
-                        </TableRow> )}
-                        {/* {games.map((g, index)=> 
-                            <GameRow key={index} game={g} games={games}/>)} */}
+                            </TableRow> )}
                         </TableBody>
                     </Table>
                 </TableContainer>
