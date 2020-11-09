@@ -82,53 +82,106 @@ function Games (props){
     const [total, setTotal]=useState();
     
     const [sortItems, setSortItems] = useState([]);
-    const [filterItems, setFilterItems] = useState([]);
+
+    const [minPlayerCountMin, setMinPlayerCountMin]=useState(undefined || '');
+    const [minPlayerCountMax, setMinPlayerCountMax]=useState(undefined || '');
+    const [maxPlayerCountMin, setMaxPlayerCountMin]=useState(undefined || '');
+    const [maxPlayerCountMax, setMaxPlayerCountMax]=useState(undefined || '');
+    const[gameModeCountMin, setGameModeCountMin]=useState(undefined || '');
+    const[gameModeCountMax, setGameModeCountMax]=useState(undefined || '');
+    const [name, setName]=useState(undefined || '');
 
     const tableHeaderItems=[
         {
             name: "Game ID",
             columnName: "ID",
             type: "number"
+            
         },
         {
             name: "Name",
             columnName: "Name",
-            type: "text"
+            type: "text",
+            filterCol: name,
+            setNameValue: setName
         },
         {
             name: "Minimum Number of Players",
             columnName: "MinPlayerCount",
-            type: "number"
+            type: "number",
+            minFilterCol: minPlayerCountMin,
+            maxFilterCol: minPlayerCountMax,
+            setMinValue: setMinPlayerCountMin,
+            setMaxValue: setMinPlayerCountMax
         },
         {
             name: "Maximum Number of Players",
             columnName: "MaxPlayerCount",
-            type: "number"
+            type: "number",
+            minFilterCol: maxPlayerCountMin,
+            maxFilterCol: maxPlayerCountMax,
+            setMinValue: setMaxPlayerCountMin,
+            setMaxValue: setMaxPlayerCountMax
         },
         {
             name: "Number of Game Modes",
             columnName: "GameModeCount",
-            type: "number"
+            type: "number",
+            minFilterCol: gameModeCountMin,
+            maxFilterCol: gameModeCountMax,
+            setMinValue: setGameModeCountMin,
+            setMaxValue: setGameModeCountMax
         },
 
     ]
-
-    const handleFilter = (columnToFilter, value)=>{
-        var filterList = [];
-        var index;
-        for(var i = 0; i < filterItems.length; i++) {
-            filterList.push(filterItems[i]);
-            if (filterItems[i].split(" ")[0]===columnToFilter){
-                index = filterList.indexOf(filterItems[i]);
-                filterList.splice(index, 1);
-            }
+    var filterList = [];
+    const handleFilter = ()=>{
+        if(minPlayerCountMin!== undefined && minPlayerCountMin!==""){
+            filterList.push(`MinPlayerCount min ${minPlayerCountMin}`);
         }
+        if(minPlayerCountMax!== undefined && minPlayerCountMax!==""){
+            filterList.push(`MinPlayerCount max ${minPlayerCountMax}`);
+        }
+        if(maxPlayerCountMin!== undefined && maxPlayerCountMin!==""){
+            filterList.push(`MaxPlayerCount min ${maxPlayerCountMin}`);
+        }
+        if(maxPlayerCountMax!== undefined && maxPlayerCountMax!==""){
+            filterList.push(`MaxPlayerCount max ${maxPlayerCountMax}`);
+        }if(gameModeCountMin!==undefined && gameModeCountMin!==""){
+            filterList.push(`GameModeCount min ${gameModeCountMin}`);
+        }
+        if(gameModeCountMax!==undefined && gameModeCountMax!==""){
+            filterList.push(`GameModeCount max ${gameModeCountMax}`);
+        }
+        if(name!==undefined && name!==""){
+            filterList.push(`Name ${name}`);
+        }
+        return filterList;
+        // console.log(filterList);
         
-        if(!value.length==0){
-            filterList.push(columnToFilter + " " + value);
-        }
-        setFilterItems(filterList);
+       
+        // for(var i = 0; i < tableHeaderItems.length; i++) {
+        //     if(tableHeaderItems[i].minFilterCol != null && tableHeaderItems[i].minFilterCol != ""){
+        //         var item = tableHeaderItems[i].columnName + " min " + tableHeaderItems[i].minFilterCol;
+        //         var splitItem = item.split(" ");
+        //         filterList.push(item);
+        //         // console.log(item.substring(0, item.indexOf(splitItem[2])));
+        //         // console.log(item);
+        //     }
+        //     if (tableHeaderItems[i].maxFilterCol != null && tableHeaderItems[i].maxFilterCol != ""){
+        //         var item = tableHeaderItems[i].columnName + " max " + tableHeaderItems[i].maxFilterCol;
+        //         filterList.push(item);
+        //     }
+        //     if(tableHeaderItems[i].filterCol!=null && tableHeaderItems[i].filterCol!==""){
+        //         var item = tableHeaderItems[i].columnName + " " + tableHeaderItems[i].filterCol;
+        //         filterList.push(item);
+        //     }
+            
+        // }
+        
     }
+   
+    // handleFilter();
 
     const handleSorting = (columnName) =>{
         var sortItem = columnName;
@@ -182,7 +235,7 @@ function Games (props){
                 page: page,
                 rowsPerPage: rowsPerPage,
                 sortItems:sortItems,
-                filterItems: filterItems
+                filterItems: handleFilter()
             })
             })
             .then(response => {
@@ -209,7 +262,11 @@ function Games (props){
     var url = config.apiURL + 'api/Games';
     useEffect(() => {
         fetchGames(url);
-    }, [page, rowsPerPage, sortItems,filterItems,config.apiURL]);
+    }, [page, rowsPerPage, sortItems, config.apiURL,
+        name, 
+        minPlayerCountMax, minPlayerCountMin, 
+        maxPlayerCountMax, maxPlayerCountMin, 
+        gameModeCountMax, gameModeCountMin]);
 
     let history = useHistory();
     const directToCreateGames= () =>{
@@ -301,7 +358,7 @@ function Games (props){
             <h1>Games</h1> )}
 
             <IconButton onClick = {directToCreateGames}>
-                <AddIcon/><Typography variant="body1">Add Games</Typography>
+                <AddIcon/><Typography variant="body1">Add Game</Typography>
             </IconButton>
             <hr></hr>
             <br></br>
@@ -328,35 +385,54 @@ function Games (props){
                                     </TableCell>
                                     <TableCell style={{fontWeight: "bold"}}> No. </TableCell>        
                                     {
-                                        tableHeaderItems.map((headerItem)=>
-                                            <TableCell >
+                                        tableHeaderItems.map((headerItem, index)=>
+                                            <TableCell key={index}>
                                                 <Typography style={{fontWeight: "bold"}} 
                                                     onClick={() => handleSorting(headerItem.columnName)}>
                                                     {checkColumnToSort(headerItem.columnName)}{headerItem.name}
                                                 </Typography>
-                                            
-                                                <input 
-                                                    onChange={(event)=>handleFilter(headerItem.columnName, event.target.value)} 
-                                                    type={headerItem.type}
-                                                    placeholder="type something...">
 
-                                                </input>
+                                                
+                                                {headerItem.columnName === "Name" || headerItem.columnName==="ID"? ( headerItem.columnName==="Name"?  <input value={headerItem.filterCol}onChange={(e)=>headerItem.setNameValue(e.target.value)}></input>: null): 
+                                                    (<div>
+                                                        <div>
+                                                            <label style={{textAlign: "right", clear: "both",float:"left"}}>
+                                                                Min: 
+                                                            </label>
+                                                            <input 
+                                                                value={headerItem.minFilterCol}
+                                                                
+                                                                onChange={(e)=>headerItem.setMinValue(e.target.value)} 
+                                                                type={headerItem.type}>
+                                                            </input>
+                                                        </div>
+                                                        <div>
+                                                            <label style={{textAlign: "right", clear: "both",float:"left"}}>Max: </label>
+                                                            <input 
+                                                                value={headerItem.maxFilterCol}
+                                                                onChange={(e)=>headerItem.setMaxValue(e.target.value)} 
+                                                                type={headerItem.type}>
+                                                            </input>
+                                                        </div>
+                                                    </div>
+                                                    )}
+  
                                             </TableCell>
                                         )
                                     }
-                                <TableCell style={{fontWeight: "bold"}}></TableCell>
-                                <TableCell style={{fontWeight: "bold"}}></TableCell>
+                                <TableCell></TableCell>
+                                <TableCell></TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody >
-                            {games.length == 0?  
+                            {games.length === 0?  
                             (<TableRow> 
                                 <TableCell style={{textAlign: "center",fontWeight: "bold"}} colSpan={tableHeaderItems.length+4}>
                                 No Records Available
                                 </TableCell>
                             </TableRow>): 
                             games.map((g,index)=>
-                            <TableRow type="button" hover>
+                            <TableRow type="button" key={index} hover >
                                 <TableCell>
                                     <Checkbox 
                                         checked={g.select} 
