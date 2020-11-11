@@ -50,33 +50,27 @@ return ['Create game ', 'Add Game Mode(s)', 'Review and Submit'];
 }
 
 function GameModeRow(props){
-    // var gameModes = props.gameModes;
-    var winCondition = props.winCondition;
-    function handleChange(e){
-        props.onSetGameModes({winCondition:e.target.value});
-    }
 
     return (
         <TableRow>
-            <TableCell style={{padding: "5px", textAlign: "center"}}>{props.index}</TableCell>
+            <TableCell style={{padding: "5px", textAlign: "center"}}>{props.number}</TableCell>
             <TableCell style={{padding: "5px"}}><TextField label="Name" variant="outlined" style={{width: "100%", boxSizing: "border-box"}}></TextField></TableCell>    
             <TableCell style={{padding: "5px"}}><TextField label="Description" variant="outlined" style={{width: "100%", boxSizing: "border-box"}}></TextField></TableCell>  
             <TableCell style={{padding: "5px", textAlign: "center"}}>
                 <FormControl variant="outlined" style={{width: "100%", boxSizing: "border-box"}} className={props.classes.formControl}>
                     <InputLabel id="demo-simple-select-outlined-label">Win Condition</InputLabel>
                     <Select
-                        value={winCondition}
-                        onChange={handleChange}
-                        // onChange={(e)=> setGameModes({winCondition: e.target.value})}
+                        value="none" 
+                        onChange={e => props.onChange(props.index, { ...props.gameModes, winCondition: e.target.value })}
                         label="Win Condition"
                     >
-                    <MenuItem value="">
+                    <MenuItem value={undefined || ''}>
                         <em>None</em>
                     </MenuItem>
-                    <MenuItem value={1}>Ten</MenuItem>
-                    <MenuItem value={2}>Twenty</MenuItem>
-                    <MenuItem value={3}>Thirty</MenuItem>
-                    <MenuItem value={4}>Thirty</MenuItem>
+                    <MenuItem value={1}>One</MenuItem>
+                    <MenuItem value={2}>Two</MenuItem>
+                    <MenuItem value={3}>Three</MenuItem>
+                    <MenuItem value={4}>Four</MenuItem>
                     </Select>
                 </FormControl>
             </TableCell>
@@ -136,8 +130,8 @@ function CreateGames(props){
     const [gameModes, setGameModes] = useState([
         {
             name:"Standard",
-            description: null,
-            winCondition:null
+            description: undefined || '',
+            winCondition:undefined || ''
         }
     ]);
     function addGameModeRow (props){
@@ -147,8 +141,8 @@ function CreateGames(props){
         }
         array.push({
             name: '',
-            description: null,
-            winCondition: null
+            description: undefined || '',
+            winCondition: undefined || ''
         });
          setGameModes(array);
 
@@ -156,8 +150,8 @@ function CreateGames(props){
         
         // array.push({
         //     name: '',
-        //     description: null,
-        //     winCondition: null
+        //     description: undefined || '',
+        //     winCondition: undefined || ''
         // });
         // console.log(array);
         // setGameModes(array);
@@ -170,10 +164,11 @@ function CreateGames(props){
         }
     }
 
-    const [winCondition, setWinCondition] = React.useState('');
-    const handleChange = (event) => {
-      setWinCondition(event.target.value);
-    };
+    function onGameChange(index, gameMode) {
+        var newValue = gameModes;
+        newValue[index] = gameMode
+        setGameModes(newValue);
+     }
 
     function getStepContent(step) {
         switch (step) {
@@ -221,11 +216,11 @@ function CreateGames(props){
                                     {gameModes.map((gm,index)=>
                                         <GameModeRow 
                                             key={index}
-                                            index={index+1}
+                                            number={index+1}
+                                            index={index}
 
-                                            // gameModes={gameModes}
-                                            // onSetGameModes={setGameModes({winCondition})} 
-                                            // winCondition={winCondition}
+                                            gameModes={gameModes} 
+                                            onChange={onGameChange} 
 
                                             onDeleteGameModeRow={deleteGameModeRow}
                                             indexForDelete={index}
@@ -304,7 +299,10 @@ function CreateGames(props){
                             {getStepContent(activeStep)}
                             <br/>
                             <div>
-                            <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
+                            <Button 
+                                disabled={activeStep === 0} 
+                                onClick={handleBack} 
+                                className={classes.button}>
                                 Back
                             </Button>
                             <Button
