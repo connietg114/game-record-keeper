@@ -19,6 +19,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import TablePagination from '@material-ui/core/TablePagination';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import TextField from '@material-ui/core/TextField';
 
 import _ from 'lodash';
 
@@ -393,26 +394,26 @@ function Games (props){
                                                 </Typography>
 
                                                 
-                                                {headerItem.columnName === "Name" || headerItem.columnName==="ID"? ( headerItem.columnName==="Name"?  <input value={headerItem.filterCol}onChange={(e)=>headerItem.setNameValue(e.target.value)}></input>: null): 
+                                                {headerItem.columnName === "Name" || headerItem.columnName==="ID"? ( headerItem.columnName==="Name"?  <TextField id="standard-basic" value={headerItem.filterCol}onChange={(e)=>headerItem.setNameValue(e.target.value)}></TextField>: null): 
                                                     (<div>
                                                         <div>
-                                                            <label style={{textAlign: "right", clear: "both",float:"left"}}>
+                                                            {/* <label style={{textAlign: "right", clear: "both",float:"left"}}>
                                                                 Min: 
-                                                            </label>
-                                                            <input 
+                                                            </label> */}
+                                                            <TextField id="standard-number" label="Min" InputLabelProps={{ shrink: true,}}
                                                                 value={headerItem.minFilterCol}
                                                                 
                                                                 onChange={(e)=>headerItem.setMinValue(e.target.value)} 
                                                                 type={headerItem.type}>
-                                                            </input>
+                                                            </TextField>
                                                         </div>
                                                         <div>
-                                                            <label style={{textAlign: "right", clear: "both",float:"left"}}>Max: </label>
-                                                            <input 
+                                                            {/* <label style={{textAlign: "right", clear: "both",float:"left"}}>Max: </label> */}
+                                                            <TextField id="standard-number" label="Max" InputLabelProps={{ shrink: true,}}
                                                                 value={headerItem.maxFilterCol}
                                                                 onChange={(e)=>headerItem.setMaxValue(e.target.value)} 
                                                                 type={headerItem.type}>
-                                                            </input>
+                                                            </TextField>
                                                         </div>
                                                     </div>
                                                     )}

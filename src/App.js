@@ -38,7 +38,7 @@ function App(props){
             <TopNavBar/>
             <Switch> {/* after detect '/', then stop - Home */}
                         <Route path='/' exact render={routeProps => (<Home {...routeProps}/>)}/> {/*put exact so that / works for Home only*/}
-                            <Route path='/tournaments' exact render={routeProps => (<Tournaments {...routeProps} />)}/>
+                        <Route path='/tournaments' exact render={routeProps => (<Tournaments {...routeProps} />)}/>
                         <Route path='/matches' exact render={routeProps => (<Matches {...routeProps} />)}/>
                         <Route path='/games' exact render={routeProps => (<Games {...routeProps} />)}/>
                 <Route path='/players' component={Players}/>
