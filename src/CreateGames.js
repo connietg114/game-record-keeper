@@ -54,17 +54,18 @@ function GameModeRow(props){
     return (
         <TableRow>
             <TableCell style={{padding: "5px", textAlign: "center"}}>{props.number}</TableCell>
-            <TableCell style={{padding: "5px"}}><TextField label="Name" variant="outlined" style={{width: "100%", boxSizing: "border-box"}}></TextField></TableCell>    
-            <TableCell style={{padding: "5px"}}><TextField label="Description" variant="outlined" style={{width: "100%", boxSizing: "border-box"}}></TextField></TableCell>  
+            <TableCell style={{padding: "5px"}}><TextField variant="outlined" style={{width: "100%", boxSizing: "border-box"}}></TextField></TableCell>    
+            <TableCell style={{padding: "5px"}}><TextField variant="outlined" style={{width: "100%", boxSizing: "border-box"}}></TextField></TableCell>  
             <TableCell style={{padding: "5px", textAlign: "center"}}>
                 <FormControl variant="outlined" style={{width: "100%", boxSizing: "border-box"}} className={props.classes.formControl}>
-                    <InputLabel id="demo-simple-select-outlined-label">Win Condition</InputLabel>
+                    {/* <InputLabel id="demo-simple-select-outlined-label">Win Condition</InputLabel> */}
                     <Select
-                        value="none" 
+                        
+                        value={props.gameModes.winCondition} 
                         onChange={e => props.onChange(props.index, { ...props.gameModes, winCondition: e.target.value })}
-                        label="Win Condition"
+                        
                     >
-                    <MenuItem value={undefined || ''}>
+                    <MenuItem value={0}>
                         <em>None</em>
                     </MenuItem>
                     <MenuItem value={1}>One</MenuItem>

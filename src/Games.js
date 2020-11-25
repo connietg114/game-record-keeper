@@ -160,29 +160,7 @@ function Games (props){
         return filterList;
         // console.log(filterList);
         
-       
-        // for(var i = 0; i < tableHeaderItems.length; i++) {
-        //     if(tableHeaderItems[i].minFilterCol != null && tableHeaderItems[i].minFilterCol != ""){
-        //         var item = tableHeaderItems[i].columnName + " min " + tableHeaderItems[i].minFilterCol;
-        //         var splitItem = item.split(" ");
-        //         filterList.push(item);
-        //         // console.log(item.substring(0, item.indexOf(splitItem[2])));
-        //         // console.log(item);
-        //     }
-        //     if (tableHeaderItems[i].maxFilterCol != null && tableHeaderItems[i].maxFilterCol != ""){
-        //         var item = tableHeaderItems[i].columnName + " max " + tableHeaderItems[i].maxFilterCol;
-        //         filterList.push(item);
-        //     }
-        //     if(tableHeaderItems[i].filterCol!=null && tableHeaderItems[i].filterCol!==""){
-        //         var item = tableHeaderItems[i].columnName + " " + tableHeaderItems[i].filterCol;
-        //         filterList.push(item);
-        //     }
-            
-        // }
-        
     }
-   
-    // handleFilter();
 
     const handleSorting = (columnName) =>{
         var sortItem = columnName;
@@ -394,7 +372,12 @@ function Games (props){
                                                 </Typography>
 
                                                 
-                                                {headerItem.columnName === "Name" || headerItem.columnName==="ID"? ( headerItem.columnName==="Name"?  <TextField id="standard-basic" value={headerItem.filterCol}onChange={(e)=>headerItem.setNameValue(e.target.value)}></TextField>: null): 
+                                                 {/* {headerItem.columnName === "Name" || headerItem.columnName==="ID"? ( headerItem.columnName==="Name"?  <TextField id="standard-basic" value={headerItem.filterCol}onChange={(e)=>headerItem.setNameValue(e.target.value)}></TextField>: null):  */}
+
+                                                {headerItem.columnName === "Name"? 
+                                                (<input value={headerItem.filterCol}onChange={(e)=>headerItem.setNameValue(e.target.value)}></input>):
+                                                (!headerItem.columnName==="ID"?(null):
+
                                                     (<div>
                                                         <div>
                                                             {/* <label style={{textAlign: "right", clear: "both",float:"left"}}>
@@ -416,7 +399,7 @@ function Games (props){
                                                             </TextField>
                                                         </div>
                                                     </div>
-                                                    )}
+                                                    ))}
   
                                             </TableCell>
                                         )
