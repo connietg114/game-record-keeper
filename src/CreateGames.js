@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import ConfigContext from './ConfigContext';
 import './index.css';
 import './CreateGames.css';
@@ -25,6 +25,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import Alert from '@material-ui/lab/Alert';
 import _ from 'lodash';
 
 
@@ -42,7 +43,17 @@ const useStyles = makeStyles((theme) => ({
     formControl: {
         margin: theme.spacing(1),
         minWidth: 120,
+        width: "100%", 
+        boxSizing: "border-box"
     },
+    textfield:{
+        width: "100%", 
+        boxSizing: "border-box"
+    },
+    tableCell:{
+        padding: "5px", 
+        textAlign: "center"
+    }
   }));
   
 function getSteps() {
@@ -52,26 +63,36 @@ return ['Create game ', 'Add Game Mode(s)', 'Review and Submit'];
 function GameModeRow(props){
 
     return (
+        
         <TableRow>
-            <TableCell style={{padding: "5px", textAlign: "center"}}>{props.number}</TableCell>
-            <TableCell style={{padding: "5px"}}><TextField variant="outlined" style={{width: "100%", boxSizing: "border-box"}}></TextField></TableCell>    
-            <TableCell style={{padding: "5px"}}><TextField variant="outlined" style={{width: "100%", boxSizing: "border-box"}}></TextField></TableCell>  
-            <TableCell style={{padding: "5px", textAlign: "center"}}>
+            <TableCell className={props.classes.tableCell}>{props.index+1}</TableCell>
+
+            <TableCell className={props.classes.tableCell}>
+                <TextField variant="outlined" label="Required" className={props.classes.textfield}
+                    value={props.gameMode.name} 
+                    onChange={e => props.onChange(props.index, { ...props.gameMode, name:e.target.value})}
+                    required={true}
+                ></TextField>
+            </TableCell>  
+
+            <TableCell className={props.classes.tableCell}>
+                <TextField variant="outlined" label="Required" className={props.classes.textfield}
+                    value={props.gameMode.description} 
+                    onChange={e => props.onChange(props.index, { ...props.gameMode, description: e.target.value })}
+                    required={true}>
+                </TextField>
+            </TableCell>  
+
+            <TableCell style={{padding: "5px"}}>
                 <FormControl variant="outlined" style={{width: "100%", boxSizing: "border-box"}} className={props.classes.formControl}>
-                    {/* <InputLabel id="demo-simple-select-outlined-label">Win Condition</InputLabel> */}
                     <Select
-                        
-                        value={props.gameModes.winCondition} 
-                        onChange={e => props.onChange(props.index, { ...props.gameModes, winCondition: e.target.value })}
+                        value={props.gameMode.winConditionID} 
+                        onChange={e => props.onChange(props.index, { ...props.gameMode, winConditionID: e.target.value })}
                         
                     >
-                    <MenuItem value={0}>
-                        <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={1}>One</MenuItem>
-                    <MenuItem value={2}>Two</MenuItem>
-                    <MenuItem value={3}>Three</MenuItem>
-                    <MenuItem value={4}>Four</MenuItem>
+                    {props.winConditionList.map((winCon, index)=>
+                    <MenuItem key={index} value={winCon.id}>{winCon.id}) {winCon.name} : {winCon.description}</MenuItem>
+                    )}
                     </Select>
                 </FormControl>
             </TableCell>
@@ -95,14 +116,69 @@ function CreateGames(props){
     const [gameName, setGameName] = useState('');
     const [minPlayer, setMinPlayer] = useState('');
     const [maxPlayer, setMaxPlayer] = useState('');
+    const gmInitialState = {
+        name:'Standard',
+        description: '',
+        winConditionID: 1
+    };
+    const [gameModes, setGameModes] = useState([gmInitialState]);
+    const [winConditionList, setWinConditionList] = useState();
+    const [alertMessage, setAlertMessage] = useState('');
+    const [gameModeAlertMessage, setGameModeAlertMessage] = useState('');
 
-    var submitHandler = e =>{
+    
+    useEffect(() => {
+        var url = config.apiURL + 'api/WinCondition';
+        fetch(url,{
+            method:'GET',
+            headers: {'Content-Type':'application/json'}
+        })
+        .then(response=>response.json())
+        .then(item=>{setWinConditionList(item)})
+    }, [])
+
+    var submitHandler = (e) =>{
         e.preventDefault();
-        post(gameName, minPlayer, maxPlayer);
-        setGameName('');
-        setMinPlayer('');
-        setMaxPlayer('');
-       alert(gameName + " has been added successfully!");
+        
+        if(gameName.length===0 ){
+            setAlertMessage("Name cannot be empty — check it out!");
+            setActiveStep(0);
+           
+        }else if(minPlayer.length===0){
+            setAlertMessage ("Minimum Number of Player cannot be empty — check it out!");
+            setActiveStep(0);
+        }else if(maxPlayer.length===0){
+            setAlertMessage( "Maximum Number of Player cannot be empty — check it out!");
+            setActiveStep(0);
+
+        }else{
+            setAlertMessage('');
+            var validation = true;
+            for (var i =0;i<gameModes.length;i++){
+                var gm = gameModes[i];
+                if(gm.name.length===0){
+                    validation = false;
+                    setGameModeAlertMessage("GameMode Name cannot be empty — check it out!");
+                    setActiveStep(1);
+                    
+                }else if(gm.description.length===0){
+                    validation = false;
+                    setGameModeAlertMessage("GameMode Description cannot be empty — check it out!");
+                    setActiveStep(1);
+                }
+            }
+            if(validation){
+                post(gameName, minPlayer, maxPlayer, gameModes);
+                setGameName('');
+                setMinPlayer('');
+                setMaxPlayer('');
+                setGameModes([gmInitialState])
+                alert(gameName + " has been added successfully!");
+                setAlertMessage('');
+                setGameModeAlertMessage("");
+                setActiveStep(0);
+            }
+        }
     };
    
     function post(gameName, minPlayer, maxPlayer) {
@@ -115,47 +191,21 @@ function CreateGames(props){
             body: JSON.stringify({ 
                 Name: gameName,
                 MinPlayerCount: minPlayer,
-                MaxPlayerCount: maxPlayer })
+                MaxPlayerCount: maxPlayer,
+                GameModeItems: gameModes
+             })
         };
         fetch(url, requestOptions)
             .then(response => response.json())
             .catch(error => {
                 console.log(error);
             });
-            // .then(data => setPostId(data.id));
     }
-
-    // const [gmName, setGmName]=useState();
-    // const [gmDesc, setGmDesc]=useState();
-    // const [gmWinCondition, setGmWinCondition] =useState();
-    const [gameModes, setGameModes] = useState([
-        {
-            name:"Standard",
-            description: undefined || '',
-            winCondition:undefined || ''
-        }
-    ]);
+    
     function addGameModeRow (props){
-        var array = [];
-        for(var i = 0; i < gameModes.length; i++) {
-            array.push(gameModes[i]);
-        }
-        array.push({
-            name: '',
-            description: undefined || '',
-            winCondition: undefined || ''
-        });
+        var array = gameModes.slice(0);//need to deep copy
+        array.push(gmInitialState);
          setGameModes(array);
-
-        // var array = gameModes;
-        
-        // array.push({
-        //     name: '',
-        //     description: undefined || '',
-        //     winCondition: undefined || ''
-        // });
-        // console.log(array);
-        // setGameModes(array);
     }
     function deleteGameModeRow(index){
         if(index !==0){
@@ -166,8 +216,8 @@ function CreateGames(props){
     }
 
     function onGameChange(index, gameMode) {
-        var newValue = gameModes;
-        newValue[index] = gameMode
+        var newValue = gameModes.slice(0); //need to deep copy
+        newValue[index] = gameMode;
         setGameModes(newValue);
      }
 
@@ -177,29 +227,32 @@ function CreateGames(props){
             return (
                 <div>
                     <h3>Create game ...</h3>
-                        <form onSubmit={submitHandler}>
+                    {alertMessage.length==0?(''):( <Alert severity="error">{alertMessage}</Alert>)}
+               
+                    <br></br>
                             <div>
                                 <label>Name: </label>
-                                <input type = "text" name="gameName" value={gameName} onChange={e => setGameName(e.target.value)} required></input>
-                                
-                            </div>
-                            <div>
-                                <label>Minimum Number of Players: </label>
-                                <input type = "number" name="minPlayer" value={minPlayer} onChange={e => setMinPlayer(e.target.value)} required></input>
-                            </div>
-                            <div>
-                                <label>Maximum Number of Players: </label>
-                                <input type = "number" name="maxPlayer" value={maxPlayer} onChange={e => setMaxPlayer(e.target.value)}required></input>
+                                <TextField type = "text" name="gameName" value={gameName} onChange={e => setGameName(e.target.value)} required variant="outlined" label="Required"></TextField>   
                             </div>
                             <br></br>
-                            <button type='submit' >Submit</button>
-                        </form>    
+                            <div>
+                                <label>Minimum Number of Players: </label>
+                                <TextField type = "number" name="minPlayer" value={minPlayer} onChange={e => setMinPlayer(e.target.value)} required variant="outlined" label="Required"></TextField>
+                            </div>
+                            <br></br>
+                            <div>
+                                <label>Maximum Number of Players: </label>
+                                <TextField type = "number" name="maxPlayer" value={maxPlayer} onChange={e => setMaxPlayer(e.target.value)}required variant="outlined" label="Required"></TextField>
+                            </div>
+                            <br></br>
+                            
                 </div>
             );
           case 1:
             return (
                 <div>
                     <h3>Add (at least one) Game Mode(s)</h3>
+                    {gameModeAlertMessage.length==0?(''):( <Alert severity="error">{gameModeAlertMessage}</Alert>)}
                     <Paper>
                         <TableContainer>
                             <Table>
@@ -217,18 +270,18 @@ function CreateGames(props){
                                     {gameModes.map((gm,index)=>
                                         <GameModeRow 
                                             key={index}
-                                            number={index+1}
                                             index={index}
 
-                                            gameModes={gameModes} 
+                                            gameMode={gm} 
                                             onChange={onGameChange} 
 
                                             onDeleteGameModeRow={deleteGameModeRow}
                                             indexForDelete={index}
                                             onAddGameModeRow={addGameModeRow}
+                                            winConditionList={winConditionList}
                                             classes={classes}/>
                                     )}
-     
+
                                 </TableBody>
                             </Table>
                         </TableContainer>
@@ -236,19 +289,50 @@ function CreateGames(props){
                 </div>
             );
           case 2:
+              function findWinConditionIndex(id){
+                return _.findIndex(winConditionList, function(w){return w.id === id});
+              }
             return (
                 <div>
                     <h3>Review and Submit</h3>
-
+                    <p>Game Name: {gameName}</p>
+                    <p>Minimum Number of Player: {minPlayer}</p>
+                    <p>Maximum Number of Player: {minPlayer}</p>
+                    <Paper>
+                        <TableContainer>
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell style={{fontWeight: "bold", textAlign: "center"}}>No.</TableCell>
+                                        <TableCell style={{fontWeight: "bold", textAlign: "center"}}>Game Mode Name</TableCell>    
+                                        <TableCell style={{fontWeight: "bold", textAlign: "center"}}>Game Mode Desciption</TableCell>
+                                        <TableCell style={{fontWeight: "bold", textAlign: "center"}}>Win Condition</TableCell>                                                                        
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {gameModes.map((gm, index)=>
+                                        <TableRow key={index}>
+                                            <TableCell style={{textAlign: "center"}}>{index+1}</TableCell>
+                                            <TableCell style={{textAlign: "center"}}>{gm.name}</TableCell>
+                                            <TableCell style={{textAlign: "center"}}>{gm.description}</TableCell>
+                                            <TableCell>
+                                                {winConditionList[findWinConditionIndex(gm.winConditionID)].id}) 
+                                                {winConditionList[findWinConditionIndex(gm.winConditionID)].name} : 
+                                                {winConditionList[findWinConditionIndex(gm.winConditionID)].description}
+                                            </TableCell>
+                                        </TableRow>
+                                    )}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Paper>
                 </div>
             );
           default:
             return 'Unknown step';
         }
       }
-    
 
-    //stepper
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
     const steps = getSteps();
@@ -261,11 +345,6 @@ function CreateGames(props){
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
-    const handleReset = () => {
-        setActiveStep(0);
-    };
-
-    //stepper
     return (
         <div>
             <h1>Create Games</h1>
@@ -273,7 +352,6 @@ function CreateGames(props){
                 <br></br>
 
                 <div className="CreateGames">
-                {/* stepper */}
                 <div className={classes.root}>
                     <Stepper activeStep={activeStep}>
                         {steps.map((label, index) => {
@@ -286,43 +364,41 @@ function CreateGames(props){
                     </Stepper>
 
                     <div>
-                        {activeStep === steps.length ? (
                         <div>
-                            <Typography className={classes.instructions}>
-                            All steps completed - you&apos;re finished
-                            </Typography>
-                            <Button onClick={handleReset} className={classes.button}>
-                            Add More Game
-                            </Button>
-                        </div>
-                        ) : (
-                        <div>
+                            <form>
                             {getStepContent(activeStep)}
+                            </form>
                             <br/>
                             <div>
                             <Button 
+                                variant="contained"
                                 disabled={activeStep === 0} 
                                 onClick={handleBack} 
                                 className={classes.button}>
                                 Back
                             </Button>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={handleNext}
-                                className={classes.button}
-                            >
-                                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                            </Button>
+                            {activeStep === steps.length - 1 ? (
+                            
+                            <Button 
+                                type = 'submit' 
+                                variant="contained" 
+                                color="primary" 
+                                onClick={submitHandler}
+                            >Review and Submit</Button>
+
+                            ) : (
+                            <Button 
+                                    type="submit"
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={handleNext}
+                                    className={classes.button}
+                            >Next</Button>)}
+                           
                             </div>
                         </div>
-                        )}
                     </div>
                 </div>
-        
-                {/* stepper */}
-            
-            <br></br>
             </div>      
         </div>
     );
