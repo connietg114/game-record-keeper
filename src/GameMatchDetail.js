@@ -2,8 +2,7 @@ import React, {useState, useEffect, useContext} from 'react';
 import ConfigContext from './ConfigContext';
 import './index.css';
 import moment from 'moment';
-import {BrowserRouter as useLocation} from "react-router-dom";
-
+import {useLocation} from "react-router-dom";
 import Table from '@material-ui/core/Table';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
@@ -124,8 +123,8 @@ function GameMatchDetail (props){
             <p>Tournament Name: {gameMatch.tournament && gameMatch.tournament.name}</p>
             <p>Start Date: {moment(gameMatch.tournament && gameMatch.tournament.startDate).format ("YYYY-MM-DD")}</p>
             <p>End Date: {moment(gameMatch.tournament && gameMatch.tournament.endDate).format ("YYYY-MM-DD")}</p>
-            <p>Tournament Type Name: {gameMatch.tournament && gameMatch.tournament.tournamentType.name}</p>
-            <p>Tournament Type Description: {gameMatch.tournament && gameMatch.tournament.tournamentType.description}</p>
+            <p>Tournament Type Name: {gameMatch.tournament && gameMatch.tournament.tournamentType && gameMatch.tournament.tournamentType.name}</p>
+            <p>Tournament Type Description: {gameMatch.tournament && gameMatch.tournament.tournamentType && gameMatch.tournament.tournamentType.description}</p>
             {/* Havent added GameMode & winCondition */}
         </div>
        

@@ -16,18 +16,26 @@ function findStartDate(days){
 function Home(props){
 
     const config = useContext(ConfigContext);
-    const[games, setGames] = useState([]); 
-    useEffect(() => {
-    var url = config.apiURL + 'api/gameMatch?startDate=' + findStartDate(90);
-    fetch(url, {
-        method: 'GET', 
-        headers: {'Content-Type': 'application/json',}
-        })
-        .then(response => response.json())
-        .then(item => {
-        setGames(item);
-        });
+    const[gameMatches, setGameMatches] = useState([]); 
+    const [gameMatchRequest, setGameMatchRequest] = useState({startDate: findStartDate(90), endDate:''});
+
+    function fetchGameMatches(url){
+        fetch(url, {
+            method: 'POST', 
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                gameMatchRequest: gameMatchRequest
+                })
+            })
+            .then(response => {return response.json();})
+            .then(item => {setGameMatches(item);});    
+    }
+
+    var url = config.apiURL + 'api/gameMatch/';
+    useEffect(() => { 
+        fetchGameMatches(url);
     }, [config.apiURL]);
+
 
     const [tournaments, setTournaments] = useState([]);
     useEffect(() => {
@@ -49,7 +57,7 @@ function Home(props){
             <br></br>
 
             <h3 style={{textDecorationLine:'underline'}}>Recent Games</h3>
-            <GameMatchList tableName = 'Recent Games' games = {games}/>
+            <GameMatchList tableName = 'Recent Games' games = {gameMatches}/>
            
             <br></br>
             <h3 style={{ textDecorationLine: 'underline' }}>Recent Tournaments</h3>

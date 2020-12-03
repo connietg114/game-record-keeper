@@ -70,6 +70,16 @@ const useStyles = makeStyles((theme) => ({
 // }
 
 function Games (props){
+    let history = useHistory();
+    const directToCreateGames= () =>{
+        history.push('/creategames/');
+    }
+
+    let his = useHistory();
+    function navigateToDetailsPage(id) {
+        his.push('/gamedetail/' + id);
+    }
+
 
     const config = useContext(ConfigContext);
 
@@ -247,16 +257,7 @@ function Games (props){
         maxPlayerCountMax, maxPlayerCountMin, 
         gameModeCountMax, gameModeCountMin]);
 
-    let history = useHistory();
-    const directToCreateGames= () =>{
-        history.push('/creategames/');
-    }
-
-    let his = useHistory();
-    function navigateToDetailsPage(id) {
-        his.push('/gamedetail/' + id);
-    }
-
+    
     function handleDeleteTask(gameID){
         deleteGame(gameID)
             .then(message=>{

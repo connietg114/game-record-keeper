@@ -210,7 +210,7 @@ function Tournaments (props){
                                     <TableCell onClick={e => navigateToDetailsPage(t.id)}>{t.name}</TableCell>
                                     <TableCell onClick={e => navigateToDetailsPage(t.id)}>{t.startDate}</TableCell>
                                     <TableCell onClick={e => navigateToDetailsPage(t.id)}>{t.endDate}</TableCell>
-                                    <TableCell onClick={e => navigateToDetailsPage(t.id)}>{t.tournamentType.name}</TableCell>
+                                    <TableCell onClick={e => navigateToDetailsPage(t.id)}>{t.tournamentType && t.tournamentType.name}</TableCell>
                                     <TableCell>
                                         <IconButton>
                                             <DeleteIcon onClick={e => { handleDeleteTask(t.id) }} />

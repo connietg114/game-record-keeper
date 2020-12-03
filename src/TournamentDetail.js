@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import ConfigContext from './ConfigContext';
 import './index.css';
 import moment from 'moment';
-import { BrowserRouter as useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 function TournamentDetail(props) {
 

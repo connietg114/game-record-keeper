@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-function GameDetail(props){
+function GameDetail(){
 
     const config = useContext(ConfigContext);
 
