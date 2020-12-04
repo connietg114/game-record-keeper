@@ -8,7 +8,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
 import Paper from '@material-ui/core/Paper';
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 
 import EditGame from './UpdateGame.js';
@@ -30,22 +30,14 @@ function getSteps() {
 
     //////////////// EditGame////////////////////
 
-function GameDetail(){
+function GameDetail(props){
 
     const config = useContext(ConfigContext);
 
     const classes = useStyles();
     let location = useLocation();
     var url = location.pathname;
-   var gameId;
-    if(url.split('/').length>3){
-        gameId = url.substr(url.lastIndexOf('/')-1);
-        gameId = gameId[0];
-        console.log(gameId[0]);
-    }else{
-        gameId = url.substr(url.lastIndexOf('/') + 1);
-    }
-    
+    const { gameId } = useParams();
 
     const[game, setGame] = useState('');
     const [gameModes, setGameModes] = useState([]);
@@ -71,10 +63,10 @@ function GameDetail(){
     };
 
     //////////////// EditGame////////////////////
-    
 
-    return(
-        <div>  
+
+    return props.edit === true ? (
+        <React.Fragment>
             <EditGame
                 title="Edit Game"
                 gameName={game.name}
@@ -87,6 +79,10 @@ function GameDetail(){
                 setGameModes={setGameModes}
                 steps={steps}
             ></EditGame> 
+        </React.Fragment>
+    ) : (
+        <div>  
+            
             <h1>Game Details</h1>
             <hr></hr>
             

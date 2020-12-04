@@ -47,7 +47,7 @@ function Games (props){
 
     let gamedetailpage = useHistory();
     function navigateToDetailsPage(id) {
-        gamedetailpage.push('/gamedetail/' + id);
+        gamedetailpage.push('/game/' + id);
     }
 
     let editGamePage = useHistory();
