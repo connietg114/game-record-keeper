@@ -10,6 +10,9 @@ import TableBody from '@material-ui/core/TableBody';
 import Paper from '@material-ui/core/Paper';
 import { useLocation } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
+
+import EditGame from './UpdateGame.js';
+
 const useStyles = makeStyles((theme) => ({
     table: {
       border: 0,
@@ -19,6 +22,13 @@ const useStyles = makeStyles((theme) => ({
       padding: 0,
     },
   }));
+  /////////////// EditGame/////////////////////
+function getSteps() {
+    return ['Edit Game ', 'Edit Game Mode(s)', 'Review and Submit'];
+}
+
+
+    //////////////// EditGame////////////////////
 
 function GameDetail(){
 
@@ -27,7 +37,15 @@ function GameDetail(){
     const classes = useStyles();
     let location = useLocation();
     var url = location.pathname;
-    var gameId = url.substr(url.lastIndexOf('/') + 1);
+   var gameId;
+    if(url.split('/').length>3){
+        gameId = url.substr(url.lastIndexOf('/')-1);
+        gameId = gameId[0];
+        console.log(gameId[0]);
+    }else{
+        gameId = url.substr(url.lastIndexOf('/') + 1);
+    }
+    
 
     const[game, setGame] = useState('');
     const [gameModes, setGameModes] = useState([]);
@@ -43,10 +61,32 @@ function GameDetail(){
         setGameModes(game.gameModes);
         });
     }, [config.apiURL, gameId]);
+
+    /////////////// EditGame/////////////////////
+    const steps = getSteps();
+
+    function setGameName (name){
+        game.name =  name;
+        setGame(game);
+    };
+
+    //////////////// EditGame////////////////////
     
 
     return(
-        <div>   
+        <div>  
+            <EditGame
+                title="Edit Game"
+                gameName={game.name}
+                setGameName={setGameName}
+                // minPlayer={minPlayer}
+                // setMinPlayer={setMinPlayer}
+                // maxPlayer={maxPlayer}
+                // setMaxPlayer={setMaxPlayer}
+                gameModes={gameModes}
+                setGameModes={setGameModes}
+                steps={steps}
+            ></EditGame> 
             <h1>Game Details</h1>
             <hr></hr>
             

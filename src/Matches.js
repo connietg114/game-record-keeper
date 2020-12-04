@@ -39,7 +39,6 @@ function Matches(props){
             .catch(error => {console.log("GameMatch Error: " + error);});
     }
 
- 
     function handleDelete(id) {
         deleteMatch(id).then(message=>{
             fetchGameMatches(url);

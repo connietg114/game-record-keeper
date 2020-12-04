@@ -39,46 +39,22 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-  
-
-// function GameRow(props) {
-//     let history = useHistory();
-//     function navigateToDetailsPage() {
-//         history.push('/gamedetail/' + props.game.id);
-//     }
-
-//     const games = props;
-
-//     return (
-        
-//     <TableRow type="button" hover>
-//         <TableCell onClick={navigateToDetailsPage}>{props.game.id}</TableCell>
-//         <TableCell onClick={navigateToDetailsPage}>{props.game.name}</TableCell>
-//         <TableCell onClick={navigateToDetailsPage}>{props.game.minPlayerCount}</TableCell>
-//         <TableCell onClick={navigateToDetailsPage}>{props.game.maxPlayerCount}</TableCell>
-//         <TableCell onClick={navigateToDetailsPage}>{props.game.gameModes}</TableCell>
-//         <TableCell>
-//             <IconButton>
-//                 <DeleteIcon onClick={e=> {handleDeleteTask(props.game.id)}}/>
-//             </IconButton>
-//             {/* <DeleteButton id={props.game.id}></DeleteButton> */}
-//         </TableCell>
-//         <TableCell><IconButton><EditIcon /></IconButton></TableCell>
-//     </TableRow> 
-    
-//     );
-// }
-
 function Games (props){
-    let history = useHistory();
+    let creategamespage = useHistory();
     const directToCreateGames= () =>{
-        history.push('/creategames/');
+        creategamespage.push('/creategames/');
     }
 
-    let his = useHistory();
+    let gamedetailpage = useHistory();
     function navigateToDetailsPage(id) {
-        his.push('/gamedetail/' + id);
+        gamedetailpage.push('/gamedetail/' + id);
     }
+
+    let editGamePage = useHistory();
+    const directToEditGamePage= (id) =>{
+        editGamePage.push('/gamedetail/' + id + '/edit');
+    }
+
 
 
     const config = useContext(ConfigContext);
@@ -314,9 +290,7 @@ function Games (props){
         return fetch(url, requestOptions)
             .then(response => 
                 response.text()
-                // if(response.ok){
-                //     setSelected([]);
-                // }    
+                // if(response.ok){setSelected([]);}    
             )
             .catch(error => {console.log(error);}
             );
@@ -371,19 +345,12 @@ function Games (props){
                                                     onClick={() => handleSorting(headerItem.columnName)}>
                                                     {checkColumnToSort(headerItem.columnName)}{headerItem.name}
                                                 </Typography>
-
-                                                
-                                                 {/* {headerItem.columnName === "Name" || headerItem.columnName==="ID"? ( headerItem.columnName==="Name"?  <TextField id="standard-basic" value={headerItem.filterCol}onChange={(e)=>headerItem.setNameValue(e.target.value)}></TextField>: null):  */}
-
                                                 {headerItem.columnName === "Name"? 
                                                 (<input value={headerItem.filterCol}onChange={(e)=>headerItem.setNameValue(e.target.value)}></input>):
                                                 (!headerItem.columnName==="ID"?(null):
 
                                                     (<div>
                                                         <div>
-                                                            {/* <label style={{textAlign: "right", clear: "both",float:"left"}}>
-                                                                Min: 
-                                                            </label> */}
                                                             <TextField id="standard-number" label="Min" InputLabelProps={{ shrink: true,}}
                                                                 value={headerItem.minFilterCol}
                                                                 
@@ -392,7 +359,6 @@ function Games (props){
                                                             </TextField>
                                                         </div>
                                                         <div>
-                                                            {/* <label style={{textAlign: "right", clear: "both",float:"left"}}>Max: </label> */}
                                                             <TextField id="standard-number" label="Max" InputLabelProps={{ shrink: true,}}
                                                                 value={headerItem.maxFilterCol}
                                                                 onChange={(e)=>headerItem.setMaxValue(e.target.value)} 
@@ -448,11 +414,11 @@ function Games (props){
                                 <TableCell onClick={e=>navigateToDetailsPage(g.id)}>{g.maxPlayerCount}</TableCell>
                                 <TableCell onClick={e=>navigateToDetailsPage(g.id)}>{g.gameModes}</TableCell>
                                 <TableCell>
-                                    <IconButton onClick={e=> {handleDeleteTask(g.id)}}>
-                                        <DeleteIcon/>
-                                    </IconButton>
+                                    <IconButton onClick={e=> {handleDeleteTask(g.id)}}><DeleteIcon/></IconButton>
                                 </TableCell>
-                                <TableCell><IconButton><EditIcon /></IconButton></TableCell>
+                                <TableCell>
+                                    <IconButton onClick={e=>directToEditGamePage(g.id)}><EditIcon /></IconButton>
+                                </TableCell>
                             </TableRow> )}
                         </TableBody>
                     </Table>

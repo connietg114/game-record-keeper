@@ -47,6 +47,7 @@ function App(props){
                         <Route path='/gamematchdetail' render={routeProps => (<GameMatchDetail {...routeProps} />)}/>
                         <Route path='/gamedetail' render={routeProps => (<GameDetail {...routeProps}/>)}/>
                         <Route path='/creategames' render={routeProps => (<CreateGames {...routeProps}/>)}/>
+                        {/* <Route path='/editgame' render={routeProps => (<CreateGames {...routeProps}/>)}/> */}
                 <Route path='/draft' component={EnhancedTable} />
                         <Route path='/tournamentdetail' render={routeProps => (<TournamentDetail {...routeProps} />)} />
                         <Route path='/login' exact render={() => (<Login />)} />
