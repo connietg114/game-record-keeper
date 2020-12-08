@@ -40,7 +40,16 @@ function GameDetail(props){
     const { gameId } = useParams();
 
     const[game, setGame] = useState('');
-    const [gameModes, setGameModes] = useState([]);
+    const [gameModes, setGameModes] = useState();
+    const [gameModesArray, setGameModesArray] = useState([]);
+    const gmInitialState = {
+        id:'',
+        name:'Standard',
+        description: '',
+        winConditionID: 1
+    };
+    const suceessMessage = " has been edited successfully!";
+
     useEffect(() => {
     var url = config.apiURL + 'api/game/getGameDetails?id=' + gameId;
     fetch(url, {
@@ -50,7 +59,9 @@ function GameDetail(props){
         .then(response => response.json())
         .then(game => {
         setGame(game);
+        setGameModesArray (game.gameModes.map(gm => ({id: gm.id, name: gm.name, description: gm.description, winConditionID:gm.winCondition.id})));
         setGameModes(game.gameModes);
+
         });
     }, [config.apiURL, gameId]);
 
@@ -58,10 +69,38 @@ function GameDetail(props){
     const steps = getSteps();
 
     function setGameName (name){
-        game.name =  name;
-        setGame(game);
+        setGame({...game, name:name});
     };
-
+    function setMinPlayer(minPlayerCount){
+        setGame({...game, minPlayerCount: minPlayerCount});
+    }
+    function setMaxPlayer(maxPlayerCount){
+        setGame({...game, maxPlayerCount:maxPlayerCount});
+    }
+   
+    function edit(gameName, minPlayer, maxPlayer){
+        var url = config.apiURL + 'api/game/editGame';
+        const requestOptions = {
+            method: 'POST',
+            headers: { 
+                'Accept': 'application/json',
+                'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                ID: game.id,
+                Name: gameName,
+                MinPlayerCount: minPlayer,
+                MaxPlayerCount: maxPlayer,
+                EditGameModeItems: gameModesArray
+             })
+        };
+        fetch(url, requestOptions)
+            .then(response => response.json())
+            .catch(error => {
+                console.log(error);
+            });
+    }
+    function setInitialState(){}
+   
     //////////////// EditGame////////////////////
 
 
@@ -71,13 +110,17 @@ function GameDetail(props){
                 title="Edit Game"
                 gameName={game.name}
                 setGameName={setGameName}
-                // minPlayer={minPlayer}
-                // setMinPlayer={setMinPlayer}
-                // maxPlayer={maxPlayer}
-                // setMaxPlayer={setMaxPlayer}
-                gameModes={gameModes}
-                setGameModes={setGameModes}
+                minPlayer={game.minPlayerCount}
+                setMinPlayer={setMinPlayer}
+                maxPlayer={game.maxPlayerCount}
+                setMaxPlayer={setMaxPlayer}
+                gameModes={gameModesArray}
+                setGameModes={setGameModesArray}
+                gmInitialState = {gmInitialState}
                 steps={steps}
+                post={edit}
+                suceessMessage={suceessMessage}
+                setInitialState={setInitialState}
             ></EditGame> 
         </React.Fragment>
     ) : (

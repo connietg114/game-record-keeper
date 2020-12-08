@@ -10,6 +10,7 @@ function getSteps() {
 }
   
 function CreateGames(props){
+    const config = useContext(ConfigContext);
     const [gameName, setGameName] = useState('');
     const [minPlayer, setMinPlayer] = useState('');
     const [maxPlayer, setMaxPlayer] = useState('');
@@ -20,6 +21,34 @@ function CreateGames(props){
     };
     const [gameModes, setGameModes] = useState([gmInitialState]);
     const steps = getSteps();
+    const suceessMessage = " has been added successfully!";
+
+    function post(gameName, minPlayer, maxPlayer) {
+        var url = config.apiURL + 'api/game/';
+        const requestOptions = {
+            method: 'POST',
+            headers: { 
+                'Accept': 'application/json',
+                'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                Name: gameName,
+                MinPlayerCount: minPlayer,
+                MaxPlayerCount: maxPlayer,
+                GameModeItems: gameModes
+             })
+        };
+        fetch(url, requestOptions)
+            .then(response => response.json())
+            .catch(error => {
+                console.log(error);
+            });
+    }
+    function setInitialState(){
+        setGameName('');
+        setMinPlayer('');
+        setMaxPlayer('');
+        setGameModes([gmInitialState]);
+    }
     return(
         <CreateNewGame
             title="Create Game"
@@ -32,6 +61,10 @@ function CreateGames(props){
             setMaxPlayer={setMaxPlayer}
             gameModes={gameModes}
             setGameModes={setGameModes}
+            gmInitialState = {gmInitialState}
+            post={post}
+            suceessMessage={suceessMessage}
+            setInitialState = {setInitialState}
         ></CreateNewGame>
     );
 }

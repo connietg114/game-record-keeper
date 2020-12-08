@@ -52,7 +52,7 @@ function Games (props){
 
     let editGamePage = useHistory();
     const directToEditGamePage= (id) =>{
-        editGamePage.push('/gamedetail/' + id + '/edit');
+        editGamePage.push('/game/' + id + '/edit');
     }
 
 

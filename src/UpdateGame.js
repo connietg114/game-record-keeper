@@ -58,7 +58,6 @@ const useStyles = makeStyles((theme) => ({
 
 
 function GameModeRow(props){
-
     return (
         
         <TableRow>
@@ -131,7 +130,7 @@ function UpdateGameForms(props){
 
     var submitHandler = (e) =>{
         e.preventDefault();
-        
+        // console.log(props.gameModes)
         if(props.gameName.length===0 ){
             setAlertMessage("Name cannot be empty — check it out!");
             setActiveStep(0);
@@ -153,53 +152,31 @@ function UpdateGameForms(props){
                     setGameModeAlertMessage("GameMode Name cannot be empty — check it out!");
                     setActiveStep(1);
                     
-                }else if(gm.description.length===0){
+                }else if(gm.description ===null || gm.description.length===0 ){
                     validation = false;
                     setGameModeAlertMessage("GameMode Description cannot be empty — check it out!");
                     setActiveStep(1);
                 }
             }
             if(validation){
-                // post(props.gameName, props.minPlayer, props.maxPlayer, props.gameModes);
-                props.setGameName('');
-                props.setMinPlayer('');
-                props.setMaxPlayer('');
-                props.setGameModes([props.gmInitialState])
-                alert(props.gameName + " has been added successfully!");
+                props.post(props.gameName, props.minPlayer, props.maxPlayer, props.gameModes);
+                props.setInitialState();
+                alert(props.gameName + props.suceessMessage);
                 setAlertMessage('');
                 setGameModeAlertMessage("");
                 setActiveStep(0);
             }
         }
     };
-   
-    function post(gameName, minPlayer, maxPlayer) {
-        var url = config.apiURL + 'api/game/';
-        const requestOptions = {
-            method: 'POST',
-            headers: { 
-                'Accept': 'application/json',
-                'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                Name: gameName,
-                MinPlayerCount: minPlayer,
-                MaxPlayerCount: maxPlayer,
-                GameModeItems: props.gameModes
-             })
-        };
-        fetch(url, requestOptions)
-            .then(response => response.json())
-            .catch(error => {
-                console.log(error);
-            });
-    }
-    
-    function addGameModeRow (props){
+
+    function addGameModeRow (){
         var array = props.gameModes.slice(0);//need to deep copy
         array.push(props.gmInitialState);
          props.setGameModes(array);
     }
+
     function deleteGameModeRow(index){
+        console.log(props.gameModes.length);
         if(index !==0){
             var newGameModes = [...props.gameModes];
             _.remove(newGameModes, gm => props.gameModes.indexOf(gm) === index);
@@ -224,17 +201,17 @@ function UpdateGameForms(props){
                     <br></br>
                             <div>
                                 <label>Name: </label>
-                                <TextField type = "text" name="gameName" value={props.gameName} onChange={e => props.setGameName(e.target.value)} required variant="outlined" label="Required"></TextField>   
+                                <TextField type = "text" name="gameName" value={props.gameName} onChange={e => props.setGameName(e.target.value)} required variant="outlined" ></TextField>   
                             </div>
                             <br></br>
                             <div>
                                 <label>Minimum Number of Players: </label>
-                                <TextField type = "number" name="minPlayer" value={props.minPlayer} onChange={e => props.setMinPlayer(e.target.value)} required variant="outlined" label="Required"></TextField>
+                                <TextField type = "number" name="minPlayer" value={props.minPlayer} onChange={e => props.setMinPlayer(e.target.value)} required variant="outlined"></TextField>
                             </div>
                             <br></br>
                             <div>
                                 <label>Maximum Number of Players: </label>
-                                <TextField type = "number" name="maxPlayer" value={props.maxPlayer} onChange={e => props.setMaxPlayer(e.target.value)}required variant="outlined" label="Required"></TextField>
+                                <TextField type = "number" name="maxPlayer" value={props.maxPlayer} onChange={e => props.setMaxPlayer(e.target.value)}required variant="outlined" ></TextField>
                             </div>
                             <br></br>
                             
@@ -259,7 +236,9 @@ function UpdateGameForms(props){
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
+                                {/* {console.log(props.gameModes)} */}
                                     {props.gameModes.map((gm,index)=>
+                                       
                                         <GameModeRow 
                                             key={index}
                                             index={index}
