@@ -27,6 +27,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Alert from '@material-ui/lab/Alert';
 import _ from 'lodash';
+import Tooltip from '@material-ui/core/Tooltip';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -91,7 +92,9 @@ function GameModeRow(props){
                         
                     >
                     {props.winConditionList.map((winCon, index)=>
-                    <MenuItem key={index} value={winCon.id}>{winCon.id}) {winCon.name} : {winCon.description}</MenuItem>
+                    <Tooltip key={index} title={<p style={{fontSize:"12px", padding:"3px", margin: "0px", wordSpacing: "2px"}}>{winCon.description}</p>} placement="right">
+                        <MenuItem value={winCon.id}>{winCon.id}) {winCon.name}</MenuItem>
+                    </Tooltip>
                     )}
                     </Select>
                 </FormControl>
