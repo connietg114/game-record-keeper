@@ -92,7 +92,7 @@ function GameModeRow(props){
                         
                     >
                     {props.winConditionList.map((winCon, index)=>
-                    <Tooltip key={index} title={<p style={{fontSize:"12px", padding:"3px", margin: "0px", wordSpacing: "2px"}}>{winCon.description}</p>} placement="right">
+                    <Tooltip value={winCon.id} key={index} title={<p style={{fontSize:"12px", padding:"3px", margin: "0px", wordSpacing: "2px"}}>{winCon.description}</p>} placement="right">
                         <MenuItem value={winCon.id}>{winCon.id}) {winCon.name}</MenuItem>
                     </Tooltip>
                     )}
@@ -155,11 +155,12 @@ function UpdateGameForms(props){
                     setGameModeAlertMessage("GameMode Name cannot be empty — check it out!");
                     setActiveStep(1);
                     
-                }else if(gm.description ===null || gm.description.length===0 ){
-                    validation = false;
-                    setGameModeAlertMessage("GameMode Description cannot be empty — check it out!");
-                    setActiveStep(1);
                 }
+                // else if(gm.description ===null || gm.description.length===0 ){
+                //     validation = false;
+                //     setGameModeAlertMessage("GameMode Description cannot be empty — check it out!");
+                //     setActiveStep(1);
+                // }
             }
             if(validation){
                 props.post(props.gameName, props.minPlayer, props.maxPlayer, props.gameModes);
@@ -167,7 +168,8 @@ function UpdateGameForms(props){
                 alert(props.gameName + props.suceessMessage);
                 setAlertMessage('');
                 setGameModeAlertMessage("");
-                setActiveStep(0);
+                // props.directTo();
+                // setActiveStep(0); do this for editGame (cell phone mode)
             }
         }
     };
@@ -179,7 +181,7 @@ function UpdateGameForms(props){
     }
 
     function deleteGameModeRow(index){
-        console.log(props.gameModes.length);
+        // console.log(props.gameModes.length);
         if(index !==0){
             var newGameModes = [...props.gameModes];
             _.remove(newGameModes, gm => props.gameModes.indexOf(gm) === index);

@@ -106,7 +106,6 @@ function GameDetail(props){
     }
     console.log(game.gameModes);
     function setInitialState(){}
-   
     //////////////// EditGame////////////////////
 
 

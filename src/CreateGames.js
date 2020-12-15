@@ -2,7 +2,7 @@ import React, {useState, useEffect, useContext} from 'react';
 import ConfigContext from './ConfigContext';
 import './index.css';
 import './CreateGames.css';
-
+import { useHistory } from "react-router-dom";
 import CreateNewGame from './UpdateGame.js';
 
 function getSteps() {
@@ -11,6 +11,7 @@ function getSteps() {
   
 function CreateGames(props){
     const config = useContext(ConfigContext);
+    const [id, setId] = useState('');
     const [gameName, setGameName] = useState('');
     const [minPlayer, setMinPlayer] = useState('');
     const [maxPlayer, setMaxPlayer] = useState('');
@@ -39,6 +40,7 @@ function CreateGames(props){
         };
         fetch(url, requestOptions)
             .then(response => response.json())
+            .then(message => directToEditGamePage(message.game.id))
             .catch(error => {
                 console.log(error);
             });
@@ -48,6 +50,11 @@ function CreateGames(props){
         setMinPlayer('');
         setMaxPlayer('');
         setGameModes([gmInitialState]);
+    }
+
+    let editGamePage = useHistory();
+    const directToEditGamePage= (id) =>{
+        editGamePage.push('/game/' + id + '/edit');
     }
     return(
         <CreateNewGame
@@ -65,6 +72,7 @@ function CreateGames(props){
             post={post}
             suceessMessage={suceessMessage}
             setInitialState = {setInitialState}
+            // directTo={directToEditGamePage}
         ></CreateNewGame>
     );
 }

@@ -56,14 +56,12 @@ function Games (props){
     const directToEditGamePage= (id) =>{
         editGamePage.push('/game/' + id + '/edit');
     }
-
-
-
+    
     const config = useContext(ConfigContext);
 
     const classes = useStyles();
     const [isLoaded, setIsLoaded] = useState(false);
-    const[games, setGames] = useState([]); 
+    const [games, setGames] = useState([]); 
     const [selected, setSelected] = useState([]);
     const [selectAll, setSelectAll]=useState(false);
     const [page, setPage] = useState(0);
@@ -78,8 +76,8 @@ function Games (props){
     const [minPlayerCountMax, setMinPlayerCountMax]=useState(undefined || '');
     const [maxPlayerCountMin, setMaxPlayerCountMin]=useState(undefined || '');
     const [maxPlayerCountMax, setMaxPlayerCountMax]=useState(undefined || '');
-    const[gameModeCountMin, setGameModeCountMin]=useState(undefined || '');
-    const[gameModeCountMax, setGameModeCountMax]=useState(undefined || '');
+    const [gameModeCountMin, setGameModeCountMin]=useState(undefined || '');
+    const [gameModeCountMax, setGameModeCountMax]=useState(undefined || '');
     const [name, setName]=useState(undefined || '');
 
     const tableHeaderItems=[
