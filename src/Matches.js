@@ -55,7 +55,7 @@ function Matches(props){
             <input type="text" placeholder="Search for matches..." ></input>
             <br></br>
             <br></br>
-            <GameMatchList games = {gameMatches} onDelete={handleDelete} delete={true}/>
+            <GameMatchList games = {gameMatches} onDelete={handleDelete} delete={true} edit={true}/>
         </div>
     );
 }

@@ -12,6 +12,7 @@ import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 
 const useStyles = makeStyles((theme) => ({
     table: {
@@ -20,7 +21,9 @@ const useStyles = makeStyles((theme) => ({
       margin: -1,
       overflow: 'hidden',
       padding: 0,
+      
     },
+    
   }));
 
 function GameRow(props) {   
@@ -45,6 +48,12 @@ function GameRow(props) {
                 <DeleteIcon/>
             </IconButton>
         </TableCell>}
+        {props.edit &&
+        <TableCell>
+            <IconButton>
+                <EditIcon/>
+            </IconButton>
+        </TableCell>} 
     </TableRow>
     );
 }
@@ -59,15 +68,15 @@ function GameMatchList (props){
         <Table className={classes.table}>
                 <TableHead>
                     <TableRow>
-                        <TableCell style={{fontWeight: "bold"}}> Game ID </TableCell>
+                        <TableCell style={{fontWeight: "bold"}}> Match ID </TableCell>
                         <TableCell style={{fontWeight: "bold"}}>Name</TableCell>
                         <TableCell style={{fontWeight: "bold"}}>Status</TableCell>
                         <TableCell style={{fontWeight: "bold"}}>Date</TableCell>
                         <TableCell style={{fontWeight: "bold"}}>Time</TableCell>
                         <TableCell style={{fontWeight: "bold"}}>Number of Players</TableCell>
                         <TableCell style={{fontWeight: "bold"}}>Tournament Name</TableCell>
-                        <TableCell style={{fontWeight: "bold"}}></TableCell>
-                        {/* <TableCell style={{fontWeight: "bold"}}></TableCell> */}
+                        {props.delete && <TableCell style={{fontWeight: "bold"}}>Delete</TableCell>}
+                        {props.edit && <TableCell style={{fontWeight: "bold"}}>Edit</TableCell>}
                     </TableRow>
                 </TableHead>
                 <TableBody >
@@ -77,6 +86,7 @@ function GameMatchList (props){
                     gameMatch={gameMatch} 
                     onDelete={props.onDelete} 
                     delete={props.delete}
+                    edit = {props.edit}
                 />)}
                 </TableBody>
             </Table>

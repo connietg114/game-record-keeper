@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useContext } from 'react';
 import ConfigContext from './ConfigContext';
 import './index.css';
+import './Games.css';
 import Table from '@material-ui/core/Table';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
@@ -12,6 +13,7 @@ import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
 import Typography from "@material-ui/core/Typography";
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
@@ -70,6 +72,8 @@ function Games (props){
     
     const [sortItems, setSortItems] = useState([]);
 
+    const [minGameId, setMinGameId] = useState(undefined || '');
+    const [maxGameId, setMaxGameId] = useState(undefined || '');
     const [minPlayerCountMin, setMinPlayerCountMin]=useState(undefined || '');
     const [minPlayerCountMax, setMinPlayerCountMax]=useState(undefined || '');
     const [maxPlayerCountMin, setMaxPlayerCountMin]=useState(undefined || '');
@@ -82,7 +86,11 @@ function Games (props){
         {
             name: "Game ID",
             columnName: "ID",
-            type: "number"
+            type: "number",
+            minFilterCol: minGameId,
+            maxFilterCol: maxGameId,
+            setMinValue: setMinGameId,
+            setMaxValue: setMaxGameId
             
         },
         {
@@ -119,10 +127,23 @@ function Games (props){
             setMinValue: setGameModeCountMin,
             setMaxValue: setGameModeCountMax
         },
+        {
+            name: "Delete",
+
+        },
+        {
+            name: "Edit",
+        },
 
     ]
     var filterList = [];
     const handleFilter = ()=>{
+        if(minGameId!== undefined && minGameId!==""){
+            filterList.push(`GameId min ${minGameId}`);
+        }
+        if(maxGameId!== undefined && maxGameId!==""){
+            filterList.push(`GameId max ${maxGameId}`);
+        }
         if(minPlayerCountMin!== undefined && minPlayerCountMin!==""){
             filterList.push(`MinPlayerCount min ${minPlayerCountMin}`);
         }
@@ -147,7 +168,7 @@ function Games (props){
         // console.log(filterList);
         
     }
-
+    
     const handleSorting = (columnName) =>{
         var sortItem = columnName;
         if(sortItem=== null){
@@ -165,7 +186,7 @@ function Games (props){
         }else if (sortList.includes(sortItem+" desc")){
             index = sortList.indexOf(sortItem+ " desc");
             sortList.splice(index, 1);
-            sortList.push(sortItem);
+            // sortList.push(sortItem);
         }else if (!sortList.includes(sortItem) && !sortList.includes(sortItem+" desc")){
             sortList.push(sortItem);
         }
@@ -191,8 +212,8 @@ function Games (props){
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
-
     function fetchGames(url){
+        console.log(handleFilter());
         fetch(url, {
             method: 'POST', 
             headers: {'Content-Type': 'application/json'},
@@ -201,6 +222,7 @@ function Games (props){
                 rowsPerPage: rowsPerPage,
                 sortItems:sortItems,
                 filterItems: handleFilter()
+                
             })
             })
             .then(response => {
@@ -229,6 +251,7 @@ function Games (props){
         fetchGames(url);
     }, [page, rowsPerPage, sortItems, config.apiURL,
         name, 
+        minGameId, maxGameId,
         minPlayerCountMax, minPlayerCountMin, 
         maxPlayerCountMax, maxPlayerCountMin, 
         gameModeCountMax, gameModeCountMin]);
@@ -301,7 +324,8 @@ function Games (props){
         return null;
     
     return(
-        <div>
+        <div className="GamesPage">
+            <div>
             {selected.length > 0?
             (<Typography variant="h6" color="inherit">Delete {selected.length} games selected
                 <IconButton onClick = {handleBulkDelete}>
@@ -309,11 +333,14 @@ function Games (props){
                 </IconButton>
             </Typography>
             ):(
+                
             <h1>Games</h1> )}
-
-            <IconButton onClick = {directToCreateGames}>
-                <AddIcon/><Typography variant="body1">Add Game</Typography>
-            </IconButton>
+            
+            <Button color="primary" variant="contained" onClick = {directToCreateGames}>
+                <AddIcon/><p>Add Game</p>
+            </Button>
+            </div>
+            <br></br>
             <hr></hr>
             <br></br>
             <Paper>
@@ -345,28 +372,28 @@ function Games (props){
                                                     onClick={() => handleSorting(headerItem.columnName)}>
                                                     {checkColumnToSort(headerItem.columnName)}{headerItem.name}
                                                 </Typography>
+                                                
                                                 {headerItem.columnName === "Name"? 
                                                 (<input value={headerItem.filterCol}onChange={(e)=>headerItem.setNameValue(e.target.value)}></input>):
-                                                (!headerItem.columnName==="ID"?(null):
+                                                (headerItem.name === "Delete" || headerItem.name === "Edit"?(null):
 
                                                     (<div>
                                                         <div>
-                                                            <TextField id="standard-number" label="Min" InputLabelProps={{ shrink: true,}}
+                                                            <TextField label="Min" InputLabelProps={{ shrink: true}}
                                                                 value={headerItem.minFilterCol}
-                                                                
-                                                                onChange={(e)=>headerItem.setMinValue(e.target.value)} 
-                                                                type={headerItem.type}>
+                                                                onChange={(e)=>!isNaN(e.target.value)? headerItem.setMinValue(e.target.value): null} 
+                                                                >
                                                             </TextField>
                                                         </div>
                                                         <div>
-                                                            <TextField id="standard-number" label="Max" InputLabelProps={{ shrink: true,}}
+                                                            <TextField label="Max" InputLabelProps={{ shrink: true}}
                                                                 value={headerItem.maxFilterCol}
-                                                                onChange={(e)=>headerItem.setMaxValue(e.target.value)} 
-                                                                type={headerItem.type}>
+                                                                onChange={(e)=>!isNaN(e.target.value)? headerItem.setMaxValue(e.target.value):null}   
+                                                            >
                                                             </TextField>
                                                         </div>
                                                     </div>
-                                                    ))}
+                                                ))}
   
                                             </TableCell>
                                         )

@@ -23,7 +23,7 @@ function CreateGames(props){
     const steps = getSteps();
     const suceessMessage = " has been added successfully!";
 
-    function post(gameName, minPlayer, maxPlayer) {
+    function post(gameName, minPlayer, maxPlayer, gameModes) {
         var url = config.apiURL + 'api/game/';
         const requestOptions = {
             method: 'POST',

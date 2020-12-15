@@ -40,7 +40,7 @@ function GameDetail(props){
     const { gameId } = useParams();
 
     const[game, setGame] = useState('');
-    const [gameModes, setGameModes] = useState();
+    
     const [gameModesArray, setGameModesArray] = useState([]);
     const gmInitialState = {
         id:'',
@@ -49,21 +49,26 @@ function GameDetail(props){
         winConditionID: 1
     };
     const suceessMessage = " has been edited successfully!";
-
+ 
     useEffect(() => {
-    var url = config.apiURL + 'api/game/getGameDetails?id=' + gameId;
-    fetch(url, {
-        method: 'GET', 
-        headers: {'Content-Type': 'application/json',}
-        })
-        .then(response => response.json())
-        .then(game => {
-        setGame(game);
-        setGameModesArray (game.gameModes.map(gm => ({id: gm.id, name: gm.name, description: gm.description, winConditionID:gm.winCondition.id})));
-        setGameModes(game.gameModes);
+        var url = config.apiURL + 'api/game/getGameDetails?id=' + gameId;
+        fetch(url, {
+            method: 'GET', 
+            headers: {'Content-Type': 'application/json',}
+            })
+            .then(response => response.json())
+            .then(game => {
+            setGame(game);
+            
+            // console.log(game.gameModes);
+            setGameModesArray (game.gameModes.map(gm => ({id: gm.id, name: gm.name, description: gm.description, winConditionID:gm.winCondition.id})));
 
         });
-    }, [config.apiURL, gameId]);
+    }, [config.apiURL, 
+        gameId, 
+        // game,  
+        // gameModesArray
+    ]);
 
     /////////////// EditGame/////////////////////
     const steps = getSteps();
@@ -78,7 +83,7 @@ function GameDetail(props){
         setGame({...game, maxPlayerCount:maxPlayerCount});
     }
    
-    function edit(gameName, minPlayer, maxPlayer){
+    function edit(gameName, minPlayer, maxPlayer, gameModesArray){
         var url = config.apiURL + 'api/game/editGame';
         const requestOptions = {
             method: 'POST',
@@ -99,6 +104,7 @@ function GameDetail(props){
                 console.log(error);
             });
     }
+    console.log(game.gameModes);
     function setInitialState(){}
    
     //////////////// EditGame////////////////////
@@ -106,6 +112,7 @@ function GameDetail(props){
 
     return props.edit === true ? (
         <React.Fragment>
+             {/* <p>{game.gameModes.length}</p> */}
             <EditGame
                 title="Edit Game"
                 gameName={game.name}
@@ -134,6 +141,7 @@ function GameDetail(props){
                 <p>Game Name: {game.name}</p>
                 <p>Number of Minimum Players: {game && game.minPlayerCount}</p>
                 <p>Number of Maximum Players: {game && game.maxPlayerCount}</p>
+    {/* <p>{game}</p> */}
                
                 <br></br>
                 <Paper>
@@ -151,7 +159,8 @@ function GameDetail(props){
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                            {gameModes.map((gm, index)=>
+                                {/* {console.log(game)} */}
+                            {game.gameModes.map((gm, index)=>
                                 <TableRow key={index} hover>
                                     <TableCell>{index+1}</TableCell>
                                     <TableCell>{gm && gm.id}</TableCell>
@@ -159,7 +168,7 @@ function GameDetail(props){
                                     <TableCell>{gm.winCondition && gm.winCondition.id}</TableCell>
                                     <TableCell>{gm.winCondition && gm.winCondition.name}</TableCell>
                                     <TableCell>{gm.winCondition && gm.winCondition.description}</TableCell>
-                                    {/* win condition - null */}
+                                  
                                 </TableRow> 
                                 
                             )}

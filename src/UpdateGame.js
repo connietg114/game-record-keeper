@@ -199,21 +199,21 @@ function UpdateGameForms(props){
                     {alertMessage.length==0?(''):( <Alert severity="error">{alertMessage}</Alert>)}
                
                     <br></br>
-                            <div>
-                                <label>Name: </label>
-                                <TextField type = "text" name="gameName" value={props.gameName} onChange={e => props.setGameName(e.target.value)} required variant="outlined" ></TextField>   
-                            </div>
-                            <br></br>
-                            <div>
-                                <label>Minimum Number of Players: </label>
-                                <TextField type = "number" name="minPlayer" value={props.minPlayer} onChange={e => props.setMinPlayer(e.target.value)} required variant="outlined"></TextField>
-                            </div>
-                            <br></br>
-                            <div>
-                                <label>Maximum Number of Players: </label>
-                                <TextField type = "number" name="maxPlayer" value={props.maxPlayer} onChange={e => props.setMaxPlayer(e.target.value)}required variant="outlined" ></TextField>
-                            </div>
-                            <br></br>
+                    <div>
+                        <label>Name: </label>
+                        <TextField type = "text" name="gameName" value={props.gameName} onChange={e => props.setGameName(e.target.value)} required variant="outlined" ></TextField>   
+                    </div>
+                    <br></br>
+                    <div>
+                        <label>Minimum Number of Players: </label>
+                        <TextField name="minPlayer" value={props.minPlayer} onChange={e => !isNaN(e.target.value)? props.setMinPlayer(e.target.value):null} required variant="outlined"></TextField>
+                    </div>
+                    <br></br>
+                    <div>
+                        <label>Maximum Number of Players: </label>
+                        <TextField name="maxPlayer" value={props.maxPlayer} onChange={e => !isNaN(e.target.value)? props.setMaxPlayer(e.target.value):null}required variant="outlined" ></TextField>
+                    </div>
+                    <br></br>
                             
                 </div>
             );
@@ -306,7 +306,6 @@ function UpdateGameForms(props){
 
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
-    // const steps = getSteps();
 
     const handleNext = () => {
        setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -328,7 +327,7 @@ function UpdateGameForms(props){
                         {props.steps.map((label, index) => {
                         return (
                             <Step key={label}>
-                            <StepLabel>{label}</StepLabel>
+                                <StepLabel onClick={e=>setActiveStep(index)}>{label}</StepLabel>
                             </Step>
                             );
                         })}
