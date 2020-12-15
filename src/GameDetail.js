@@ -22,13 +22,10 @@ const useStyles = makeStyles((theme) => ({
       padding: 0,
     },
   }));
-  /////////////// EditGame/////////////////////
+
 function getSteps() {
     return ['Edit Game ', 'Edit Game Mode(s)', 'Review and Submit'];
 }
-
-
-    //////////////// EditGame////////////////////
 
 function GameDetail(props){
 
@@ -36,10 +33,11 @@ function GameDetail(props){
 
     const classes = useStyles();
     let location = useLocation();
-    var url = location.pathname;
+    // var url = location.pathname;
+     // var gameId = url.substr(url.lastIndexOf('/') + 1);
     const { gameId } = useParams();
-
-    const[game, setGame] = useState('');
+    const[game, setGame] = useState([]);
+    const [gameModes, setGameModes]= useState([]);
     
     const [gameModesArray, setGameModesArray] = useState([]);
     const gmInitialState = {
@@ -59,15 +57,11 @@ function GameDetail(props){
             .then(response => response.json())
             .then(game => {
             setGame(game);
-            
-            // console.log(game.gameModes);
+            setGameModes(game.gameModes);
             setGameModesArray (game.gameModes.map(gm => ({id: gm.id, name: gm.name, description: gm.description, winConditionID:gm.winCondition.id})));
 
         });
-    }, [config.apiURL, 
-        gameId, 
-        // game,  
-        // gameModesArray
+    }, [config.apiURL, gameId
     ]);
 
     /////////////// EditGame/////////////////////
@@ -104,7 +98,7 @@ function GameDetail(props){
                 console.log(error);
             });
     }
-    console.log(game.gameModes);
+   
     function setInitialState(){}
     //////////////// EditGame////////////////////
 
@@ -140,7 +134,6 @@ function GameDetail(props){
                 <p>Game Name: {game.name}</p>
                 <p>Number of Minimum Players: {game && game.minPlayerCount}</p>
                 <p>Number of Maximum Players: {game && game.maxPlayerCount}</p>
-    {/* <p>{game}</p> */}
                
                 <br></br>
                 <Paper>
@@ -158,8 +151,8 @@ function GameDetail(props){
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {/* {console.log(game)} */}
-                            {game.gameModes.map((gm, index)=>
+                               
+                            {gameModes.map((gm, index)=>
                                 <TableRow key={index} hover>
                                     <TableCell>{index+1}</TableCell>
                                     <TableCell>{gm && gm.id}</TableCell>

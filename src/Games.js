@@ -211,7 +211,6 @@ function Games (props){
         setPage(newPage);
     };
     function fetchGames(url){
-        console.log(handleFilter());
         fetch(url, {
             method: 'POST', 
             headers: {'Content-Type': 'application/json'},

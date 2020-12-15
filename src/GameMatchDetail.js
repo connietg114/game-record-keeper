@@ -104,6 +104,7 @@ function GameMatchDetail (props){
                                 </TableRow>
                             </TableHead>
                             <TableBody>
+                                {console.log(gameModes)}
                             {gameModes.map((gm, index)=>
                                 <TableRow key={index} hover>
                                     <TableCell>{index+1}</TableCell>
