@@ -153,14 +153,8 @@ function UpdateGameForms(props){
                 if(gm.name.length===0){
                     validation = false;
                     setGameModeAlertMessage("GameMode Name cannot be empty — check it out!");
-                    setActiveStep(1);
-                    
-                }
-                // else if(gm.description ===null || gm.description.length===0 ){
-                //     validation = false;
-                //     setGameModeAlertMessage("GameMode Description cannot be empty — check it out!");
-                //     setActiveStep(1);
-                // }
+                    setActiveStep(1);   
+                }  
             }
             if(validation){
                 props.post(props.gameName, props.minPlayer, props.maxPlayer, props.gameModes);
@@ -168,7 +162,6 @@ function UpdateGameForms(props){
                 alert(props.gameName + props.suceessMessage);
                 setAlertMessage('');
                 setGameModeAlertMessage("");
-                // props.directTo();
                 // setActiveStep(0); do this for editGame (cell phone mode)
             }
         }
@@ -331,8 +324,8 @@ function UpdateGameForms(props){
                     <Stepper activeStep={activeStep}>
                         {props.steps.map((label, index) => {
                         return (
-                            <Step key={label}>
-                                <StepLabel onClick={e=>setActiveStep(index)}>{label}</StepLabel>
+                            <Step key={index}>
+                                <StepLabel completed ={false}  onClick={e=>setActiveStep(index)}>{label}</StepLabel>
                             </Step>
                             );
                         })}
@@ -340,16 +333,15 @@ function UpdateGameForms(props){
 
                     <div>
                         <div>
-                            <form>
                             {getStepContent(activeStep)}
-                            </form>
                             <br/>
                             <div>
                             <Button 
                                 variant="contained"
                                 disabled={activeStep === 0} 
                                 onClick={handleBack} 
-                                className={classes.button}>
+                                className={classes.button}
+                                >
                                 Back
                             </Button>
                             {activeStep === props.steps.length - 1 ? (

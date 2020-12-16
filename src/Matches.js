@@ -1,7 +1,11 @@
 import React, {useState, useEffect, useContext} from 'react';
+import { useHistory } from "react-router-dom";
 import ConfigContext from './ConfigContext';
 import GameMatchList from './GameMatchList.js';
 import _ from 'lodash';
+import AddIcon from '@material-ui/icons/Add';
+// import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
 
 // import EditIcon from '@material-ui/core/icons/Edit'; --> Can't resolve '@material-ui/core/icons/Edit'
 function Matches(props){
@@ -47,9 +51,20 @@ function Matches(props){
 
     }
 
+    
+    let creategamematch = useHistory();
+    function directToCreateGameMatch(){
+        creategamematch.push('/creategamematch/');
+    }
+
     return(
         <div>
-            <h1>Matches</h1>
+            <div>
+                <h1>Matches</h1>
+                <Button color="primary" variant="contained" onClick = {directToCreateGameMatch}>
+                    <AddIcon/><p>Add Game Match</p>
+                </Button>
+            </div>
             <hr></hr>
             <br></br>
             <input type="text" placeholder="Search for matches..." ></input>
