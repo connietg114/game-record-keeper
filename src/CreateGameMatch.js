@@ -85,7 +85,8 @@ function CreateGameMatch(props){
                         style={{}}
                         id="datetime-local"
                         type="datetime-local"
-                        // defaultValue={findDate()}
+                        // value={new Date()}
+                        defaultValue={moment().format("YYYY-MM-DDThh:mm:ss")}
                         className={classes.textField}
                         InputLabelProps={{
                         shrink: true,
